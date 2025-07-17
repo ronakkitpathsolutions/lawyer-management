@@ -32,5 +32,19 @@ export const api = {
         ...configs,
       }),
   },
-  client: {},
+  client: {
+    getAll : ({ params, ...configs }) =>
+      client({
+        url: "/clients",
+        method: METHODS.GET,
+        params,
+        ...configs,
+      }),
+    get: ({ id, ...configs }) =>
+      client({
+        url: `/clients/${id}`,
+        method: METHODS.GET,
+        ...configs,
+      }),
+  },
 };
