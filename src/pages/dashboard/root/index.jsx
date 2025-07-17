@@ -1,6 +1,8 @@
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div className="space-y-4">
+      STATS
+    </div>
   )
 }
 

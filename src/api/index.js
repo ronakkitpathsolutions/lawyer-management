@@ -24,6 +24,13 @@ export const api = {
         params,
         ...configs,
       }),
+    profile: ({ data, ...configs }) =>
+      client({
+        url: "/auth/profile",
+        method: METHODS.GET,
+        data,
+        ...configs,
+      }),
   },
   client: {},
 };

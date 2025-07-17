@@ -25,14 +25,19 @@ export const DASHBOARD_ROUTES = {
     url: "/dashboard",
     title: "Dashboard",
   },
+};
+
+export const MAIN_ROUTES = {
   clients: {
+    path: "/clients",
     roles: Object.values(ROLES),
-    url: "/dashboard/clients",
+    url: "/clients",
     title: "Clients",
   },
   profile: {
+    path: "/profile",
     roles: Object.values(ROLES),
-    url: "/dashboard/profile",
+    url: "/profile",
     title: "Profile",
   },
 };

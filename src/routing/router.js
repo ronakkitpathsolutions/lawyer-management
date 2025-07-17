@@ -2,7 +2,7 @@ import { createBrowserRouter, redirect } from "react-router";
 import { getAuth } from "../auth";
 
 // Routes
-import { AUTH_ROUTES, DASHBOARD_ROUTES } from "./routes";
+import { AUTH_ROUTES, DASHBOARD_ROUTES, MAIN_ROUTES } from "./routes";
 
 // Layouts
 import PlainLayout from "../layouts/plain-layout";
@@ -76,23 +76,29 @@ export const router = createBrowserRouter([
         Component: DashboardRoot,
         loader: dashboardPageLoader(DASHBOARD_ROUTES.dashboard.roles),
       },
+    ],
+  },
+  {
+    ...MAIN_ROUTES.clients,
+    Component: DashboardLayout,
+    loader: dashboardLayoutLoader,
+    children: [
       {
-        ...DASHBOARD_ROUTES.clients,
+        index: true,
         Component: Clients,
-        loader: dashboardPageLoader(DASHBOARD_ROUTES.clients.roles),
-        children: [
-          {
-            index: true,
-            loader: () => {
-              return redirect(DASHBOARD_ROUTES.clients.url);
-            },
-          },
-        ],
+        loader: dashboardPageLoader(MAIN_ROUTES.clients.roles),
       },
+    ],
+  },
+  {
+    ...MAIN_ROUTES.profile,
+    Component: DashboardLayout,
+    loader: dashboardLayoutLoader,
+    children: [
       {
-        ...DASHBOARD_ROUTES.profile,
+        index: true,
         Component: Profile,
-        loader: dashboardPageLoader(DASHBOARD_ROUTES.profile.roles),
+        loader: dashboardPageLoader(MAIN_ROUTES.profile.roles),
       },
     ],
   },
