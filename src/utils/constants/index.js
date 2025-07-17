@@ -1,14 +1,12 @@
-import { rem } from "@mantine/core";
+
 import dayjs from "dayjs";
 import { capitalize } from "../helper";
 
-export const DASHBOARD_HEADER_HEIGHT = rem(60);
-export const DASHBOARD_FOOTER_HEIGHT = rem(40);
+export const DASHBOARD_HEADER_HEIGHT = "60px";
+export const DASHBOARD_FOOTER_HEIGHT = "40px";
 
 export const DASHBOARD_LAYOUT_CALC = {
-  base: `calc(100dvh - (${DASHBOARD_HEADER_HEIGHT} + ${DASHBOARD_FOOTER_HEIGHT} + ${rem(
-    32
-  )}))`,
+  base: `calc(100dvh - (${DASHBOARD_HEADER_HEIGHT} + ${DASHBOARD_FOOTER_HEIGHT} + 32px))`,
 };
 
 export const APP_TITLE = "Lawyer Dashboard";

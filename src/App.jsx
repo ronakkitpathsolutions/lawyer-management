@@ -1,18 +1,14 @@
-import { Notifications } from "@mantine/notifications";
-import { MantineProvider } from "@mantine/core";
-import { colorSchemeManager, defaultColorScheme, theme } from "./theme";
 import { AuthProvider } from "./auth/auth-provider";
 import Routing from "./routing";
 
 const App = () => {
   return (
-    <MantineProvider {...{ theme, defaultColorScheme, colorSchemeManager }}>
-      <Notifications />
+    <div>
       <AuthProvider>
         <Routing />
       </AuthProvider>
-    </MantineProvider>
-  )
-}
+    </div>
+  );
+};
 
 export default App;

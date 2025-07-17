@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { ERROR_MESSAGES } from "../utils/constants";
-import { notifications } from "@mantine/notifications";
+// import { notifications } from "@mantine/notifications"; // Removed Mantine notifications
 import { apiAsyncHandler } from "../utils/helper";
 import { useTimeout } from "@mantine/hooks";
-import { Alert } from "../components";
 import { ICONS } from "../assets/icons";
 
 // const [submitFunction, loading] = useAsyncOperation(apiFunction,handleError,{options});
@@ -45,28 +44,19 @@ const useAsyncOperation = (
 
         if (!isHandled) {
           if (notificationType === "toast") {
-            notifications.show({
-              title: notification?.title,
-              message,
-              color: "red",
-            });
+            // Replace with custom toast notification or console.log
+            console.error(`${notification?.title}: ${message}`);
           } else {
             if (autoHide) {
               clear();
               start();
             }
             setNotificationUi(
-              <Alert
-                {...{ message }}
-                color="red"
-                icon={ICONS.IconAlertSquare}
-                onClose={() => {
-                  setNotificationUi(null);
-                  if (autoHide) {
-                    clear();
-                  }
-                }}
-              />
+                // integrate shadcn sooner
+              <div>
+                <strong>{notification?.title}</strong>
+                <p>{message}</p>
+              </div>
             );
           }
         }

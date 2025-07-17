@@ -1,8 +1,6 @@
-import { Flex } from "@mantine/core";
-
 const Svg = ({ svgData = "", ...props }) => {
   return (
-    <Flex dangerouslySetInnerHTML={{ __html: svgData || "" }} {...props} />
+    <div className="flex" dangerouslySetInnerHTML={{ __html: svgData || "" }} {...props} />
   );
 };
 

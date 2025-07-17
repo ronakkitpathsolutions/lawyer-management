@@ -4,7 +4,7 @@ import { decodeToken } from "../utils/helper";
 import { AUTH_ROUTES } from "../routing/routes";
 import useLocalStorage from "../hooks/use-local-storage";
 import { REDIRECTION } from ".";
-import { useTimeout } from "@mantine/hooks";
+import { useTimeout } from "@mantine/hooks"; // Replaced with custom timeout
 
 const AuthContext = createContext();
 
