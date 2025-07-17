@@ -11,8 +11,8 @@ export const DASHBOARD_LAYOUT_CALC = {
   )}))`,
 };
 
-export const APP_TITLE = "Bug Route";
-export const LOCAL_STORAGE_KEY = "bug-route";
+export const APP_TITLE = "Lawyer Dashboard";
+export const LOCAL_STORAGE_KEY = "lawyer-dashboard";
 export const CACHED_URL_LOCAL_STORAGE_KEY = "cached-redirect-url";
 
 export const BASE_URL =
