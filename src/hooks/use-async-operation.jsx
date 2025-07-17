@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ERROR_MESSAGES } from "../utils/constants";
-// import { notifications } from "@mantine/notifications"; // Removed Mantine notifications
-import { apiAsyncHandler } from "../utils/helper";
-import { useTimeout } from "@mantine/hooks";
+import { apiAsyncHandler, toastError } from "../utils/helper";
 import { ICONS } from "../assets/icons";
 
 // const [submitFunction, loading] = useAsyncOperation(apiFunction,handleError,{options});
@@ -18,8 +16,6 @@ const useAsyncOperation = (
 ) => {
   const [loading, setLoading] = useState(false);
   const [notificationUi, setNotificationUi] = useState(null);
-
-  const { start, clear } = useTimeout(() => setNotificationUi(null), 4000);
 
   const executeOperation = async (params) => {
     setLoading(true);
@@ -44,20 +40,48 @@ const useAsyncOperation = (
 
         if (!isHandled) {
           if (notificationType === "toast") {
-            // Replace with custom toast notification or console.log
-            console.error(`${notification?.title}: ${message}`);
+            // Use Sonner toast for error notifications
+            const title = notification?.title || "Error";
+            toastError(`${title}: ${message}`);
           } else {
-            if (autoHide) {
-              clear();
-              start();
-            }
+            // For non-toast notifications, create a simple error display
             setNotificationUi(
-                // integrate shadcn sooner
-              <div>
-                <strong>{notification?.title}</strong>
-                <p>{message}</p>
+              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <ICONS.IconAlertSquare className="h-5 w-5 text-red-400" />
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">
+                      {notification?.title || "Error"}
+                    </h3>
+                    <div className="mt-2 text-sm text-red-700">
+                      <p>{message}</p>
+                    </div>
+                    <div className="mt-4">
+                      <div className="-mx-2 -my-1.5 flex">
+                        <button
+                          type="button"
+                          className="bg-red-50 px-2 py-1.5 rounded-md text-sm font-medium text-red-800 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-50 focus:ring-red-600"
+                          onClick={() => {
+                            setNotificationUi(null);
+                          }}
+                        >
+                          Dismiss
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             );
+            
+            // Auto-hide after 4 seconds if autoHide is enabled
+            if (autoHide) {
+              setTimeout(() => {
+                setNotificationUi(null);
+              }, 4000);
+            }
           }
         }
 
@@ -68,12 +92,6 @@ const useAsyncOperation = (
       }
     );
   };
-
-  useEffect(() => {
-    return () => {
-      clear();
-    };
-  }, [clear]);
 
   const hookData = [executeOperation, loading, notificationUi];
   hookData.executeOperation = executeOperation;
