@@ -3,14 +3,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
+  DropdownMenuItem
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Bell, ChevronRight, User, LogOut, Shield } from "lucide-react";
-import { Link } from "react-router";
+import { ChevronRight, User, Shield } from "lucide-react";
+import { Link, useNavigate } from "react-router";
 import useProfileStore from "@/pages/dashboard/profile/use-profile-store";
+import { MAIN_ROUTES } from "@/routing/routes";
 
 const breadcrumbs = [
   { label: "Home", href: "/" },
@@ -19,6 +18,11 @@ const breadcrumbs = [
 
 const TopBar = () => {
   const { data } = useProfileStore();
+  const navigate = useNavigate();
+
+  const  handleNavigation = () => {
+    navigate(MAIN_ROUTES.profile.url)
+  }
 
   // Function to get user initials for avatar fallback
   const getUserInitials = (name) => {
@@ -29,12 +33,6 @@ const TopBar = () => {
       .join("")
       .toUpperCase()
       .slice(0, 2);
-  };
-
-  // Function to handle logout
-  const handleLogout = () => {
-    // Add your logout logic here
-    console.log("Logging out...");
   };
 
   return (
@@ -74,7 +72,7 @@ const TopBar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            sideOffset={8}
+            sideOffset={2}
             className="w-[240px] bg-background border-border rounded-lg shadow-lg"
           >
             {/* User Info Header */}
@@ -106,19 +104,9 @@ const TopBar = () => {
 
             {/* Menu Items */}
             <div className="p-1">
-              <DropdownMenuItem className="cursor-pointer p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">
+              <DropdownMenuItem onClick={handleNavigation} className="cursor-pointer p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">
                 <User className="h-4 w-4 mr-2 text-gray-500" />
                 <span className="text-sm font-medium">View Profile</span>
-              </DropdownMenuItem>
-              
-              <DropdownMenuSeparator className="my-1" />
-              
-              <DropdownMenuItem 
-                className="cursor-pointer p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md text-red-600 dark:text-red-400"
-                onClick={handleLogout}
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                <span className="text-sm font-medium">Sign Out</span>
               </DropdownMenuItem>
             </div>
           </DropdownMenuContent>

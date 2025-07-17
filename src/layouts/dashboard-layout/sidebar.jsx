@@ -1,14 +1,31 @@
 import React, { useCallback } from "react";
-import { Menu, Home, UsersIcon, User } from "lucide-react";
-import { Link } from "react-router";
+import { Menu, Home, UsersIcon, User, LogOutIcon } from "lucide-react";
+import { Link, useNavigate } from "react-router";
 import { useDisclosure } from "@mantine/hooks";
 import NavItem from "./nav-item";
-import { DASHBOARD_ROUTES, MAIN_ROUTES } from "@/routing/routes";
+import { AUTH_ROUTES, DASHBOARD_ROUTES, MAIN_ROUTES } from "@/routing/routes";
+import Confirmation from "@/shared/confirmation";
+import useAuth from "@/auth/use-auth";
 
 const Sidebar = () => {
   const [isOpen, { toggle }] = useDisclosure(false);
+  const [isLogoutOpen, { open: openLogout, close: closeLogout }] =
+    useDisclosure(false);
+
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleNavigation = useCallback(() => toggle(), [toggle]);
+
+  const handleLogout = useCallback(() => {
+    toggle();
+    openLogout();
+  }, [openLogout, toggle]);
+
+  const handleFinalLogout = useCallback(() => {
+    logout();
+    navigate(AUTH_ROUTES.login.url);
+  }, [logout, navigate]);
 
   return (
     <>
@@ -60,19 +77,17 @@ const Sidebar = () => {
                     url={MAIN_ROUTES.clients.url}
                     icon={UsersIcon}
                   />
-                  <NavItem
-                    label="Profile"
-                    activeKey="profile"
-                    toggle={handleNavigation}
-                    url={MAIN_ROUTES.profile.url}
-                    icon={User}
-                  />
                 </div>
               </div>
             </div>
           </div>
           <div className="px-4 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
-            Logout Option
+            <NavItem
+              label="Logout"
+              type="button"
+              icon={LogOutIcon}
+              handleClick={handleLogout}
+            />
           </div>
         </div>
       </nav>
@@ -82,6 +97,16 @@ const Sidebar = () => {
           onClick={toggle}
         />
       )}
+
+      <Confirmation
+        open={isLogoutOpen}
+        handleClose={closeLogout}
+        title="Logout"
+        description="Are you sure you want to logout?"
+        confirmText="Logout"
+        cancelText="Cancel"
+        handleSubmit={handleFinalLogout}
+      />
     </>
   );
 };

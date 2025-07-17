@@ -5,6 +5,7 @@ import { AUTH_ROUTES } from "../routing/routes";
 import useLocalStorage from "../hooks/use-local-storage";
 import { REDIRECTION } from ".";
 import { useTimeout } from "@mantine/hooks"; // Replaced with custom timeout
+import useProfileStore from "@/pages/dashboard/profile/use-profile-store";
 
 const AuthContext = createContext();
 
@@ -28,7 +29,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const resetAllStores = () => {
-    // Resetting store logic can be added here
+    useProfileStore.getState().reset()
   };
 
   const { start, clear } = useTimeout(() => resetAllStores(), 1000);
