@@ -130,7 +130,7 @@ export const createFileUrl = (url = "") => {
     return url;
   }
 
-  return `${API.URL}${url}`;
+  return `${API.URL}/${url}`;
 };
 
 export const formatListWithAnd = (arr) => {

@@ -3,13 +3,14 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  DropdownMenuItem
+  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronRight, User, Shield } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import useProfileStore from "@/pages/dashboard/profile/use-profile-store";
 import { MAIN_ROUTES } from "@/routing/routes";
+import { createFileUrl } from "@/utils/helper";
 
 const breadcrumbs = [
   { label: "Home", href: "/" },
@@ -20,9 +21,9 @@ const TopBar = () => {
   const { data } = useProfileStore();
   const navigate = useNavigate();
 
-  const  handleNavigation = () => {
-    navigate(MAIN_ROUTES.profile.url)
-  }
+  const handleNavigation = () => {
+    navigate(MAIN_ROUTES.profile.url);
+  };
 
   // Function to get user initials for avatar fallback
   const getUserInitials = (name) => {
@@ -64,10 +65,14 @@ const TopBar = () => {
           <DropdownMenuTrigger className="focus:outline-none">
             <div className="flex items-center gap-2 p-1.5 transition-colors cursor-pointer">
               <Avatar className="w-10 h-10">
-                  <AvatarFallback className="font-medium">
-                    {getUserInitials(data?.name)}
-                  </AvatarFallback>
-                </Avatar>
+                <AvatarImage
+                  src={createFileUrl(data?.profile) || "/default-avatar.png"}
+                  alt={data?.name || "User Avatar"}
+                />
+                <AvatarFallback className="font-medium">
+                  {getUserInitials(data?.name)}
+                </AvatarFallback>
+              </Avatar>
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -79,6 +84,10 @@ const TopBar = () => {
             <div className="p-3 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
+                  <AvatarImage
+                    src={createFileUrl(data?.profile) || "/default-avatar.png"}
+                    alt={data?.name || "User Avatar"}
+                  />
                   <AvatarFallback className="font-medium">
                     {getUserInitials(data?.name)}
                   </AvatarFallback>
@@ -104,7 +113,10 @@ const TopBar = () => {
 
             {/* Menu Items */}
             <div className="p-1">
-              <DropdownMenuItem onClick={handleNavigation} className="cursor-pointer p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md">
+              <DropdownMenuItem
+                onClick={handleNavigation}
+                className="cursor-pointer p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md"
+              >
                 <User className="h-4 w-4 mr-2 text-gray-500" />
                 <span className="text-sm font-medium">View Profile</span>
               </DropdownMenuItem>

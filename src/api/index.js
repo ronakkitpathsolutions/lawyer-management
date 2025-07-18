@@ -24,10 +24,24 @@ export const api = {
         params,
         ...configs,
       }),
+    changePassword: ({ data, ...configs }) =>
+      client({
+        url: "/auth/change-password",
+        method: METHODS.POST,
+        data,
+        ...configs,
+      }),
     profile: ({ data, ...configs }) =>
       client({
         url: "/auth/profile",
         method: METHODS.GET,
+        data,
+        ...configs,
+      }),
+    updateProfile: ({ data, ...configs }) =>
+      client({
+        url: "/auth/profile",
+        method: METHODS.PUT,
         data,
         ...configs,
       }),
