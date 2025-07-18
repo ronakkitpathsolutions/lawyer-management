@@ -83,13 +83,13 @@ const useVisaInformation = () => {
         header: "Existing Visa",
         accessorKey: "existing_visa",
         render: ({ rowData }) =>
-          rowData?.existing_visa ? EXISTING_VISA_MAP[rowData.existing_visa] : "—",
+          rowData?.existing_visa ? EXISTING_VISA_MAP[rowData.existing_visa] : "-",
       },
       {
         header: "Wished Visa",
         accessorKey: "wished_visa",
         render: ({ rowData }) =>
-          rowData?.wished_visa ? WISHED_VISA_MAP[rowData.wished_visa] : "—",
+          rowData?.wished_visa ? WISHED_VISA_MAP[rowData.wished_visa] : "-",
       },
       {
         header: "Existing Visa Expiry",
@@ -97,7 +97,7 @@ const useVisaInformation = () => {
         render: ({ rowData }) =>
           rowData?.existing_visa_expiry
             ? DATE_FORMAT.date(rowData.existing_visa_expiry)
-            : "—",
+            : "-",
       },
       {
         header: "Latest Entry Date",
@@ -105,7 +105,7 @@ const useVisaInformation = () => {
         render: ({ rowData }) =>
           rowData?.latest_entry_date
             ? DATE_FORMAT.date(rowData.latest_entry_date)
-            : "—",
+            : "-",
       },
       {
         header: "Intended Departure",
@@ -113,7 +113,7 @@ const useVisaInformation = () => {
         render: ({ rowData }) =>
           rowData?.intended_departure_date
             ? DATE_FORMAT.date(rowData.intended_departure_date)
-            : "—",
+            : "-",
       },
       {
         header: "Created At",
