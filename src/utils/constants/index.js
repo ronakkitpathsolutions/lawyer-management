@@ -72,8 +72,8 @@ export const PLACEHOLDER_MESSAGES = {
 };
 
 export const DATE_FORMAT = {
-  date: (date) => (date ? dayjs(date).format("DD/MM/YYYY") : "-"),
-  dateTime: (date) => (date ? dayjs(date).format("DD/MM/YYYY h:mm A") : "-"),
+  date: (date) => (date ? dayjs(date).format("YYYY-MM-DD") : "-"),
+  dateTime: (date) => (date ? dayjs(date).format("YYYY-MM-DD h:mm A") : "-"),
 };
 
 export const ACTION_MESSAGES = {
@@ -90,3 +90,59 @@ export const STATUS_OPTIONS = [
   { value: "true", label: "Active" },
   { value: "false", label: "Inactive" },
 ];
+
+export const EXISTING_VISA = [
+  { id: 1, name: 'Entry Stamp (30 Day)', value: 'entry_stamp_30_day' },
+  { id: 2, name: 'Entry Stamp (60 Day)', value: 'entry_stamp_60_day' },
+  { id: 3, name: 'Tourist Visa (60 Day)', value: 'tourist_visa_60_day' },
+  { id: 4, name: 'Non-Immigrant O Visa (3 Month)', value: 'non_immigrant_o_visa_3_month' },
+  { id: 5, name: 'Married to Thai Visa', value: 'married_to_thai_visa' },
+  { id: 6, name: 'Thai Child Visa', value: 'thai_child_visa' },
+  { id: 7, name: 'Student Visa (Language School)', value: 'student_visa_language_school' },
+  { id: 8, name: 'Student Visa (School or University)', value: 'student_visa_school_or_university' },
+  { id: 9, name: 'Retirement Visa', value: 'retirement_visa' },
+  { id: 10, name: 'Guardian Visa', value: 'guardian_visa' },
+  { id: 11, name: 'Dependent Visa', value: 'dependent_visa' },
+  { id: 12, name: 'Non-Immigrant B Visa (3 Month)', value: 'non_immigrant_b_visa_3_month' },
+  { id: 13, name: 'Business Visa (Employment – 1 Year)', value: 'business_visa_employment_1_year' },
+  { id: 14, name: 'Retirement Visa (1 Year)', value: 'retirement_visa_1_year' },
+  { id: 15, name: 'Non-Immigrant OA Visa', value: 'non_immigrant_oa_visa' },
+  { id: 16, name: 'Elite Visa', value: 'elite_visa' },
+  { id: 17, name: 'DTV', value: 'dtv' },
+  { id: 18, name: 'LTR: Wealthy Pensioner', value: 'ltr_wealthy_pensioner' },
+  { id: 19, name: 'LTR: Wealthy Citizen', value: 'ltr_wealthy_citizen' },
+  { id: 20, name: 'LTR: Highly Skilled Professional', value: 'ltr_highly_skilled_professional' },
+  { id: 21, name: 'LTR: Work from Thailand Professional', value: 'ltr_work_from_thailand_professional' }
+];
+
+export const WISHED_VISA = [
+  { id: 1, name: 'Renew the Existing One', value: 'renew_the_existing_one' },
+  { id: 2, name: 'Non-Immigrant O Visa (3 Month)', value: 'non_immigrant_o_visa_3_month' },
+  { id: 3, name: 'Married to Thai Visa', value: 'married_to_thai_visa' },
+  { id: 4, name: 'Thai Child Visa', value: 'thai_child_visa' },
+  { id: 5, name: 'Student Visa (Language School)', value: 'student_visa_language_school' },
+  { id: 6, name: 'Student Visa (School or University)', value: 'student_visa_school_or_university' },
+  { id: 7, name: 'Retirement Visa', value: 'retirement_visa' },
+  { id: 8, name: 'Guardian Visa', value: 'guardian_visa' },
+  { id: 9, name: 'Dependent Visa', value: 'dependent_visa' },
+  { id: 10, name: 'Non-Immigrant B Visa (3 Month)', value: 'non_immigrant_b_visa_3_month' },
+  { id: 11, name: 'Business Visa (Employment – 1 Year)', value: 'business_visa_employment_1_year' },
+  { id: 12, name: 'Retirement Visa (1 Year)', value: 'retirement_visa_1_year' },
+  { id: 13, name: 'Non-Immigrant OA Visa', value: 'non_immigrant_oa_visa' },
+  { id: 14, name: 'Elite Visa', value: 'elite_visa' },
+  { id: 15, name: 'DTV', value: 'dtv' },
+  { id: 16, name: 'LTR: Wealthy Pensioner', value: 'ltr_wealthy_pensioner' },
+  { id: 17, name: 'LTR: Wealthy Citizen', value: 'ltr_wealthy_citizen' },
+  { id: 18, name: 'LTR: Highly Skilled Professional', value: 'ltr_highly_skilled_professional' },
+  { id: 19, name: 'LTR: Work from Thailand Professional', value: 'ltr_work_from_thailand_professional' }
+];
+
+export const EXISTING_VISA_MAP = EXISTING_VISA.reduce((acc, visa) => {
+  acc[visa.value] = visa.name;
+  return acc;
+}, {});
+
+export const WISHED_VISA_MAP = WISHED_VISA.reduce((acc, visa) => {
+  acc[visa.value] = visa.name;
+  return acc;
+}, {});

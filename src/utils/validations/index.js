@@ -161,4 +161,58 @@ export const clientFullInformationSchema = clientPersonalInfoSchema.extend({
   is_active: z
     .boolean({ invalid_type_error: "Must be true or false" })
     .default(true),
-})
+});
+
+export const clientVisaSchema = z.object({
+  existing_visa: z
+    .string()
+    .trim()
+    .max(100, msg.maxLength("existing visa", 100))
+    .optional()
+    .or(z.literal("")),
+
+  wished_visa: z
+    .string()
+    .trim()
+    .min(1, msg.required("wished visa"))
+    .max(100, msg.maxLength("wished visa", 100)),
+
+  existing_visa_expiry: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .refine(
+      (date) => {
+        if (!date || date === "") return true;
+        return !isNaN(Date.parse(date));
+      },
+      { message: msg.invalid("existing visa expiry date") }
+    ),
+
+  intended_departure_date: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .refine(
+      (date) => {
+        if (!date || date === "") return true;
+        return !isNaN(Date.parse(date));
+      },
+      { message: msg.invalid("intended departure date") }
+    ),
+
+  latest_entry_date: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .refine(
+      (date) => {
+        if (!date || date === "") return true;
+        return !isNaN(Date.parse(date));
+      },
+      { message: msg.invalid("latest entry date") }
+    ),
+});

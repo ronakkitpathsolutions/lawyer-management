@@ -34,8 +34,8 @@ const CustomTable = ({
   ...additionalProps
 }) => {
   const [localSearchValue, setLocalSearchValue] = useState('');
-
-  const { currentPage, limit, totalCount, totalPages } = params || {};
+  const { page: currentPage, limit, totalItems } = params || {};
+  const totalPages = Math.ceil(totalItems / limit) || 1;
 
   // Debounced function for search API calls
   const debouncedHandleSearch = useDebouncedCallback((searchTerm) => {
@@ -72,10 +72,7 @@ const CustomTable = ({
   // Handle page change
   const handlePageChange = (page) => {
     if (setParams && page !== currentPage && page >= 1 && page <= totalPages) {
-      setParams(prevParams => ({ 
-        ...prevParams, 
-        page 
-      }));
+      setParams({ page });
     }
   };
 
@@ -187,7 +184,7 @@ const CustomTable = ({
         <div className="mt-4 flex items-center justify-between">
           <div className="text-sm text-muted-foreground">
             Showing {(currentPage - 1) * limit + 1} to{" "}
-            {Math.min(currentPage * limit, totalCount)} of {totalCount}{" "}
+            {Math.min(currentPage * limit, totalItems)} of {totalItems}{" "}
             results
           </div>
 

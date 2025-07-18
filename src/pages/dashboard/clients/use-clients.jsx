@@ -17,7 +17,7 @@ import { useNavigate } from "react-router";
 import { MAIN_ROUTES } from "@/routing/routes";
 
 const useClients = () => {
-  const { getAll, data, params, resetParams, setParams, loading } = useClientsStore();
+  const { getAll, data, params, resetParams, setParams, total, loading } = useClientsStore();
   const [fetchData] = useFetchWithAbort(getAll);
   const navigate = useNavigate();
 
@@ -124,7 +124,7 @@ const useClients = () => {
     columns,
     data,
     loading,
-    params,
+    params: { ...params, totalItems: total },
     setParams,
     openDrawer,
     isDrawerOpen,

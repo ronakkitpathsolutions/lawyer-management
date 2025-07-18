@@ -67,4 +67,33 @@ export const api = {
         ...configs,
       }),
   },
+  visa: {
+    getAll: ({ id, params, ...configs }) =>
+      client({
+        url: `/visas/client/${id}`,
+        method: METHODS.GET,
+        params,
+        ...configs,
+      }),
+    create: ({ data, ...configs }) =>
+      client({
+        url: "/visas/create",
+        method: METHODS.POST,
+        data,
+        ...configs,
+      }),
+    update: ({ id, data, ...configs }) =>
+      client({
+        url: `/visas/${id}`,
+        method: METHODS.PATCH,
+        data,
+        ...configs,
+      }),
+    delete: ({ id, ...configs }) =>
+      client({
+        url: `/visas/${id}`,
+        method: METHODS.DELETE,
+        ...configs,
+      }),
+  },
 };

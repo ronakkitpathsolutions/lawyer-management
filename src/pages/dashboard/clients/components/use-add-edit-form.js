@@ -30,6 +30,7 @@ const useAddEditForm = ({ onClose, client = null }) => {
   const methods = useForm({
     resolver: zodResolver(clientPersonalInfoSchema),
     defaultValues: initialValues,
+    values: initialValues,
   });
 
   const fieldsData = useMemo(
