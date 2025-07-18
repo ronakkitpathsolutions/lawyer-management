@@ -15,12 +15,22 @@ const initialState = {
 
 const useClientsStore = create((set) => ({
   ...initialState,
-  setParams: (newState) => set((state) => ({ params: { ...state.params, ...newState } })),
-  getAll: async (params = {}) => {
+  setParams: (newState) => {
+    console.log('newState', newState)
+    set((state) => ({ params: { ...state.params, ...newState } }))
+  },
+  getAll: async (configs = {}) => {
     set({ isLoading: true });
+    
+    // Extract signal from configs and separate it from params
+    const { signal, params} = configs;
+    
      await apiAsyncHandler(
       async () => {
-        const res = await api.client.getAll(params);
+        const res = await api.client.getAll({ 
+          params, 
+          signal 
+        });
         set({
           data: res?.data?.data?.result,
           total: res?.data?.data?.pagination?.totalCount,

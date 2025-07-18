@@ -41,7 +41,7 @@ const useLogin = () => {
       {
         id: "password",
         name: "password",
-        type: "password-input",
+        type: "password",
         label: "Password",
         placeholder: msg.default("password"),
         withAsterisk: true,

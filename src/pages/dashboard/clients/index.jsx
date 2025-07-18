@@ -5,7 +5,7 @@ import { Plus } from "lucide-react"
 
 const Clients = () => {
 
-  const { columns, data, loading, handleAddNewClient } = useClients()
+  const { columns, data, loading, handleAddNewClient,  params, setParams } = useClients()
   
   return (
     <div className="p-6 space-y-6">
@@ -27,9 +27,7 @@ const Clients = () => {
       {/* Table Section */}
       <div className="bg-white">
         <CustomTable
-          columns={columns}
-          data={data || []}
-          isLoading={loading}
+          {...{ params, setParams, columns, data, loading }}
           className="w-full"
         />
       </div>

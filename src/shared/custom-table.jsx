@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDebouncedCallback } from '@mantine/hooks';
+import { useDebouncedCallback } from "@mantine/hooks";
 import {
   Table,
   TableBody,
@@ -18,31 +18,26 @@ import {
   PaginationEllipsis,
 } from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 
 const CustomTable = ({
   columns = [],
   data = [],
-  handlePagination,
+  params,
+  setParams,
+  loading = false,
   className,
-  // Pagination props
-  currentPage = 1,
-  totalPages = 1,
-  totalItems = 0,
-  itemsPerPage = 10,
-  showPagination = true,
   // Search props
   showSearch = true,
   searchPlaceholder = "Search...",
-  searchValue = "",
-  onSearchChange,
 }) => {
-  const [localSearchValue, setLocalSearchValue] = useState(searchValue);
+  const [localSearchValue, setLocalSearchValue] = useState('');
 
-  // Debounced function for API calls
-  const debouncedHandlePagination = useDebouncedCallback((searchTerm) => {
-    if (handlePagination) {
-      handlePagination({ params: { search: searchTerm, page: 1 } });
-    }
+  const { currentPage, limit, totalCount, totalPages } = params || {};
+
+  // Debounced function for search API calls
+  const debouncedHandleSearch = useDebouncedCallback((searchTerm) => {
+   setParams({ search: searchTerm, page: 1 });
   }, 500);
 
   // Function to render cell content
@@ -63,11 +58,7 @@ const CustomTable = ({
   // Handle search
   const handleSearch = (searchTerm) => {
     setLocalSearchValue(searchTerm);
-    if (onSearchChange) {
-      onSearchChange(searchTerm);
-    }
-    // Use debounced callback for API calls
-    debouncedHandlePagination(searchTerm);
+    debouncedHandleSearch(searchTerm);
   };
 
   // Handle search input change
@@ -78,13 +69,11 @@ const CustomTable = ({
 
   // Handle page change
   const handlePageChange = (page) => {
-    if (
-      handlePagination &&
-      page !== currentPage &&
-      page >= 1 &&
-      page <= totalPages
-    ) {
-      handlePagination({ params: { page } });
+    if (setParams && page !== currentPage && page >= 1 && page <= totalPages) {
+      setParams(prevParams => ({ 
+        ...prevParams, 
+        page 
+      }));
     }
   };
 
@@ -145,43 +134,58 @@ const CustomTable = ({
       {/* Table Container */}
       <div className="border rounded-lg">
         <Table>
-        <TableHeader>
-          <TableRow>
-            {columns.map((column, index) => (
-              <TableHead key={column.accessorKey || index}>
-                {column.header}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.length > 0 ? (
-            data.map((rowData, rowIndex) => (
-              <TableRow key={rowIndex}>
-                {columns.map((column, colIndex) => (
-                  <TableCell key={column.accessorKey || colIndex}>
-                    {renderCellContent(column, rowData, rowIndex)}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={columns.length} className="text-center py-8">
-                No data available
-              </TableCell>
+              {columns.map((column, index) => (
+                <TableHead key={column.accessorKey || index}>
+                  {column.header}
+                </TableHead>
+              ))}
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center py-8"
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Loading...
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : data.length > 0 ? (
+              data.map((rowData, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  {columns.map((column, colIndex) => (
+                    <TableCell key={column.accessorKey || colIndex}>
+                      {renderCellContent(column, rowData, rowIndex)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center py-8"
+                >
+                  No data available
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
 
       {/* Pagination */}
-      {showPagination && handlePagination && totalPages > 1 && (
+      {setParams && params && totalPages > 1 && (
         <div className="mt-4 flex items-center justify-between">
           <div className="text-sm text-muted-foreground">
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-            {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}{" "}
+            Showing {(currentPage - 1) * limit + 1} to{" "}
+            {Math.min(currentPage * limit, totalCount)} of {totalCount}{" "}
             results
           </div>
 

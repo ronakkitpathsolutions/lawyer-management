@@ -73,7 +73,7 @@ const TopBar = () => {
           <DropdownMenuContent
             align="end"
             sideOffset={2}
-            className="w-[240px] bg-background border-border rounded-lg shadow-lg"
+            className="w-[220px] bg-background border-border rounded-lg shadow-lg"
           >
             {/* User Info Header */}
             <div className="p-3 border-b border-gray-200 dark:border-gray-700">

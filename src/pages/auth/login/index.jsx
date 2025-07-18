@@ -50,7 +50,7 @@ const Login = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      type={field.type === "password-input" ? "password" : field.type}
+                      type={field.type}
                       placeholder={field.placeholder}
                       autoFocus={field.focus}
                       {...formField}
