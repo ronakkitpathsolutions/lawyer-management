@@ -35,6 +35,27 @@ export const resetPasswordSchema = z.object({
   path: ["confirmPassword"],
 });
 
+export const profileSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(1, msg.required("name"))
+    .max(100, msg.maxLength("name", 100)),
+  email: z
+    .string()
+    .trim()
+    .min(1, msg.required("email"))
+    .email(msg.invalid("email"))
+    .max(255, msg.maxLength("email", 255)),
+  phone_number: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .or(z.literal(""))
+    .transform(val => val === "" ? null : val),
+});
+
 export const clientPersonalInfoSchema = z.object({
   name: z
     .string()
@@ -215,4 +236,23 @@ export const clientVisaSchema = z.object({
       },
       { message: msg.invalid("latest entry date") }
     ),
+});
+
+export const changePasswordSchema = z.object({
+  currentPassword: z
+    .string()
+    .trim()
+    .min(1, msg.required("current password")),
+  newPassword: z
+    .string()
+    .trim()
+    .min(6, msg.minLength("new password", 6))
+    .max(50, msg.maxLength("new password", 50)),
+  confirmPassword: z
+    .string()
+    .trim()
+    .min(1, msg.required("confirm password")),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: msg.passwordsDoNotMatch,
+  path: ["confirmPassword"],
 });
