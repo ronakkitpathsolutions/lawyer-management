@@ -155,3 +155,28 @@ export const formatListWithAnd = (arr) => {
   const last = arr[len - 1];
   return `${allButLast} and ${last}`;
 };
+
+// Utility function to remove undefined, null, or empty values from an object
+export const removeEmptyFields = (obj) => {
+  if (!obj || typeof obj !== "object") {
+    return obj;
+  }
+
+  const cleanedObj = {};
+
+  for (const [key, value] of Object.entries(obj)) {
+    // Skip undefined, null, or empty string values
+    if (value !== undefined && value !== null && value !== "") {
+      // For arrays, only include non-empty arrays
+      if (Array.isArray(value)) {
+        if (value.length > 0) {
+          cleanedObj[key] = value;
+        }
+      } else {
+        cleanedObj[key] = value;
+      }
+    }
+  }
+
+  return cleanedObj;
+};

@@ -13,10 +13,13 @@ import { useDisclosure } from "@mantine/hooks";
 import useAsyncOperation from "@/hooks/use-async-operation";
 import { toastSuccess } from "@/lib/toast";
 import { api } from "@/api";
+import { useNavigate } from "react-router";
+import { MAIN_ROUTES } from "@/routing/routes";
 
 const useClients = () => {
   const { getAll, data, params, resetParams, setParams, loading } = useClientsStore();
   const [fetchData] = useFetchWithAbort(getAll);
+  const navigate = useNavigate();
 
   const [isDrawerOpen, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
 
@@ -79,7 +82,7 @@ const useClients = () => {
       {
         header: "Actions",
         id: "actions",
-        render: ({ rowData, onEdit }) => (
+        render: ({ rowData }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -90,14 +93,14 @@ const useClients = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => console.log("View client", rowData)}
+                onClick={() => navigate(MAIN_ROUTES.clients.path + `/${rowData.id}`)}
               >
                 <Eye className="mr-2 h-4 w-4" />
                 View
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => onEdit && onEdit(rowData)}
+                onClick={() => navigate(MAIN_ROUTES.clients.path + `/edit/${rowData.id}`)}
               >
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
@@ -114,7 +117,7 @@ const useClients = () => {
         ),
       },
     ],
-    [setDeleteData]
+    [navigate]
   );
 
   return {

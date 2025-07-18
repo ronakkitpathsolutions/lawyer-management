@@ -19,13 +19,13 @@ const DashboardLayout = () => {
   }, [fetchData, user?.id]);
 
   return (
-    <div className={`flex h-screen`}>
+    <div className="flex h-screen">
       <Sidebar />
-      <div className="w-full flex flex-1 flex-col">
-        <header className="h-16 border-b border-gray-200 dark:border-[#1F1F23]">
+      <div className="flex flex-1 flex-col">
+        <header className="h-16 border-b border-gray-200 dark:border-[#1F1F23] flex-shrink-0">
           <TopBar />
         </header>
-        <main className="flex-1 overflow-auto p-6 bg-white dark:bg-[#0F0F12]">
+        <main className="flex-1 overflow-y-auto p-6 bg-white dark:bg-[#0F0F12]">
           <Outlet />
         </main>
       </div>

@@ -34,6 +34,18 @@ export const MAIN_ROUTES = {
     url: "/clients",
     title: "Clients",
   },
+  client: {
+    path: "/clients/:id",
+    roles: Object.values(ROLES),
+    url: "/clients/:id",
+    title: "Client",
+  },
+  clientEdit: {
+    path: "/clients/edit/:id",
+    roles: Object.values(ROLES),
+    url: "/clients/edit/:id",
+    title: "Edit Client",
+  },
   profile: {
     path: "/profile",
     roles: Object.values(ROLES),

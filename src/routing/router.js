@@ -18,6 +18,9 @@ import ResetPassword from "../pages/auth/reset-password";
 import DashboardRoot from "../pages/dashboard/root";
 import Profile from "../pages/dashboard/profile";
 import Clients from "../pages/dashboard/clients";
+import ClientInformation from "@/pages/dashboard/clients/components/client-information";
+
+
 import PageNotFound from "@/components/not-found";
 
 const authLayoutLoader = () => {
@@ -87,6 +90,16 @@ export const router = createBrowserRouter([
         index: true,
         Component: Clients,
         loader: dashboardPageLoader(MAIN_ROUTES.clients.roles),
+      },
+      {
+        ...MAIN_ROUTES.client,
+        Component: ClientInformation,
+        loader: dashboardPageLoader(MAIN_ROUTES.client.roles),
+      },
+      {
+        ...MAIN_ROUTES.clientEdit,
+        Component: ClientInformation,
+        loader: dashboardPageLoader(MAIN_ROUTES.clientEdit.roles),
       },
     ],
   },

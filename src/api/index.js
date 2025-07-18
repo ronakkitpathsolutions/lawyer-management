@@ -33,7 +33,7 @@ export const api = {
       }),
   },
   client: {
-    getAll : ({ params, ...configs }) =>
+    getAll: ({ params, ...configs }) =>
       client({
         url: "/clients",
         method: METHODS.GET,
@@ -53,7 +53,14 @@ export const api = {
         data,
         ...configs,
       }),
-      delete: ({ id, ...configs }) =>
+    update: ({ id, data, ...configs }) =>
+      client({
+        url: `/clients/${id}`,
+        method: METHODS.PATCH,
+        data,
+        ...configs,
+      }),
+    delete: ({ id, ...configs }) =>
       client({
         url: `/clients/${id}`,
         method: METHODS.DELETE,

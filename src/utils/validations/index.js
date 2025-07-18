@@ -51,7 +51,7 @@ export const clientPersonalInfoSchema = z.object({
     .trim()
     .min(1, msg.required("email"))
     .email(msg.invalid("email"))
-    .max(255, msg.maxLength("email", 255)),
+    .max(150, msg.maxLength("email", 150)),
   nationality: z
     .string()
     .trim()
@@ -60,15 +60,105 @@ export const clientPersonalInfoSchema = z.object({
   date_of_birth: z
     .string()
     .trim()
-    .min(1, msg.required("date of birth")),
+    .min(1, msg.required("date of birth"))
+    .refine(
+      date => {
+        const now = new Date();
+        const input = new Date(date);
+        return input < now;
+      },
+      { message: "Date of birth must be in the past" }
+    ),
   phone_number: z
     .string()
     .trim()
-    .min(1, msg.required("phone number"))
-    .max(20, msg.maxLength("phone number", 20)),
+    .min(10, msg.minLength("phone number", 10))
+    .max(15, msg.maxLength("phone number", 15))
+    .regex(/^[+]?[1-9][\d]{0,15}$/, msg.invalid("phone number")),
   current_address: z
     .string()
     .trim()
     .min(1, msg.required("current address"))
     .max(500, msg.maxLength("current address", 500)),
 });
+
+export const clientFullInformationSchema = clientPersonalInfoSchema.extend({
+  id: z.string().or(z.number()).optional(),
+  
+  passport_number: z
+    .string()
+    .trim()
+    .regex(/^[A-Z0-9]+$/, msg.invalid("passport number"))
+    .min(6, msg.minLength("passport number", 6))
+    .max(20, msg.maxLength("passport number", 20))
+    .optional()
+    .or(z.literal("")),                                         
+
+  age: z
+    .number({ invalid_type_error: msg.invalid("age") })
+    .min(18, "Age must be at least 18")
+    .max(120, "Age must be at most 120")
+    .optional(),
+
+  address_in_thailand: z
+    .string()
+    .trim()
+    .max(500, msg.maxLength("address in Thailand", 500))
+    .optional(),
+
+  whatsapp: z
+    .string()
+    .trim()
+    .min(10, msg.minLength("WhatsApp number", 10))
+    .max(15, msg.maxLength("WhatsApp number", 15))
+    .regex(/^[+]?[1-9][\d]{0,15}$/, msg.invalid("WhatsApp number"))
+    .optional()
+    .or(z.literal("")),
+
+  line: z
+    .string()
+    .trim()
+    .min(3, msg.minLength("Line ID", 3))
+    .max(50, msg.maxLength("Line ID", 50))
+    .optional()
+    .or(z.literal("")),
+
+  marital_status: z
+    .enum(["single", "married", "common_law", "divorced", "widowed"], {
+      errorMap: () => ({ message: msg.invalid("marital status") })
+    })
+    .optional()
+    .or(z.literal("")),
+
+  father_name: z
+    .string()
+    .trim()
+    .min(2, msg.minLength("father name", 2))
+    .max(100, msg.maxLength("father name", 100))
+    .optional()
+    .or(z.literal("")),
+
+  mother_name: z
+    .string()
+    .trim()
+    .min(2, msg.minLength("mother name", 2))
+    .max(100, msg.maxLength("mother name", 100))
+    .optional()
+    .or(z.literal("")),
+
+  married_to_thai_and_registered: z
+    .boolean({ invalid_type_error: "Must be true or false" })
+    .optional(),
+
+  has_yellow_or_pink_card: z
+    .boolean({ invalid_type_error: "Must be true or false" })
+    .optional(),
+
+  has_bought_property_in_thailand: z
+    .boolean({ invalid_type_error: "Must be true or false" })
+    .optional(),
+
+  is_active: z
+    .boolean({ invalid_type_error: "Must be true or false" })
+    .default(true),
+})
