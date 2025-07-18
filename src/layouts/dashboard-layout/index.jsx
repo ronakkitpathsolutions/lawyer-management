@@ -11,9 +11,7 @@ const DashboardLayout = () => {
   const [fetchData] = useFetchWithAbort(getData);
 
   const { user } = useAuth();
-
-  console.log('user :', user)
-
+  
   useEffect(() => {
     if (user?.id) {
       fetchData({ id: user?.id });

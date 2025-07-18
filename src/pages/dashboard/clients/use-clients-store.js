@@ -16,7 +16,6 @@ const initialState = {
 const useClientsStore = create((set) => ({
   ...initialState,
   setParams: (newState) => {
-    console.log('newState', newState)
     set((state) => ({ params: { ...state.params, ...newState } }))
   },
   getAll: async (configs = {}) => {

@@ -1,6 +1,6 @@
 import useFetchWithAbort from "@/hooks/use-fetch-with-abort";
 import useClientsStore from "./use-clients-store";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,10 +9,36 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Eye, Edit, Trash2 } from "lucide-react";
+import { useDisclosure } from "@mantine/hooks";
+import useAsyncOperation from "@/hooks/use-async-operation";
+import { toastSuccess } from "@/lib/toast";
+import { api } from "@/api";
 
 const useClients = () => {
   const { getAll, data, params, resetParams, setParams, loading } = useClientsStore();
   const [fetchData] = useFetchWithAbort(getAll);
+
+  const [isDrawerOpen, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
+
+  const [deleteData, setDeleteData] = useState({});
+
+  const isOpenDeleteModal = useMemo(() => Boolean(deleteData?.id), [deleteData]);
+
+  // call delete Client API
+  const [handleDeleteConfirm, deleteLoading] = useAsyncOperation(async() => {
+    if (!deleteData?.id) return;
+
+    await api.client.delete({ id: deleteData.id });
+    toastSuccess("Client deleted successfully");
+    // Refresh the clients list
+    fetchData({ params });
+    // Close the delete modal
+    closeDeleteModal({});
+  })
+
+  const closeDeleteModal = useCallback(() => {
+    setDeleteData({});
+  }, []);
 
   useEffect(() => {
     fetchData({ params });
@@ -53,7 +79,7 @@ const useClients = () => {
       {
         header: "Actions",
         id: "actions",
-        render: ({ rowData }) => (
+        render: ({ rowData, onEdit }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -71,13 +97,13 @@ const useClients = () => {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => console.log("Edit client", rowData)}
+                onClick={() => onEdit && onEdit(rowData)}
               >
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => console.log("Delete client", rowData)}
+                onClick={() => setDeleteData(rowData)}
                 className="text-red-600 focus:text-red-600 cursor-pointer"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
@@ -88,7 +114,7 @@ const useClients = () => {
         ),
       },
     ],
-    []
+    [setDeleteData]
   );
 
   return {
@@ -97,6 +123,13 @@ const useClients = () => {
     loading,
     params,
     setParams,
+    openDrawer,
+    isDrawerOpen,
+    closeDrawer,
+    isOpenDeleteModal,
+    closeDeleteModal,
+    handleDeleteConfirm, 
+    deleteLoading
   };
 };
 

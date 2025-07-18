@@ -18,7 +18,8 @@ const Confirmation = ({
   handleSubmit,
   confirmText = "Continue",
   cancelText = "Cancel",
-  confirmVariant = "destructive"
+  confirmVariant = "destructive",
+  loading = false,
 }) => {
   return (
     <AlertDialog open={open} onOpenChange={handleClose}>
@@ -32,14 +33,15 @@ const Confirmation = ({
           )}
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleClose}>
+          <AlertDialogCancel onClick={handleClose} disabled={loading}>
             {cancelText}
           </AlertDialogCancel>
           <AlertDialogAction 
             onClick={handleSubmit}
+            disabled={loading}
             className={confirmVariant === "destructive" ? "bg-destructive text-destructive-foreground hover:bg-destructive/90" : ""}
           >
-            {confirmText}
+            {loading ? "Please wait..." : confirmText}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

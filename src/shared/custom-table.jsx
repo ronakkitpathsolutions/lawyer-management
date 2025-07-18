@@ -30,6 +30,8 @@ const CustomTable = ({
   // Search props
   showSearch = true,
   searchPlaceholder = "Search...",
+  // Additional props to pass to render functions
+  ...additionalProps
 }) => {
   const [localSearchValue, setLocalSearchValue] = useState('');
 
@@ -44,7 +46,7 @@ const CustomTable = ({
   const renderCellContent = (column, rowData, rowIndex) => {
     // If render function is provided, it has 1st priority
     if (column.render && typeof column.render === "function") {
-      return column.render({ rowData, rowIndex });
+      return column.render({ rowData, rowIndex, ...additionalProps });
     }
 
     // Otherwise, use accessorKey to get the value

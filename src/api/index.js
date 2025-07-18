@@ -46,5 +46,18 @@ export const api = {
         method: METHODS.GET,
         ...configs,
       }),
+    create: ({ data, ...configs }) =>
+      client({
+        url: "/clients/create",
+        method: METHODS.POST,
+        data,
+        ...configs,
+      }),
+      delete: ({ id, ...configs }) =>
+      client({
+        url: `/clients/${id}`,
+        method: METHODS.DELETE,
+        ...configs,
+      }),
   },
 };
