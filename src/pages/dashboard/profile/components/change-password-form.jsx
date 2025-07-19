@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Loader2, Shield, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Shield, KeyRound } from 'lucide-react';
 import { toastSuccess } from '@/lib/toast';
 import { api } from '@/api';
 import useAsyncOperation from '@/hooks/use-async-operation';
@@ -27,13 +27,13 @@ const ChangePasswordForm = () => {
 
   const [handleChangePassword, updating] = useAsyncOperation(
     async (formData) => {
-      await api.auth.changePassword({ 
+      await api.auth.changePassword({
         data: {
           currentPassword: formData.currentPassword,
           newPassword: formData.newPassword,
         }
       });
-      
+
       toastSuccess("Password changed successfully!");
       form.reset();
     }
@@ -131,7 +131,10 @@ const ChangePasswordForm = () => {
                     Updating...
                   </>
                 ) : (
-                  'Change Password'
+                  <>
+                    <KeyRound className="h-4 w-4" />
+                    Change Password
+                  </>
                 )}
               </Button>
             </div>

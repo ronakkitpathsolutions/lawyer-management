@@ -10,7 +10,7 @@ import { ChevronRight, User, Shield } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import useProfileStore from "@/pages/dashboard/profile/use-profile-store";
 import { MAIN_ROUTES } from "@/routing/routes";
-import { createFileUrl } from "@/utils/helper";
+import { createFileUrl, getUserInitials } from "@/utils/helper";
 
 const breadcrumbs = [
   { label: "Home", href: "/" },
@@ -23,17 +23,6 @@ const TopBar = () => {
 
   const handleNavigation = () => {
     navigate(MAIN_ROUTES.profile.url);
-  };
-
-  // Function to get user initials for avatar fallback
-  const getUserInitials = (name) => {
-    if (!name) return "U";
-    return name
-      .split(" ")
-      .map((word) => word.charAt(0))
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
   };
 
   return (
@@ -117,7 +106,7 @@ const TopBar = () => {
                 onClick={handleNavigation}
                 className="cursor-pointer p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md"
               >
-                <User className="h-4 w-4 mr-2 text-gray-500" />
+                <User className="h-4 w-4 text-gray-500" />
                 <span className="text-sm font-medium">View Profile</span>
               </DropdownMenuItem>
             </div>

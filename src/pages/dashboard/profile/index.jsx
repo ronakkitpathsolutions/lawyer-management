@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Loader2, Save, User } from 'lucide-react';
+import { Loader2, Save, User, Camera } from 'lucide-react';
 import ProfileImageUpload from '@/shared/profile-image-upload';
 import { ChangePasswordForm } from './components';
 import useProfile from './use-profile';
@@ -39,11 +39,14 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-6">
         {/* Profile Image Section */}
-        <Card className="lg:col-span-1">
+        <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Profile Picture</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Camera className="h-5 w-5" />
+              Profile Picture
+            </CardTitle>
             <CardDescription>
               Upload a photo to personalize your account
             </CardDescription>
@@ -59,9 +62,12 @@ const Profile = () => {
         </Card>
 
         {/* Profile Information Section */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-4">
           <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <User className="h-5 w-5" />
+              Personal Information
+            </CardTitle>
             <CardDescription>
               Update your personal details and contact information
             </CardDescription>
@@ -148,8 +154,12 @@ const Profile = () => {
             </Form>
           </CardContent>
         </Card>
+
+        {/* Change Password Section */}
+        <div className="lg:col-span-6">
+          <ChangePasswordForm />
+        </div>
       </div>
-      <ChangePasswordForm />
     </div>
   );
 };
