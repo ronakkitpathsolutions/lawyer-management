@@ -1,4 +1,3 @@
-
 import dayjs from "dayjs";
 import { capitalize } from "../helper";
 
@@ -126,7 +125,7 @@ export const WISHED_VISA = [
   { id: 8, name: 'Guardian Visa', value: 'guardian_visa' },
   { id: 9, name: 'Dependent Visa', value: 'dependent_visa' },
   { id: 10, name: 'Non-Immigrant B Visa (3 Month)', value: 'non_immigrant_b_visa_3_month' },
-  { id: 11, name: 'Business Visa (Employment – 1 Year)', value: 'business_visa_employment_1_year' },
+  { id: 11, name: 'Business Visa (Employment - 1 Year)', value: 'business_visa_employment_1_year' },
   { id: 12, name: 'Retirement Visa (1 Year)', value: 'retirement_visa_1_year' },
   { id: 13, name: 'Non-Immigrant OA Visa', value: 'non_immigrant_oa_visa' },
   { id: 14, name: 'Elite Visa', value: 'elite_visa' },
@@ -137,12 +136,490 @@ export const WISHED_VISA = [
   { id: 19, name: 'LTR: Work from Thailand Professional', value: 'ltr_work_from_thailand_professional' }
 ];
 
-export const EXISTING_VISA_MAP = EXISTING_VISA.reduce((acc, visa) => {
-  acc[visa.value] = visa.name;
+export const EXISTING_VISA_MAP = EXISTING_VISA.reduce((acc, item) => {
+  acc[item.value] = item.name;
   return acc;
 }, {});
 
-export const WISHED_VISA_MAP = WISHED_VISA.reduce((acc, visa) => {
-  acc[visa.value] = visa.name;
+export const WISHED_VISA_MAP = WISHED_VISA.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const TYPE_OF_TRANSACTION_TEXTS = [
+  'buy',
+  'sell',
+  'rent',
+  'sublease',
+  'mortgage',
+  'construction',
+  'joint_venture',
+  'consultant_from_owner',
+  'consultant_from_buyer',
+];
+
+export const TYPE_OF_PROPERTY_TEXTS = [
+  'house_and_land_freehold',
+  'house_and_land_leasehold',
+  'condominium_freehold',
+  'condominium_leasehold',
+  'empty_land',
+];
+
+export const INTENDED_CLOSING_DATE_TEXTS = [
+  'on_or_before',
+  'any_date',
+  'at_closing',
+  'after_closing',
+  'specific_date',
+];
+
+export const HANDOVER_DATE_TEXTS = [
+  'on_or_before',
+  'at_closing',
+  'after_closing',
+];
+
+export const ACCEPTABLE_PAYMENT_METHODS_TEXTS = [
+  'cashiers_check_recommended',
+  'cash_transfer',
+  'personal_check',
+  'cash',
+  'other',
+];
+
+export const PLACE_OF_PAYMENT_TEXTS = ['thailand', 'other'];
+
+export const PROPERTY_CONDITION_TEXTS = [
+  'new',
+  'good_working',
+  'as_seen',
+  'sometimes_items_to_be_repaired',
+];
+
+export const FURNITURE_INCLUDED_TEXTS = [
+  'not_furniture_included',
+  'specific_furniture_included',
+  'all_furniture_included',
+  'selected_furniture_included',
+  'all_furniture_except_personal_items',
+];
+
+export const COST_SHARING_TEXTS = [
+  'buyer_only',
+  'seller_only',
+  'lessee_only',
+  'lessor_only',
+  'mortgagor_only',
+  'mortgagee_only',
+  'usufructuary_only',
+  'owner_only',
+  'dominant_owner_only',
+  'servient_owner_only',
+  'share_50_50',
+];
+
+export const HOUSE_TITLE_TEXTS = [
+  'building_permit',
+  'official_house_sale_and_purchase_agreement',
+];
+
+export const LAND_TITLE_TEXTS = [
+  'land_title_deed',
+  'certificate_of_utilization',
+];
+
+export const DECLARED_LAND_OFFICE_PRICE_TEXTS = [
+  'actual_price',
+  'lowest_possible_price',
+  'mediocre_price',
+];
+
+export const PROPERTY_MESSAGES = {
+  CLIENT_ID: {
+    REQUIRED: 'Client ID is required',
+    INVALID: 'Client ID must be a valid integer',
+    NOT_FOUND: 'Client not found',
+  },
+  AGENT_NAME: {
+    REQUIRED: 'Agent name is required',
+    TOO_SHORT: 'Agent name must be at least 2 characters long',
+    TOO_LONG: 'Agent name must not exceed 100 characters',
+    INVALID: 'Agent name contains invalid characters',
+  },
+  BROKER_COMPANY: {
+    REQUIRED: 'Broker company is required',
+    TOO_SHORT: 'Broker company must be at least 2 characters long',
+    TOO_LONG: 'Broker company must not exceed 100 characters',
+    INVALID: 'Broker company contains invalid characters',
+  },
+  TRANSACTION_TYPE: {
+    REQUIRED: 'Transaction type is required',
+    INVALID: 'Transaction type must be one of: buy, sell, rent',
+  },
+  PROPERTY_TYPE: {
+    REQUIRED: 'Property type is required',
+    INVALID: 'Property type must be one of: house, condo, land, commercial',
+  },
+  RESERVATION_DATE: {
+    REQUIRED: 'Reservation date is required',
+    INVALID: 'Reservation date must be a valid date',
+  },
+  INTENDED_CLOSING_DATE: {
+    REQUIRED: 'Intended closing date is required',
+    INVALID: 'Intended closing date must be a valid date',
+  },
+  HANDOVER_DATE: {
+    REQUIRED: 'Handover date is required',
+    INVALID: 'Handover date must be a valid date',
+  },
+  PROPERTY_NAME: {
+    REQUIRED: 'Property name is required',
+    TOO_SHORT: 'Property name must be at least 2 characters long',
+    TOO_LONG: 'Property name must not exceed 100 characters',
+    INVALID: 'Property name contains invalid characters',
+  },
+  SELLING_PRICE: {
+    REQUIRED: 'Selling price is required',
+    INVALID: 'Selling price must be a valid number',
+    MUST_BE_POSITIVE: 'Selling price must be a positive number',
+  },
+  DEPOSIT: {
+    REQUIRED: 'Deposit amount is required',
+    INVALID: 'Deposit must be a valid number',
+    MUST_BE_POSITIVE: 'Deposit must be a positive number',
+  },
+  INTERMEDIARY_PAYMENT: {
+    REQUIRED: 'Intermediary payment is required',
+    INVALID: 'Intermediary payment must be a valid number',
+    MUST_BE_POSITIVE: 'Intermediary payment must be a positive number',
+  },
+  CLOSING_PAYMENT: {
+    REQUIRED: 'Closing payment is required',
+    INVALID: 'Closing payment must be a valid number',
+    MUST_BE_POSITIVE: 'Closing payment must be a positive number',
+  },
+  ACCEPTABLE_METHOD_OF_PAYMENT: {
+    REQUIRED: 'Acceptable method of payment is required',
+    INVALID:
+      'Acceptable method of payment must be one of: direct_transfer, bank_transfer, cash',
+  },
+  PLACE_OF_PAYMENT: {
+    REQUIRED: 'Place of payment is required',
+    TOO_SHORT: 'Place of payment must be at least 2 characters long',
+    TOO_LONG: 'Place of payment must not exceed 100 characters',
+    INVALID: 'Place of payment contains invalid characters',
+  },
+  PROPERTY_CONDITION: {
+    REQUIRED: 'Property condition is required',
+    INVALID:
+      'Property condition must be one of: new, good, needs_renovation, poor',
+  },
+  HOUSE_WARRANTY: {
+    REQUIRED: 'House warranty is required',
+    INVALID: 'House warranty must be a boolean value (true/false)',
+  },
+  FURNITURE_INCLUDED: {
+    REQUIRED: 'Furniture included status is required',
+    INVALID: 'Furniture included must be one of: yes, no, negotiable',
+  },
+  // cost sharing
+  TRANSFER_FEE: {
+    REQUIRED: 'Transfer fee is required',
+    INVALID: 'Transfer fee must be a valid number',
+    MUST_BE_POSITIVE: 'Transfer fee must be a positive number',
+  },
+  WITHHOLDING_TAX: {
+    REQUIRED: 'Withholding tax is required',
+    INVALID: 'Withholding tax must be a valid number',
+    MUST_BE_POSITIVE: 'Withholding tax must be a positive number',
+  },
+  BUSINESS_TAX: {
+    REQUIRED: 'Business tax is required',
+    INVALID: 'Business tax must be a valid number',
+    MUST_BE_POSITIVE: 'Business tax must be a positive number',
+  },
+  LEASE_REGISTRATION_FEE: {
+    REQUIRED: 'Lease registration fee is required',
+    INVALID: 'Lease registration fee must be a valid number',
+    MUST_BE_POSITIVE: 'Lease registration fee must be a positive number',
+  },
+  MORTGAGE_FEE: {
+    REQUIRED: 'Mortgage fee is required',
+    INVALID: 'Mortgage fee must be a valid number',
+    MUST_BE_POSITIVE: 'Mortgage fee must be a positive number',
+  },
+  USUFRUCT_REGISTRATION_FEE: {
+    REQUIRED: 'Usufruct registration fee is required',
+    INVALID: 'Usufruct registration fee must be a valid number',
+    MUST_BE_POSITIVE: 'Usufruct registration fee must be a positive number',
+  },
+  SERVITUDE_REGISTRATION_FEE: {
+    REQUIRED: 'Servitude registration fee is required',
+    INVALID: 'Servitude registration fee must be a valid number',
+    MUST_BE_POSITIVE: 'Servitude registration fee must be a positive number',
+  },
+  DECLARED_LAND_OFFICE_PRICE: {
+    REQUIRED: 'Declared land office price is required',
+    INVALID: 'Declared land office price must be a valid number',
+    MUST_BE_POSITIVE: 'Declared land office price must be a positive number',
+  },
+  // documentation attachment
+  LAND_TITLE: {
+    REQUIRED: 'Land title document is required',
+    INVALID: 'Land title must be a valid URL',
+    TOO_LONG: 'Land title URL must not exceed 500 characters',
+  },
+  LAND_TITLE_DOCUMENT: {
+    REQUIRED: 'Land title document is required',
+    INVALID: 'Land title document must be a valid URL',
+    TOO_LONG: 'Land title document URL must not exceed 500 characters',
+  },
+  HOUSE_TITLE: {
+    REQUIRED: 'House title document is required',
+    INVALID: 'House title must be a valid URL',
+    TOO_LONG: 'House title URL must not exceed 500 characters',
+  },
+  HOUSE_TITLE_DOCUMENT: {
+    REQUIRED: 'House title document is required',
+    INVALID: 'House title document must be a valid URL',
+    TOO_LONG: 'House title document URL must not exceed 500 characters',
+  },
+  HOUSE_REGISTRATION_BOOK: {
+    REQUIRED: 'House registration book is required',
+    INVALID: 'House registration book must be a valid URL',
+    TOO_LONG: 'House registration book URL must not exceed 500 characters',
+  },
+  LAND_LEASE_AGREEMENT: {
+    REQUIRED: 'Land lease agreement is required',
+    INVALID: 'Land lease agreement must be a valid URL',
+    TOO_LONG: 'Land lease agreement URL must not exceed 500 characters',
+  },
+  GENERAL: {
+    NOT_FOUND: 'Property record not found',
+    ALREADY_EXISTS: 'Property record already exists',
+    CREATION_FAILED: 'Failed to create property record',
+    UPDATE_FAILED: 'Failed to update property record',
+    DELETE_FAILED: 'Failed to delete property record',
+    UNAUTHORIZED: 'Unauthorized access',
+    FORBIDDEN: 'Access forbidden - Admin access required',
+  },
+}
+
+export const TYPE_OF_TRANSACTION_OPTIONS = [
+  { id: 1, name: 'Buy', value: 'buy' },
+  { id: 2, name: 'Sell', value: 'sell' },
+  { id: 3, name: 'Rent', value: 'rent' },
+  { id: 4, name: 'Sublease', value: 'sublease' },
+  { id: 5, name: 'Mortgage', value: 'mortgage' },
+  { id: 6, name: 'Construction', value: 'construction' },
+  { id: 7, name: 'Joint Venture', value: 'joint_venture' },
+  { id: 8, name: 'Consultant from Owner', value: 'consultant_from_owner' },
+  { id: 9, name: 'Consultant from Buyer', value: 'consultant_from_buyer' },
+];
+
+export const TYPE_OF_TRANSACTION_MAP = TYPE_OF_TRANSACTION_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const TYPE_OF_PROPERTY_OPTIONS = [
+  { id: 1, name: 'House and Land (Freehold)', value: 'house_and_land_freehold' },
+  { id: 2, name: 'House and Land (Leasehold)', value: 'house_and_land_leasehold' },
+  { id: 3, name: 'Condominium (Freehold)', value: 'condominium_freehold' },
+  { id: 4, name: 'Condominium (Leasehold)', value: 'condominium_leasehold' },
+  { id: 5, name: 'Empty Land', value: 'empty_land' },
+];
+
+export const TYPE_OF_PROPERTY_MAP = TYPE_OF_PROPERTY_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const INTENDED_CLOSING_DATE_OPTIONS = [
+  { id: 1, name: 'On or Before', value: 'on_or_before' },
+  { id: 2, name: 'Any Date', value: 'any_date' },
+  { id: 3, name: 'At Closing', value: 'at_closing' },
+  { id: 4, name: 'After Closing', value: 'after_closing' },
+  { id: 5, name: 'Specific Date', value: 'specific_date' },
+];
+
+export const INTENDED_CLOSING_DATE_MAP = INTENDED_CLOSING_DATE_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const HANDOVER_DATE_OPTIONS = [
+  { id: 1, name: 'On or Before', value: 'on_or_before' },
+  { id: 2, name: 'At Closing', value: 'at_closing' },
+  { id: 3, name: 'After Closing', value: 'after_closing' },
+];
+
+export const HANDOVER_DATE_MAP = HANDOVER_DATE_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const ACCEPTABLE_PAYMENT_METHODS_OPTIONS = [
+  { id: 1, name: 'Cashier\'s Check Recommended', value: 'cashiers_check_recommended' },
+  { id: 2, name: 'Cash Transfer', value: 'cash_transfer' },
+  { id: 3, name: 'Personal Check', value: 'personal_check' },
+  { id: 4, name: 'Cash', value: 'cash' },
+  { id: 5, name: 'Other', value: 'other' },
+];
+
+export const ACCEPTABLE_PAYMENT_METHODS_MAP = ACCEPTABLE_PAYMENT_METHODS_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const PLACE_OF_PAYMENT_OPTIONS = [
+  { id: 1, name: 'Thailand', value: 'thailand' },
+  { id: 2, name: 'Other', value: 'other' },
+];
+
+export const PLACE_OF_PAYMENT_MAP = PLACE_OF_PAYMENT_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const PROPERTY_CONDITION_OPTIONS = [
+  { id: 1, name: 'New', value: 'new' },
+  { id: 2, name: 'Good Working', value: 'good_working' },
+  { id: 3, name: 'As Seen', value: 'as_seen' },
+  { id: 4, name: 'Sometimes Items to be Repaired', value: 'sometimes_items_to_be_repaired' },
+];
+
+export const PROPERTY_CONDITION_MAP = PROPERTY_CONDITION_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const FURNITURE_INCLUDED_OPTIONS = [
+  { id: 1, name: 'Not Furniture Included', value: 'not_furniture_included' },
+  { id: 2, name: 'Specific Furniture Included', value: 'specific_furniture_included' },
+  { id: 3, name: 'All Furniture Included', value: 'all_furniture_included' },
+  { id: 4, name: 'Selected Furniture Included', value: 'selected_furniture_included' },
+  { id: 5, name: 'All Furniture Except Personal Items', value: 'all_furniture_except_personal_items' },
+];
+
+export const FURNITURE_INCLUDED_MAP = FURNITURE_INCLUDED_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const COST_SHARING_OPTIONS = [
+  { id: 1, name: 'Buyer Only', value: 'buyer_only' },
+  { id: 2, name: 'Seller Only', value: 'seller_only' },
+  { id: 3, name: 'Lessee Only', value: 'lessee_only' },
+  { id: 4, name: 'Lessor Only', value: 'lessor_only' },
+  { id: 5, name: 'Mortgagor Only', value: 'mortgagor_only' },
+  { id: 6, name: 'Mortgagee Only', value: 'mortgagee_only' },
+  { id: 7, name: 'Usufructuary Only', value: 'usufructuary_only' },
+  { id: 8, name: 'Owner Only', value: 'owner_only' },
+  { id: 9, name: 'Dominant Owner Only', value: 'dominant_owner_only' },
+  { id: 10, name: 'Servient Owner Only', value: 'servient_owner_only' },
+  { id: 11, name: 'Share (50/50)', value: 'share_50_50' },
+];
+
+export const COST_SHARING_MAP = COST_SHARING_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const HOUSE_TITLE_OPTIONS = [
+  { id: 1, name: 'Building Permit', value: 'building_permit' },
+  { id: 2, name: 'Official House Sale and Purchase Agreement', value: 'official_house_sale_and_purchase_agreement' },
+];
+
+export const HOUSE_TITLE_MAP = HOUSE_TITLE_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const LAND_TITLE_OPTIONS = [
+  { id: 1, name: 'Land Title Deed', value: 'land_title_deed' },
+  { id: 2, name: 'Certificate of Utilization', value: 'certificate_of_utilization' },
+];
+
+export const LAND_TITLE_MAP = LAND_TITLE_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const DECLARED_LAND_OFFICE_PRICE_OPTIONS = [
+  { id: 1, name: 'Actual Price', value: 'actual_price' },
+  { id: 2, name: 'Lowest Possible Price', value: 'lowest_possible_price' },
+  { id: 3, name: 'Mediocre Price', value: 'mediocre_price' },
+];
+
+export const DECLARED_LAND_OFFICE_PRICE_MAP = DECLARED_LAND_OFFICE_PRICE_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const YES_NO_OPTIONS = [
+  { id: 1, name: 'Yes', value: 'yes' },
+  { id: 2, name: 'No', value: 'no' },
+];
+
+export const YES_NO_MAP = YES_NO_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+// Specific cost sharing options for different types of fees
+export const BUYER_SELLER_COST_OPTIONS = [
+  { id: 1, name: 'Buyer Only', value: 'buyer_only' },
+  { id: 2, name: 'Seller Only', value: 'seller_only' },
+  { id: 3, name: 'Share (50/50)', value: 'share_50_50' },
+];
+
+export const BUYER_SELLER_COST_MAP = BUYER_SELLER_COST_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const LESSEE_LESSOR_COST_OPTIONS = [
+  { id: 1, name: 'Lessee Only', value: 'lessee_only' },
+  { id: 2, name: 'Lessor Only', value: 'lessor_only' },
+  { id: 3, name: 'Share (50/50)', value: 'share_50_50' },
+];
+
+export const LESSEE_LESSOR_COST_MAP = LESSEE_LESSOR_COST_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const MORTGAGOR_MORTGAGEE_COST_OPTIONS = [
+  { id: 1, name: 'Mortgagor Only', value: 'mortgagor_only' },
+  { id: 2, name: 'Mortgagee Only', value: 'mortgagee_only' },
+  { id: 3, name: 'Share (50/50)', value: 'share_50_50' },
+];
+
+export const MORTGAGOR_MORTGAGEE_COST_MAP = MORTGAGOR_MORTGAGEE_COST_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const USUFRUCTUARY_OWNER_COST_OPTIONS = [
+  { id: 1, name: 'Usufructuary Only', value: 'usufructuary_only' },
+  { id: 2, name: 'Owner Only', value: 'owner_only' },
+  { id: 3, name: 'Share (50/50)', value: 'share_50_50' },
+];
+
+export const USUFRUCTUARY_OWNER_COST_MAP = USUFRUCTUARY_OWNER_COST_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
+  return acc;
+}, {});
+
+export const SERVITUDE_COST_OPTIONS = [
+  { id: 1, name: 'Dominant Owner Only', value: 'dominant_owner_only' },
+  { id: 2, name: 'Servient Owner Only', value: 'servient_owner_only' },
+  { id: 3, name: 'Share (50/50)', value: 'share_50_50' },
+];
+
+export const SERVITUDE_COST_MAP = SERVITUDE_COST_OPTIONS.reduce((acc, item) => {
+  acc[item.value] = item.name;
   return acc;
 }, {});

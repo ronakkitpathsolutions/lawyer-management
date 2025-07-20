@@ -110,4 +110,33 @@ export const api = {
         ...configs,
       }),
   },
+  property: {
+    getAll: ({ id, params, ...configs }) =>
+      client({
+        url: `/properties/client/${id}`,
+        method: METHODS.GET,
+        params,
+        ...configs,
+      }),
+    create: ({ data, ...configs }) =>
+      client({
+        url: "/properties/create",
+        method: METHODS.POST,
+        data,
+        ...configs,
+      }),
+    update: ({ id, data, ...configs }) =>
+      client({
+        url: `/properties/${id}`,
+        method: METHODS.PATCH,
+        data,
+        ...configs,
+      }),
+    delete: ({ id, ...configs }) =>
+      client({
+        url: `/properties/${id}`,
+        method: METHODS.DELETE,
+        ...configs,
+      }),
+  }
 };

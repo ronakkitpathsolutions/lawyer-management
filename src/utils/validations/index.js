@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { VALIDATION_MESSAGES as msg } from "../constants";
+import { ACCEPTABLE_PAYMENT_METHODS_TEXTS, COST_SHARING_TEXTS, DECLARED_LAND_OFFICE_PRICE_TEXTS, FURNITURE_INCLUDED_TEXTS, HOUSE_TITLE_TEXTS, LAND_TITLE_TEXTS, VALIDATION_MESSAGES as msg, PLACE_OF_PAYMENT_TEXTS, PROPERTY_CONDITION_TEXTS, PROPERTY_MESSAGES, TYPE_OF_PROPERTY_TEXTS, TYPE_OF_TRANSACTION_TEXTS, INTENDED_CLOSING_DATE_TEXTS, HANDOVER_DATE_TEXTS } from "../constants";
 
 export const loginSchema = z.object({
   email: z
@@ -105,7 +105,7 @@ export const clientPersonalInfoSchema = z.object({
 
 export const clientFullInformationSchema = clientPersonalInfoSchema.extend({
   id: z.string().or(z.number()).optional(),
-  
+
   passport_number: z
     .string()
     .trim()
@@ -113,7 +113,7 @@ export const clientFullInformationSchema = clientPersonalInfoSchema.extend({
     .min(6, msg.minLength("passport number", 6))
     .max(20, msg.maxLength("passport number", 20))
     .optional()
-    .or(z.literal("")),                                         
+    .or(z.literal("")),
 
   age: z
     .number({ invalid_type_error: msg.invalid("age") })
@@ -255,4 +255,407 @@ export const changePasswordSchema = z.object({
 }).refine((data) => data.newPassword === data.confirmPassword, {
   message: msg.passwordsDoNotMatch,
   path: ["confirmPassword"],
+});
+
+export const propertyValidationSchema = z.object({
+  property_name: z
+    .string()
+    .min(1, PROPERTY_MESSAGES.PROPERTY_NAME?.REQUIRED)
+    .min(2, PROPERTY_MESSAGES.PROPERTY_NAME?.TOO_SHORT)
+    .max(100, PROPERTY_MESSAGES.PROPERTY_NAME?.TOO_LONG)
+    .trim(),
+  agent_name: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || val.length >= 2,
+      PROPERTY_MESSAGES.AGENT_NAME.TOO_SHORT
+    )
+    .refine(
+      val => val === null || val === undefined || val.length <= 100,
+      PROPERTY_MESSAGES.AGENT_NAME.TOO_LONG
+    ),
+  broker_company: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || val.length >= 2,
+      PROPERTY_MESSAGES.BROKER_COMPANY.TOO_SHORT
+    )
+    .refine(
+      val => val === null || val === undefined || val.length <= 100,
+      PROPERTY_MESSAGES.BROKER_COMPANY.TOO_LONG
+    ),
+  transaction_type: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || TYPE_OF_TRANSACTION_TEXTS.includes(val),
+      PROPERTY_MESSAGES.TRANSACTION_TYPE.INVALID
+    ),
+  property_type: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || TYPE_OF_PROPERTY_TEXTS.includes(val),
+      PROPERTY_MESSAGES.PROPERTY_TYPE.INVALID
+    ),
+  reservation_date: z
+    .string()
+    .optional()
+    .nullable()
+    .transform(val => {
+      if (!val || val === '') return null;
+
+      // Check if it's already in YYYY-MM-DD format
+      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+        return val;
+      }
+
+      // Check if it's in DD-MM-YYYY format and convert
+      if (/^\d{2}-\d{2}-\d{4}$/.test(val)) {
+        const [day, month, year] = val.split('-');
+        return `${year}-${month}-${day}`;
+      }
+
+      // Check if it's in DD/MM/YYYY format and convert
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+        const [day, month, year] = val.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      }
+
+      return val;
+    })
+    .refine(
+      val => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
+      PROPERTY_MESSAGES.RESERVATION_DATE.INVALID
+    ),
+  intended_closing_date: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || INTENDED_CLOSING_DATE_TEXTS.includes(val),
+      PROPERTY_MESSAGES.INTENDED_CLOSING_DATE.INVALID
+    ),
+  handover_date: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || HANDOVER_DATE_TEXTS.includes(val),
+      PROPERTY_MESSAGES.HANDOVER_DATE.INVALID
+    ),
+  specific_closing_date: z
+    .string()
+    .optional()
+    .nullable()
+    .transform(val => {
+      if (!val || val === '') return null;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+        return val;
+      }
+      if (/^\d{2}-\d{2}-\d{4}$/.test(val)) {
+        const [day, month, year] = val.split('-');
+        return `${year}-${month}-${day}`;
+      }
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+        const [day, month, year] = val.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      }
+      return val;
+    })
+    .refine(
+      val => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
+      "Invalid specific closing date format"
+    ),
+  warranty_term: z
+    .string()
+    .max(255, "Warranty term must not exceed 255 characters")
+    .optional()
+    .nullable(),
+  warranty_condition: z
+    .string()
+    .max(500, "Warranty condition must not exceed 500 characters")
+    .optional()
+    .nullable(),
+  selling_price: z
+    .union([z.string(), z.number()])
+    .transform(val => {
+      if (typeof val === 'string') {
+        if (val === '' || val.trim() === '') return null;
+        const parsed = parseFloat(val);
+        return isNaN(parsed) ? undefined : parsed;
+      }
+      return val;
+    })
+    .pipe(
+      z
+        .number({
+          invalid_type_error:
+            PROPERTY_MESSAGES.SELLING_PRICE.INVALID,
+        })
+        .positive(PROPERTY_MESSAGES.SELLING_PRICE.MUST_BE_POSITIVE)
+        .nullable()
+    )
+    .optional()
+    .nullable(),
+  deposit: z
+    .union([z.string(), z.number()])
+    .transform(val => {
+      if (typeof val === 'string') {
+        if (val === '' || val.trim() === '') return null;
+        const parsed = parseFloat(val);
+        return isNaN(parsed) ? undefined : parsed;
+      }
+      return val;
+    })
+    .pipe(
+      z
+        .number({
+          invalid_type_error: PROPERTY_MESSAGES.DEPOSIT.INVALID,
+        })
+        .positive(PROPERTY_MESSAGES.DEPOSIT.MUST_BE_POSITIVE)
+        .nullable()
+    )
+    .optional()
+    .nullable(),
+  intermediary_payment: z
+    .union([z.string(), z.number()])
+    .transform(val => {
+      if (typeof val === 'string') {
+        if (val === '' || val.trim() === '') return null;
+        const parsed = parseFloat(val);
+        return isNaN(parsed) ? undefined : parsed;
+      }
+      return val;
+    })
+    .pipe(
+      z
+        .number({
+          invalid_type_error:
+            PROPERTY_MESSAGES.INTERMEDIARY_PAYMENT.INVALID,
+        })
+        .positive(
+          PROPERTY_MESSAGES.INTERMEDIARY_PAYMENT.MUST_BE_POSITIVE
+        )
+        .nullable()
+    )
+    .optional()
+    .nullable(),
+  closing_payment: z
+    .union([z.string(), z.number()])
+    .transform(val => {
+      if (typeof val === 'string') {
+        if (val === '' || val.trim() === '') return null;
+        const parsed = parseFloat(val);
+        return isNaN(parsed) ? undefined : parsed;
+      }
+      return val;
+    })
+    .pipe(
+      z
+        .number({
+          invalid_type_error:
+            PROPERTY_MESSAGES.CLOSING_PAYMENT.INVALID,
+        })
+        .positive(PROPERTY_MESSAGES.CLOSING_PAYMENT.MUST_BE_POSITIVE)
+        .nullable()
+    )
+    .optional()
+    .nullable(),
+  acceptable_method_of_payment: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || ACCEPTABLE_PAYMENT_METHODS_TEXTS.includes(val),
+      PROPERTY_MESSAGES.ACCEPTABLE_METHOD_OF_PAYMENT.INVALID
+    ),
+  place_of_payment: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || PLACE_OF_PAYMENT_TEXTS.includes(val),
+      PROPERTY_MESSAGES.PLACE_OF_PAYMENT.INVALID
+    ),
+  property_condition: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || PROPERTY_CONDITION_TEXTS.includes(val),
+      PROPERTY_MESSAGES.PROPERTY_CONDITION.INVALID
+    ),
+  house_warranty: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => {
+      if (val === "" || val === null || val === undefined) return null;
+      if (val === "yes" || val === true) return "yes";
+      if (val === "no" || val === false) return "no";
+      return val;
+    }),
+  furniture_included: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || FURNITURE_INCLUDED_TEXTS.includes(val),
+      PROPERTY_MESSAGES.FURNITURE_INCLUDED.INVALID
+    ),
+  // Cost sharing fields
+  transfer_fee: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
+      PROPERTY_MESSAGES.TRANSFER_FEE.INVALID
+    ),
+  withholding_tax: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
+      PROPERTY_MESSAGES.WITHHOLDING_TAX.INVALID
+    ),
+  business_tax: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
+      PROPERTY_MESSAGES.BUSINESS_TAX.INVALID
+    ),
+  lease_registration_fee: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
+      PROPERTY_MESSAGES.LEASE_REGISTRATION_FEE.INVALID
+    ),
+  mortgage_fee: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
+      PROPERTY_MESSAGES.MORTGAGE_FEE.INVALID
+    ),
+  usufruct_registration_fee: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
+      PROPERTY_MESSAGES.USUFRUCT_REGISTRATION_FEE.INVALID
+    ),
+  servitude_registration_fee: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
+      PROPERTY_MESSAGES.SERVITUDE_REGISTRATION_FEE.INVALID
+    ),
+  declared_land_office_price: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || DECLARED_LAND_OFFICE_PRICE_TEXTS.includes(val),
+      PROPERTY_MESSAGES.DECLARED_LAND_OFFICE_PRICE.INVALID
+    ),
+  // Documentation attachment fields
+  land_title: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || LAND_TITLE_TEXTS.includes(val),
+      PROPERTY_MESSAGES.LAND_TITLE.INVALID
+    ),
+  land_title_document: z
+    .string()
+    .max(500, PROPERTY_MESSAGES.LAND_TITLE_DOCUMENT.TOO_LONG)
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val),
+  house_title: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val)
+    .refine(
+      val => val === null || val === undefined || HOUSE_TITLE_TEXTS.includes(val),
+      PROPERTY_MESSAGES.HOUSE_TITLE.INVALID
+    ),
+  house_title_document: z
+    .string()
+    .max(500, PROPERTY_MESSAGES.HOUSE_TITLE_DOCUMENT.TOO_LONG)
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val),
+  house_registration_book: z
+    .string()
+    .max(500, PROPERTY_MESSAGES.HOUSE_REGISTRATION_BOOK.TOO_LONG)
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val),
+  land_lease_agreement: z
+    .string()
+    .max(500, PROPERTY_MESSAGES.LAND_LEASE_AGREEMENT.TOO_LONG)
+    .optional()
+    .nullable()
+    .transform(val => val === "" ? null : val),
+  is_active: z.boolean().optional().default(true),
 });
