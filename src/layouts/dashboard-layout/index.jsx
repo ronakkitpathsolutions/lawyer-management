@@ -4,6 +4,7 @@ import TopBar from "./topbar";
 import useProfileStore from "@/pages/dashboard/profile/use-profile-store";
 import useFetchWithAbort from "@/hooks/use-fetch-with-abort";
 import useAuth from "@/auth/use-auth";
+import { BreadcrumbProvider } from "@/contexts/breadcrumb-context";
 import { useEffect } from "react";
 
 const DashboardLayout = () => {
@@ -11,7 +12,7 @@ const DashboardLayout = () => {
   const [fetchData] = useFetchWithAbort(getData);
 
   const { user } = useAuth();
-  
+
   useEffect(() => {
     if (user?.id) {
       fetchData({ id: user?.id });
@@ -19,17 +20,19 @@ const DashboardLayout = () => {
   }, [fetchData, user?.id]);
 
   return (
-    <div className="flex h-screen">
-      <Sidebar />
-      <div className="flex flex-1 flex-col">
-        <header className="h-16 border-b border-gray-200 dark:border-[#1F1F23] flex-shrink-0">
-          <TopBar />
-        </header>
-        <main className="flex-1 overflow-y-auto p-6 bg-white dark:bg-[#0F0F12]">
-          <Outlet />
-        </main>
+    <BreadcrumbProvider>
+      <div className="flex h-screen">
+        <Sidebar />
+        <div className="flex flex-1 flex-col">
+          <header className="h-16 border-b border-gray-200 dark:border-[#1F1F23] flex-shrink-0">
+            <TopBar />
+          </header>
+          <main className="flex-1 overflow-y-auto p-6 bg-white dark:bg-[#0F0F12]">
+            <Outlet />
+          </main>
+        </div>
       </div>
-    </div>
+    </BreadcrumbProvider>
   );
 };
 

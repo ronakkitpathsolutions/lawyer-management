@@ -623,3 +623,24 @@ export const SERVITUDE_COST_MAP = SERVITUDE_COST_OPTIONS.reduce((acc, item) => {
   acc[item.value] = item.name;
   return acc;
 }, {});
+
+// Breadcrumb related constants
+export const BREADCRUMB_LABELS = {
+  DASHBOARD: "Dashboard",
+  CLIENTS: "Clients",
+  CLIENT_DETAILS: "Client Details",
+  EDIT_CLIENT: "Edit Client",
+  PROFILE: "Profile",
+  PERSONAL_INFORMATION: "Personal Information",
+  PROPERTY_INFORMATION: "Property Information",
+  VISA_INFORMATION: "Visa Information"
+};
+
+// Route patterns for breadcrumb matching
+export const ROUTE_PATTERNS = {
+  DASHBOARD: "/dashboard",
+  CLIENTS: "/clients",
+  CLIENT_DETAIL: "/clients/:id",
+  CLIENT_EDIT: "/clients/edit/:id",
+  PROFILE: "/profile"
+};

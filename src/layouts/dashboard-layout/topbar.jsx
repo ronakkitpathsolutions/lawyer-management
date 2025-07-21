@@ -6,20 +6,18 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronRight, User, Shield } from "lucide-react";
-import { Link, useNavigate } from "react-router";
+import ResponsiveBreadcrumb from "@/shared/breadcrumb";
+import { User, Shield } from "lucide-react";
+import { useNavigate } from "react-router";
 import useProfileStore from "@/pages/dashboard/profile/use-profile-store";
 import { MAIN_ROUTES } from "@/routing/routes";
 import { createFileUrl, getUserInitials } from "@/utils/helper";
-
-const breadcrumbs = [
-  { label: "Home", href: "/" },
-  { label: "Dashboard", href: "/dashboard" },
-];
+import { useBreadcrumbData } from "@/hooks/use-breadcrumb-data";
 
 const TopBar = () => {
   const { data } = useProfileStore();
   const navigate = useNavigate();
+  const { clientData, activeTab } = useBreadcrumbData();
 
   const handleNavigation = () => {
     navigate(MAIN_ROUTES.profile.url);
@@ -27,27 +25,14 @@ const TopBar = () => {
 
   return (
     <nav className="px-3 sm:px-6 flex items-center justify-between bg-white dark:bg-[#0F0F12] h-full">
-      <div className="font-medium text-sm hidden lg:flex items-center space-x-1 truncate max-w-[300px]">
-        {breadcrumbs.map((item, index) => (
-          <div key={item.label} className="flex items-center">
-            {index > 0 && (
-              <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 mx-1" />
-            )}
-            {item.href ? (
-              <Link
-                to={item.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <span className="text-gray-900 dark:text-gray-100">
-                {item.label}
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
+      <ResponsiveBreadcrumb
+        showHomeIcon={true}
+        maxItems={4}
+        homeHref="/dashboard"
+        className="max-w-[300px] lg:max-w-none"
+        clientData={clientData}
+        activeTab={activeTab}
+      />
 
       <div className="flex items-center gap-2 sm:gap-4 ml-auto lg:ml-0">
         <DropdownMenu>
