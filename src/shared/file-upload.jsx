@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { Upload, X, File, FileText, Image as ImageIcon, Loader2, Check } from 'lucide-react';
+import { Upload, X, File, FileText, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { createFileUrl } from '@/utils/helper';
 

@@ -293,13 +293,15 @@ export const propertyValidationSchema = z.object({
       PROPERTY_MESSAGES.BROKER_COMPANY.TOO_LONG
     ),
   transaction_type: z
-    .string()
-    .trim()
+    .array(z.string())
     .optional()
     .nullable()
-    .transform(val => val === "" ? null : val)
+    .transform(val => {
+      if (!val || val.length === 0) return null;
+      return val;
+    })
     .refine(
-      val => val === null || val === undefined || TYPE_OF_TRANSACTION_TEXTS.includes(val),
+      val => val === null || val === undefined || val.every(item => TYPE_OF_TRANSACTION_TEXTS.includes(item)),
       PROPERTY_MESSAGES.TRANSACTION_TYPE.INVALID
     ),
   property_type: z
@@ -378,65 +380,23 @@ export const propertyValidationSchema = z.object({
     .trim()
     .optional()
     .nullable()
-    .transform(val => {
-      if (!val || val === '') return null;
-
-      // Check if it's already in YYYY-MM-DD format
-      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
-        return val;
-      }
-
-      // Check if it's in DD-MM-YYYY format and convert
-      if (/^\d{2}-\d{2}-\d{4}$/.test(val)) {
-        const [day, month, year] = val.split('-');
-        return `${year}-${month}-${day}`;
-      }
-
-      // Check if it's in DD/MM/YYYY format and convert
-      if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
-        const [day, month, year] = val.split('/');
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-      }
-
-      return val;
-    })
+    .transform(val => val === "" ? null : val)
     .refine(
-      val => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
+      val => val === null || val === undefined || HANDOVER_DATE_TEXTS.includes(val),
       PROPERTY_MESSAGES.HANDOVER_DATE.INVALID
-    ),
-  specific_closing_date: z
-    .string()
-    .optional()
-    .nullable()
-    .transform(val => {
-      if (!val || val === '') return null;
-      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
-        return val;
-      }
-      if (/^\d{2}-\d{2}-\d{4}$/.test(val)) {
-        const [day, month, year] = val.split('-');
-        return `${year}-${month}-${day}`;
-      }
-      if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
-        const [day, month, year] = val.split('/');
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-      }
-      return val;
-    })
-    .refine(
-      val => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
-      "Invalid specific closing date format"
     ),
   warranty_term: z
     .string()
     .max(255, "Warranty term must not exceed 255 characters")
     .optional()
-    .nullable(),
+    .nullable()
+    .transform(val => val === "" ? null : val),
   warranty_condition: z
     .string()
     .max(500, "Warranty condition must not exceed 500 characters")
     .optional()
-    .nullable(),
+    .nullable()
+    .transform(val => val === "" ? null : val),
   selling_price: z
     .union([z.string(), z.number()])
     .transform(val => {
@@ -725,4 +685,22 @@ export const propertyValidationSchema = z.object({
       },
       "Land lease agreement must be a valid file"
     )
+}).refine((data) => {
+  // If house warranty is "yes", warranty_term and warranty_condition are required
+  if (data.house_warranty === "yes") {
+    return data.warranty_term && data.warranty_term.trim() !== "";
+  }
+  return true;
+}, {
+  message: "Warranty term is required when house warranty is Yes",
+  path: ["warranty_term"]
+}).refine((data) => {
+  // If house warranty is "yes", warranty_condition is required
+  if (data.house_warranty === "yes") {
+    return data.warranty_condition && data.warranty_condition.trim() !== "";
+  }
+  return true;
+}, {
+  message: "Warranty condition is required when house warranty is Yes",
+  path: ["warranty_condition"]
 });

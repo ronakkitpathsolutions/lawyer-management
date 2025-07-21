@@ -20,6 +20,7 @@ import {
     MORTGAGOR_MORTGAGEE_COST_OPTIONS,
     USUFRUCTUARY_OWNER_COST_OPTIONS,
     SERVITUDE_COST_OPTIONS,
+    HANDOVER_DATE_OPTIONS,
 } from "@/utils/constants";
 import useAsyncOperation from "@/hooks/use-async-operation";
 import { api } from "@/api";
@@ -39,11 +40,16 @@ const useAddEditForm = ({ onClose, property = null }) => {
         property_name: property?.property_name || "",
         agent_name: property?.agent_name || "",
         broker_company: property?.broker_company || "",
-        transaction_type: property?.transaction_type || "",
+        transaction_type: property?.transaction_type 
+            ? (typeof property.transaction_type === 'string' 
+                ? property.transaction_type.split(',').filter(Boolean)
+                : Array.isArray(property.transaction_type) 
+                    ? property.transaction_type 
+                    : [])
+            : [],
         property_type: property?.property_type || "",
         reservation_date: property?.reservation_date || "",
         intended_closing_date: property?.intended_closing_date || "",
-        specific_closing_date: property?.specific_closing_date || "",
         handover_date: property?.handover_date || "",
         selling_price: property?.selling_price || "",
         deposit: property?.deposit || "",
@@ -77,6 +83,9 @@ const useAddEditForm = ({ onClose, property = null }) => {
         defaultValues: initialValues,
         values: initialValues,
     });
+
+    // Watch house_warranty field to conditionally show warranty fields
+    const houseWarranty = methods.watch("house_warranty");
 
     const fieldsData = useMemo(
         () => [
@@ -112,7 +121,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
             {
                 id: "transaction_type",
                 name: "transaction_type",
-                type: "select",
+                type: "multi-select",
                 label: "Type of Transaction",
                 placeholder: msg.select("transaction type"),
                 options: TYPE_OF_TRANSACTION_OPTIONS,
@@ -150,19 +159,11 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 section: "dates",
             },
             {
-                id: "specific_closing_date",
-                name: "specific_closing_date",
-                type: "date",
-                label: "Specific Closing Date",
-                placeholder: msg.default("specific closing date"),
-                withAsterisk: false,
-                section: "dates",
-            },
-            {
                 id: "handover_date",
                 name: "handover_date",
-                type: "date",
+                 type: "select",
                 label: "Handover Date",
+                options: HANDOVER_DATE_OPTIONS,
                 placeholder: msg.select("handover date"),
                 withAsterisk: false,
                 section: "dates",
@@ -255,8 +256,9 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 type: "text",
                 label: "Term of Warranty",
                 placeholder: msg.default("warranty term"),
-                withAsterisk: false,
+                withAsterisk: houseWarranty === "yes",
                 section: "details",
+                hidden: houseWarranty !== "yes",
             },
             {
                 id: "warranty_condition",
@@ -264,8 +266,9 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 type: "text",
                 label: "Warranty condition",
                 placeholder: msg.default("warranty condition"),
-                withAsterisk: false,
+                withAsterisk: houseWarranty === "yes",
                 section: "details",
+                hidden: houseWarranty !== "yes",
             },
             {
                 id: "furniture_included",
@@ -418,19 +421,20 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 section: "documents",
             },
         ],
-        []
+        [houseWarranty]
     );
 
     const [onSubmit, loading, notification] = useAsyncOperation(
         async (payload) => {
-            // Check if there are file uploads in the form
-            const house_warranty = payload.house_warranty === "yes";
             const fileFields = ['land_title_document', 'house_title_document', 'house_registration_book', 'land_lease_agreement'];
             const hasFiles = fileFields.some(field => payload[field] && payload[field] instanceof File);
 
             const values = {
                 ...payload,
-                house_warranty,
+                // Convert transaction_type array to comma-separated string
+                transaction_type: Array.isArray(payload.transaction_type) 
+                    ? payload.transaction_type.join(',')
+                    : payload.transaction_type
             }
 
             let requestData;

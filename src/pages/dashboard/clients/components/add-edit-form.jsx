@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import DatePicker from "@/shared/date-picker";
 
 const AddEditForm = ({ onClose, client = null }) => {
@@ -86,7 +87,7 @@ const AddEditForm = ({ onClose, client = null }) => {
             >
               {loading ? (
                 <>
-                  <span className="animate-spin mr-2">⏳</span>
+                  <Loader2 className="animate-spin mr-2 h-4 w-4" />
                   {isEditing ? 'Updating...' : 'Adding...'}
                 </>
               ) : (

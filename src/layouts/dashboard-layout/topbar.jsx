@@ -11,7 +11,7 @@ import { User, Shield } from "lucide-react";
 import { useNavigate } from "react-router";
 import useProfileStore from "@/pages/dashboard/profile/use-profile-store";
 import { MAIN_ROUTES } from "@/routing/routes";
-import { createFileUrl, getUserInitials } from "@/utils/helper";
+import { getUserInitials } from "@/utils/helper";
 import { useBreadcrumbData } from "@/hooks/use-breadcrumb-data";
 
 const TopBar = () => {
@@ -40,7 +40,7 @@ const TopBar = () => {
             <div className="flex items-center gap-2 p-1.5 transition-colors cursor-pointer">
               <Avatar className="w-10 h-10">
                 <AvatarImage
-                  src={createFileUrl(data?.profile) || "/default-avatar.png"}
+                  src={data?.profile || ""}
                   alt={data?.name || "User Avatar"}
                 />
                 <AvatarFallback className="font-medium">
@@ -59,7 +59,7 @@ const TopBar = () => {
               <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
                   <AvatarImage
-                    src={createFileUrl(data?.profile) || "/default-avatar.png"}
+                    src={data?.profile || "/default-avatar.png"}
                     alt={data?.name || "User Avatar"}
                   />
                   <AvatarFallback className="font-medium">

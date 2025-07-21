@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { Link } from "react-router";
 
 const ResetPassword = () => {
@@ -76,7 +77,7 @@ const ResetPassword = () => {
             >
               {loading ? (
                 <>
-                  <span className="animate-spin mr-2">⏳</span>
+                  <Loader2 className="animate-spin mr-2 h-4 w-4" />
                   Resetting password...
                 </>
               ) : (

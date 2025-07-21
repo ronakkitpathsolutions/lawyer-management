@@ -12,8 +12,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Loader2 } from "lucide-react";
 import DatePicker from "@/shared/date-picker";
 import FileUpload from "@/shared/file-upload";
+import { MultiSelect } from "@/shared/multi-select";
 
 const AddEditForm = ({ onClose, property = null, initialData = null }) => {
     // Support both prop names for backwards compatibility
@@ -57,7 +59,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                 control={methods.control}
                 name={field.name}
                 render={({ field: formField }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className={field.type !== 'multi-select' ? "space-y-2" : "space-y-1"}>
                         {!hideLabel && field.label && (
                             <FormLabel
                                 className="text-sm font-semibold text-gray-900 block mb-1"
@@ -85,6 +87,14 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                         ))}
                                     </SelectContent>
                                 </Select>
+                            ) : field.type === 'multi-select' ? (
+                                <MultiSelect
+                                    options={field.options || []}
+                                    value={formField.value || []}
+                                    onChange={formField.onChange}
+                                    placeholder={field.placeholder}
+                                    disabled={loading}
+                                />
                             ) : field.type === 'date' ? (
                                 <DatePicker
                                     value={formField.value}
@@ -248,7 +258,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {fields.map((field) => renderField(field))}
+                                        {fields.filter(field => !field.hidden).map((field) => renderField(field))}
                                     </div>
                                 )}
                             </div>
@@ -270,7 +280,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                         >
                             {loading ? (
                                 <>
-                                    <span className="animate-spin mr-2">⏳</span>
+                                    <Loader2 className="animate-spin mr-2 h-4 w-4" />
                                     {isEditing ? 'Updating...' : 'Adding...'}
                                 </>
                             ) : (

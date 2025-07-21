@@ -7,7 +7,6 @@ import { Loader2, Save, User, Camera } from 'lucide-react';
 import ProfileImageUpload from '@/shared/profile-image-upload';
 import { ChangePasswordForm } from './components';
 import useProfile from './use-profile';
-import { createFileUrl } from '@/utils/helper';
 
 const Profile = () => {
   const {
@@ -53,7 +52,7 @@ const Profile = () => {
           </CardHeader>
           <CardContent>
             <ProfileImageUpload
-              imageUrl={createFileUrl(data?.profile)}
+              imageUrl={data?.profile}
               userName={data?.name || ''}
               uploading={uploading}
               onImageUpload={handleImageUpload}

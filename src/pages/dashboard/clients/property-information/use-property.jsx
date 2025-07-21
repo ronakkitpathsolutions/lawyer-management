@@ -18,6 +18,7 @@ import {
     DATE_FORMAT,
     TYPE_OF_TRANSACTION_MAP,
     TYPE_OF_PROPERTY_MAP,
+    HANDOVER_DATE_MAP,
 } from "@/utils/constants";
 
 const useProperty = () => {
@@ -120,7 +121,7 @@ const useProperty = () => {
                 accessorKey: "handover_date",
                 render: ({ rowData }) =>
                     rowData.handover_date
-                        ? DATE_FORMAT.date(rowData.handover_date)
+                        ? HANDOVER_DATE_MAP[rowData.handover_date] || "-"
                         : "-",
             },
             {
