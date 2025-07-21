@@ -164,7 +164,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
             <div className="space-y-4">
                 {/* Land Title Group */}
                 {documentGroups.landTitle.select && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                    <div>
                         <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                             <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
                             Land Title
@@ -185,7 +185,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
 
                 {/* House Title Group */}
                 {documentGroups.houseTitle.select && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                    <div>
                         <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                             <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
                             House Title
@@ -207,7 +207,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* House Registration Book */}
                     {documentGroups.houseRegistration.upload && (
-                        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                        <div>
                             <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                                 <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
                                 House Registration Book
@@ -223,7 +223,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
 
                     {/* Land Lease Agreement */}
                     {documentGroups.landLease.upload && (
-                        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                        <div>
                             <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                                 <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
                                 Land Lease Agreement
@@ -247,7 +247,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                 <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
                     {notification}
 
-                    <div className="max-h-[70vh] overflow-y-auto pr-2 space-y-8">
+                    <div className="max-h-[70vh] overflow-y-auto px-2 space-y-8">
                         {Object.entries(groupedFields).map(([sectionKey, fields]) => (
                             <div key={sectionKey} className="space-y-4">
                                 <div className="border-b pb-2">

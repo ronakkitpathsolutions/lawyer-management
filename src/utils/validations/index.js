@@ -347,9 +347,30 @@ export const propertyValidationSchema = z.object({
     .trim()
     .optional()
     .nullable()
-    .transform(val => val === "" ? null : val)
+    .transform(val => {
+      if (!val || val === '') return null;
+
+      // Check if it's already in YYYY-MM-DD format
+      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+        return val;
+      }
+
+      // Check if it's in DD-MM-YYYY format and convert
+      if (/^\d{2}-\d{2}-\d{4}$/.test(val)) {
+        const [day, month, year] = val.split('-');
+        return `${year}-${month}-${day}`;
+      }
+
+      // Check if it's in DD/MM/YYYY format and convert
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+        const [day, month, year] = val.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      }
+
+      return val;
+    })
     .refine(
-      val => val === null || val === undefined || INTENDED_CLOSING_DATE_TEXTS.includes(val),
+      val => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
       PROPERTY_MESSAGES.INTENDED_CLOSING_DATE.INVALID
     ),
   handover_date: z
@@ -357,9 +378,30 @@ export const propertyValidationSchema = z.object({
     .trim()
     .optional()
     .nullable()
-    .transform(val => val === "" ? null : val)
+    .transform(val => {
+      if (!val || val === '') return null;
+
+      // Check if it's already in YYYY-MM-DD format
+      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+        return val;
+      }
+
+      // Check if it's in DD-MM-YYYY format and convert
+      if (/^\d{2}-\d{2}-\d{4}$/.test(val)) {
+        const [day, month, year] = val.split('-');
+        return `${year}-${month}-${day}`;
+      }
+
+      // Check if it's in DD/MM/YYYY format and convert
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+        const [day, month, year] = val.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      }
+
+      return val;
+    })
     .refine(
-      val => val === null || val === undefined || HANDOVER_DATE_TEXTS.includes(val),
+      val => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
       PROPERTY_MESSAGES.HANDOVER_DATE.INVALID
     ),
   specific_closing_date: z
@@ -623,12 +665,6 @@ export const propertyValidationSchema = z.object({
       val => val === null || val === undefined || LAND_TITLE_TEXTS.includes(val),
       PROPERTY_MESSAGES.LAND_TITLE.INVALID
     ),
-  land_title_document: z
-    .string()
-    .max(500, PROPERTY_MESSAGES.LAND_TITLE_DOCUMENT.TOO_LONG)
-    .optional()
-    .nullable()
-    .transform(val => val === "" ? null : val),
   house_title: z
     .string()
     .trim()
@@ -639,23 +675,54 @@ export const propertyValidationSchema = z.object({
       val => val === null || val === undefined || HOUSE_TITLE_TEXTS.includes(val),
       PROPERTY_MESSAGES.HOUSE_TITLE.INVALID
     ),
+  
+  // File upload fields
+  land_title_document: z
+    .any()
+    .optional()
+    .nullable()
+    .refine(
+      (file) => {
+        if (!file) return true; // Allow empty/null files
+        if (typeof file === 'string') return true; // Allow existing file URLs
+        return file instanceof File; // Must be a File object if present
+      },
+      "Land title document must be a valid file"
+    ),
   house_title_document: z
-    .string()
-    .max(500, PROPERTY_MESSAGES.HOUSE_TITLE_DOCUMENT.TOO_LONG)
+    .any()
     .optional()
     .nullable()
-    .transform(val => val === "" ? null : val),
+    .refine(
+      (file) => {
+        if (!file) return true; // Allow empty/null files
+        if (typeof file === 'string') return true; // Allow existing file URLs
+        return file instanceof File; // Must be a File object if present
+      },
+      "House title document must be a valid file"
+    ),
   house_registration_book: z
-    .string()
-    .max(500, PROPERTY_MESSAGES.HOUSE_REGISTRATION_BOOK.TOO_LONG)
+    .any()
     .optional()
     .nullable()
-    .transform(val => val === "" ? null : val),
+    .refine(
+      (file) => {
+        if (!file) return true; // Allow empty/null files
+        if (typeof file === 'string') return true; // Allow existing file URLs
+        return file instanceof File; // Must be a File object if present
+      },
+      "House registration book must be a valid file"
+    ),
   land_lease_agreement: z
-    .string()
-    .max(500, PROPERTY_MESSAGES.LAND_LEASE_AGREEMENT.TOO_LONG)
+    .any()
     .optional()
     .nullable()
-    .transform(val => val === "" ? null : val),
-  is_active: z.boolean().optional().default(true),
+    .refine(
+      (file) => {
+        if (!file) return true; // Allow empty/null files
+        if (typeof file === 'string') return true; // Allow existing file URLs
+        return file instanceof File; // Must be a File object if present
+      },
+      "Land lease agreement must be a valid file"
+    )
 });

@@ -3,6 +3,7 @@ import { Upload, X, File, FileText, Image as ImageIcon, Loader2, Check } from 'l
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { createFileUrl } from '@/utils/helper';
 
 const FileUpload = ({
     value,
@@ -70,6 +71,11 @@ const FileUpload = ({
     };
 
     const getFileIcon = (file) => {
+        if( typeof file === 'string') {
+            if (file.endsWith('.pdf')) return <FileText className="h-8 w-8" />;
+            if (file.match(/\.(jpg|jpeg|png|gif|webp)$/i)) return <ImageIcon className="h-8 w-8" />;
+            return <File className="h-8 w-8" />;
+        }
         if (!file) return <Upload className="h-8 w-8" />;
 
         const type = file.type || '';
@@ -103,14 +109,15 @@ const FileUpload = ({
     };
 
     const getPreviewUrl = (file) => {
-        if (typeof file === 'string') return file;
+        if (typeof file === 'string'){
+            return isImage(file) ? createFileUrl(file) : '';
+        }
         if (isImage(file)) return URL.createObjectURL(file);
         return null;
     };
 
     const renderFilePreview = (file, index = 0) => {
         const previewUrl = getPreviewUrl(file);
-
         return (
             <div key={index} className="relative group border rounded-lg p-3 bg-gray-50">
                 <div className="flex items-center space-x-3">

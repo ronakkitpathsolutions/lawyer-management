@@ -7,13 +7,10 @@ import {
     ACTION_MESSAGES,
     TYPE_OF_TRANSACTION_OPTIONS,
     TYPE_OF_PROPERTY_OPTIONS,
-    INTENDED_CLOSING_DATE_OPTIONS,
-    HANDOVER_DATE_OPTIONS,
     ACCEPTABLE_PAYMENT_METHODS_OPTIONS,
     PLACE_OF_PAYMENT_OPTIONS,
     PROPERTY_CONDITION_OPTIONS,
     FURNITURE_INCLUDED_OPTIONS,
-    COST_SHARING_OPTIONS,
     HOUSE_TITLE_OPTIONS,
     LAND_TITLE_OPTIONS,
     DECLARED_LAND_OFFICE_PRICE_OPTIONS,
@@ -68,11 +65,11 @@ const useAddEditForm = ({ onClose, property = null }) => {
         servitude_registration_fee: property?.servitude_registration_fee || "",
         declared_land_office_price: property?.declared_land_office_price || "",
         land_title: property?.land_title || "",
-        land_title_document: property?.land_title_document || "",
+        land_title_document: property?.land_title_document || null,
         house_title: property?.house_title || "",
-        house_title_document: property?.house_title_document || "",
-        house_registration_book: property?.house_registration_book || "",
-        land_lease_agreement: property?.land_lease_agreement || "",
+        house_title_document: property?.house_title_document || null,
+        house_registration_book: property?.house_registration_book || null,
+        land_lease_agreement: property?.land_lease_agreement || null,
     }), [property]);
 
     const methods = useForm({
@@ -146,10 +143,9 @@ const useAddEditForm = ({ onClose, property = null }) => {
             {
                 id: "intended_closing_date",
                 name: "intended_closing_date",
-                type: "select",
+                type: "date",
                 label: "Intended Closing Date",
                 placeholder: msg.select("intended closing date"),
-                options: INTENDED_CLOSING_DATE_OPTIONS,
                 withAsterisk: false,
                 section: "dates",
             },
@@ -165,10 +161,9 @@ const useAddEditForm = ({ onClose, property = null }) => {
             {
                 id: "handover_date",
                 name: "handover_date",
-                type: "select",
+                type: "date",
                 label: "Handover Date",
                 placeholder: msg.select("handover date"),
-                options: HANDOVER_DATE_OPTIONS,
                 withAsterisk: false,
                 section: "dates",
             },
@@ -427,19 +422,59 @@ const useAddEditForm = ({ onClose, property = null }) => {
     );
 
     const [onSubmit, loading, notification] = useAsyncOperation(
-        async (values) => {
+        async (payload) => {
+            // Check if there are file uploads in the form
+            const house_warranty = payload.house_warranty === "yes";
+            const fileFields = ['land_title_document', 'house_title_document', 'house_registration_book', 'land_lease_agreement'];
+            const hasFiles = fileFields.some(field => payload[field] && payload[field] instanceof File);
+
+            const values = {
+                ...payload,
+                house_warranty,
+            }
+
+            let requestData;
+            
+            if (hasFiles) {
+                // If there are files, use FormData
+                const formData = new FormData();
+                
+                // Add regular fields to FormData
+                Object.keys(values).forEach(key => {
+                    if (values[key] !== null && values[key] !== undefined && values[key] !== '') {
+                        if (fileFields.includes(key) && values[key] instanceof File) {
+                            // Add file to FormData
+                            formData.append(key, values[key]);
+                        } else if (!fileFields.includes(key)) {
+                            // Add non-file fields to FormData
+                            formData.append(key, values[key]);
+                        }
+                    }
+                });
+                
+                // Add client_id for create operation
+                if (!isEditing) {
+                    formData.append('client_id', id);
+                }
+                
+                requestData = formData;
+            } else {
+                // If no files, use regular JSON data
+                requestData = removeEmptyFields(values);
+                if (!isEditing) {
+                    requestData.client_id = id;
+                }
+            }
+
             if (isEditing) {
                 await api.property.update({
                     id: property.id,
-                    data: removeEmptyFields(values),
+                    data: requestData,
                 });
                 toastSuccess(ACTION_MESSAGES.update("property"));
             } else {
                 await api.property.create({
-                    data: {
-                        ...removeEmptyFields(values),
-                        client_id: id, // Associate property with client
-                    },
+                    data: requestData,
                 });
                 toastSuccess(ACTION_MESSAGES.add("property"));
             }

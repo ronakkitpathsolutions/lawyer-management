@@ -11,22 +11,17 @@ const ROUTE_BREADCRUMB_CONFIG = {
         { label: "Dashboard", href: "/dashboard", isActive: true }
     ],
     "/clients": [
-        { label: "Dashboard", href: "/dashboard", isActive: false },
         { label: "Clients", href: "/clients", isActive: true }
     ],
     "/clients/:id": [
-        { label: "Dashboard", href: "/dashboard", isActive: false },
         { label: "Clients", href: "/clients", isActive: false },
         { label: "Client Details", href: null, isActive: true, isDynamic: true }
     ],
     "/clients/edit/:id": [
-        { label: "Dashboard", href: "/dashboard", isActive: false },
         { label: "Clients", href: "/clients", isActive: false },
-        { label: "Client Details", href: "/clients/:id", isActive: false, isDynamic: true },
-        { label: "Edit Client", href: null, isActive: true, isDynamic: true }
+        { label: "Client Details", href: null, isActive: true, isDynamic: true }
     ],
     "/profile": [
-        { label: "Dashboard", href: "/dashboard", isActive: false },
         { label: "Profile", href: "/profile", isActive: true }
     ]
 };
