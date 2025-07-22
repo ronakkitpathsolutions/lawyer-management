@@ -51,7 +51,7 @@ const CustomTable = ({
 }) => {
   const [localSearchValue, setLocalSearchValue] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
-  const { page: currentPage, limit, totalItems } = params || {};
+  const { page: currentPage, limit, totalItems, sortBy, sortOrder } = params || {};
   const totalPages = Math.ceil(totalItems / limit) || 1;
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -136,6 +136,47 @@ const CustomTable = ({
       setParams({ page });
     }
   };
+
+  // Handle sorting
+  const handleSort = useCallback((column) => {
+    if (!column.isEnableSorting || !setParams) return;
+
+    const currentSortBy = sortBy;
+    const currentSortOrder = sortOrder;
+    const columnKey = column.accessorKey;
+
+    // If clicking the same column, toggle sort order
+    if (currentSortBy === columnKey) {
+      const newSortOrder = currentSortOrder === 'ASC' ? 'DESC' : 'ASC';
+      setParams({ sortBy: columnKey, sortOrder: newSortOrder, page: 1 });
+    } else {
+      // If clicking a new column, set it to ascending
+      setParams({ sortBy: columnKey, sortOrder: 'ASC', page: 1 });
+    }
+  }, [sortBy, sortOrder, setParams]);
+
+  // Get sort icon for a column
+  const getSortIcon = useCallback((column) => {
+    if (!column.isEnableSorting) return null;
+
+    const columnKey = column.accessorKey;
+    const isActive = sortBy === columnKey;
+
+    if (!isActive) {
+      return (
+        <div className="flex flex-col opacity-50">
+          <ChevronUp className="h-3 w-3 text-gray-400" />
+          <ChevronDown className="h-3 w-3 text-gray-400 -mt-1" />
+        </div>
+      );
+    }
+
+    if (sortOrder === 'asc') {
+      return <ChevronUp className="h-4 w-4 text-gray-700" />;
+    } else {
+      return <ChevronDown className="h-4 w-4 text-gray-700" />;
+    }
+  }, [sortBy, sortOrder]);
 
   // Generate page numbers to show
   const generatePageNumbers = () => {
@@ -242,16 +283,14 @@ const CustomTable = ({
               {columns.map((column, index) => (
                 <TableHead
                   key={column.accessorKey || index}
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className={`px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                    column.isEnableSorting ? 'cursor-pointer hover:bg-gray-100' : ''
+                  }`}
+                  onClick={() => handleSort(column)}
                 >
                   <div className="flex items-center gap-1">
                     {column.header}
-                    {column.sortable && (
-                      <div className="flex flex-col">
-                        <ChevronUp className="h-3 w-3 text-gray-400" />
-                        <ChevronDown className="h-3 w-3 text-gray-400 -mt-1" />
-                      </div>
-                    )}
+                    {column.isEnableSorting && getSortIcon(column)}
                   </div>
                 </TableHead>
               ))}

@@ -90,6 +90,7 @@ const useProperty = () => {
             {
                 header: "Property Name",
                 accessorKey: "property_name",
+                isEnableSorting: true,
             },
             {
                 header: "Transaction Type",
@@ -101,6 +102,7 @@ const useProperty = () => {
             {
                 header: "Property Type",
                 accessorKey: "property_type",
+                isEnableSorting: true,
                 render: ({ rowData }) => TYPE_OF_PROPERTY_MAP[rowData.property_type] || "-",
             },
             {

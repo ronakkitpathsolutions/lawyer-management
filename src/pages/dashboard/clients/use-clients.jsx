@@ -63,14 +63,17 @@ const useClients = () => {
       {
         header: "Name",
         accessorKey: "name",
+        isEnableSorting: true,
       },
       {
         header: "Family Name",
         accessorKey: "family_name",
+        isEnableSorting: true,
       },
       {
         header: "Email",
         accessorKey: "email",
+        isEnableSorting: true,
       },
       {
         header: "Phone",
@@ -79,6 +82,7 @@ const useClients = () => {
       {
         header: "Nationality",
         accessorKey: "nationality",
+        isEnableSorting: true,
       },
       {
         header: "DOB",

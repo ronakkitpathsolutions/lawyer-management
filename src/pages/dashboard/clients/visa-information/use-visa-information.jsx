@@ -88,6 +88,7 @@ const useVisaInformation = () => {
       {
         header: "Existing Visa",
         accessorKey: "existing_visa",
+        isEnableSorting: true,
         render: ({ rowData }) =>
           rowData?.existing_visa
             ? EXISTING_VISA_MAP[rowData.existing_visa]
@@ -96,6 +97,7 @@ const useVisaInformation = () => {
       {
         header: "Wished Visa",
         accessorKey: "wished_visa",
+        isEnableSorting: true,
         render: ({ rowData }) =>
           rowData?.wished_visa ? WISHED_VISA_MAP[rowData.wished_visa] : "-",
       },
