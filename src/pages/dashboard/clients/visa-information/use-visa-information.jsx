@@ -13,7 +13,11 @@ import { useDisclosure } from "@mantine/hooks";
 import useAsyncOperation from "@/hooks/use-async-operation";
 import { toastSuccess } from "@/lib/toast";
 import { api } from "@/api";
-import { DATE_FORMAT, EXISTING_VISA_MAP, WISHED_VISA_MAP } from "@/utils/constants";
+import {
+  DATE_FORMAT,
+  EXISTING_VISA_MAP,
+  WISHED_VISA_MAP,
+} from "@/utils/constants";
 import { useParams } from "react-router";
 
 const useVisaInformation = () => {
@@ -54,10 +58,13 @@ const useVisaInformation = () => {
     openDrawer();
   }, [openDrawer]);
 
-  const openEditDrawer = useCallback((visaData) => {
-    setSelectedVisaData(visaData);
-    openDrawer();
-  }, [openDrawer]);
+  const openEditDrawer = useCallback(
+    (visaData) => {
+      setSelectedVisaData(visaData);
+      openDrawer();
+    },
+    [openDrawer]
+  );
 
   const handleCloseDrawer = useCallback(() => {
     setSelectedVisaData(null);
@@ -82,7 +89,9 @@ const useVisaInformation = () => {
         header: "Existing Visa",
         accessorKey: "existing_visa",
         render: ({ rowData }) =>
-          rowData?.existing_visa ? EXISTING_VISA_MAP[rowData.existing_visa] : "-",
+          rowData?.existing_visa
+            ? EXISTING_VISA_MAP[rowData.existing_visa]
+            : "-",
       },
       {
         header: "Wished Visa",
@@ -160,6 +169,15 @@ const useVisaInformation = () => {
     [openEditDrawer]
   );
 
+  const [handleBulkDeleteConfirm, deleteBulkLoading] = useAsyncOperation(
+    async (ids = []) => {
+      if (!ids.length) return;
+      await Promise.all(ids.map((id) => api.visa.delete({ id })));
+      toastSuccess(`${ids.length} visa deleted successfully`);
+      fetchData({ id, params });
+    }
+  );
+
   return {
     columns,
     data,
@@ -174,6 +192,8 @@ const useVisaInformation = () => {
     handleDeleteConfirm,
     deleteLoading,
     selectedVisaData,
+    handleBulkDeleteConfirm,
+    deleteBulkLoading,
   };
 };
 

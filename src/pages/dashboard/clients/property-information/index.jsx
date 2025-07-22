@@ -22,6 +22,8 @@ const PropertyInformation = () => {
     handleDeleteConfirm,
     deleteLoading,
     selectedPropertyData,
+    deleteBulkLoading,
+    handleBulkDeleteConfirm,
   } = useProperty();
 
   return (
@@ -45,13 +47,26 @@ const PropertyInformation = () => {
       {/* Table Section */}
       <div className="bg-white">
         <CustomTable
-          {...{ params, setParams, columns, data, loading }}
+          {...{
+            params,
+            setParams,
+            columns,
+            data,
+            loading,
+            deleteButtonText: "Delete Properties",
+            handleDeleteConfirm: handleBulkDeleteConfirm,
+            confirmTitle: "Delete Properties",
+            deleteLoading: deleteBulkLoading,
+            confirmDescription:
+              "Are you sure you want to delete the selected properties?",
+          }}
           className="w-full"
         />
       </div>
 
       {/* Custom Drawer */}
-      <CustomDrawer className="sm:!max-w-[920px]"
+      <CustomDrawer
+        className="sm:!max-w-[920px]"
         open={isDrawerOpen}
         handleClose={closeDrawer}
         title={selectedPropertyData ? "Edit Property" : "Add New Property"}

@@ -21,6 +21,8 @@ const VisaInformation = () => {
     handleDeleteConfirm,
     deleteLoading,
     selectedVisaData,
+    handleBulkDeleteConfirm,
+    deleteBulkLoading,
   } = useVisaInformation();
 
   return (
@@ -40,7 +42,19 @@ const VisaInformation = () => {
       {/* Table Section */}
       <div className="bg-white">
         <CustomTable
-          {...{ params, setParams, columns, data, loading }}
+          {...{
+            params,
+            setParams,
+            columns,
+            data,
+            loading,
+            deleteButtonText: "Delete Visas",
+            handleDeleteConfirm: handleBulkDeleteConfirm,
+            confirmTitle: "Delete Visas",
+            deleteLoading: deleteBulkLoading,
+            confirmDescription:
+              "Are you sure you want to delete the selected visas?",
+          }}
           className="w-full"
         />
       </div>

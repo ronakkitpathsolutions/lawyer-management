@@ -35,7 +35,7 @@ const initialValues = useMemo(() => ({
 
     // Additional Information
     passport_number: data?.passport_number || "",
-    age: data?.age || undefined,
+    age: data?.age ? Number(data.age) : "",
     address_in_thailand: data?.address_in_thailand || "",
     whatsapp: data?.whatsapp || "",
     line: data?.line || "",
@@ -247,9 +247,15 @@ const initialValues = useMemo(() => ({
 
   const [onSubmit, loading, notification] = useAsyncOperation(
     async (values) => {
+      // Convert age to number if it exists and is not empty
+      const processedValues = {
+        ...values,
+        age: values.age ? Number(values.age) : undefined,
+      };
+      
       await api.client.update({
-        id: values.id, // Assuming the ID will be in the form values
-        data: removeEmptyFields(values),
+        id: processedValues.id, // Assuming the ID will be in the form values
+        data: removeEmptyFields(processedValues),
       });
       toastSuccess(ACTION_MESSAGES.update("client"));
     },

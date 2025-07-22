@@ -105,7 +105,6 @@ export const clientPersonalInfoSchema = z.object({
 
 export const clientFullInformationSchema = clientPersonalInfoSchema.extend({
   id: z.string().or(z.number()).optional(),
-
   passport_number: z
     .string()
     .trim()

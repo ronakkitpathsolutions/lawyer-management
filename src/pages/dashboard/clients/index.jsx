@@ -20,6 +20,8 @@ const Clients = () => {
     closeDeleteModal,
     handleDeleteConfirm,
     deleteLoading,
+    handleBulkDeleteConfirm,
+    deleteBulkLoading
   } = useClients();
 
   return (
@@ -39,7 +41,20 @@ const Clients = () => {
       {/* Table Section */}
       <div className="bg-white">
         <CustomTable
-          {...{ params, setParams, columns, data, loading }}
+          {...{
+            params,
+            setParams,
+            columns,
+            data,
+            loading,
+            searchPlaceholder: "Search by all fields",
+            deleteButtonText: "Delete Clients",
+            handleDeleteConfirm: handleBulkDeleteConfirm,
+            confirmTitle: "Delete Clients",
+            deleteLoading: deleteBulkLoading,
+            confirmDescription:
+              "Are you sure you want to delete the selected clients?",
+          }}
           className="w-full"
         />
       </div>
@@ -53,9 +68,9 @@ const Clients = () => {
         <AddEditForm onClose={closeDrawer} />
       </CustomDrawer>
 
-
       {/* Delete Confirmation Modal */}
-      <Confirmation open={isOpenDeleteModal}
+      <Confirmation
+        open={isOpenDeleteModal}
         handleClose={closeDeleteModal}
         title="Are you sure?"
         description="Are you sure you want to delete this client?"
@@ -64,7 +79,6 @@ const Clients = () => {
         loading={deleteLoading}
         handleSubmit={handleDeleteConfirm}
       />
-
     </div>
   );
 };

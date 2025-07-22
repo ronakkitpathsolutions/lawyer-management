@@ -183,6 +183,16 @@ const useProperty = () => {
         [openEditDrawer]
     );
 
+    
+  const [handleBulkDeleteConfirm, deleteBulkLoading] = useAsyncOperation(
+    async (ids = []) => {
+      if (!ids.length) return;
+      await Promise.all(ids.map((id) => api.property.delete({ id })));
+      toastSuccess(`${ids.length} property deleted successfully`);
+      fetchData({ id, params });
+    }
+  );
+
     return {
         columns,
         data,
@@ -197,6 +207,8 @@ const useProperty = () => {
         handleDeleteConfirm,
         deleteLoading,
         selectedPropertyData,
+        deleteBulkLoading,
+        handleBulkDeleteConfirm
     };
 };
 

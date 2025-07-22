@@ -17,18 +17,23 @@ import { useNavigate } from "react-router";
 import { MAIN_ROUTES } from "@/routing/routes";
 
 const useClients = () => {
-  const { getAll, data, params, resetParams, setParams, total, loading } = useClientsStore();
+  const { getAll, data, params, resetParams, setParams, total, loading } =
+    useClientsStore();
   const [fetchData] = useFetchWithAbort(getAll);
   const navigate = useNavigate();
 
-  const [isDrawerOpen, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
+  const [isDrawerOpen, { open: openDrawer, close: closeDrawer }] =
+    useDisclosure(false);
 
   const [deleteData, setDeleteData] = useState({});
 
-  const isOpenDeleteModal = useMemo(() => Boolean(deleteData?.id), [deleteData]);
+  const isOpenDeleteModal = useMemo(
+    () => Boolean(deleteData?.id),
+    [deleteData]
+  );
 
   // call delete Client API
-  const [handleDeleteConfirm, deleteLoading] = useAsyncOperation(async() => {
+  const [handleDeleteConfirm, deleteLoading] = useAsyncOperation(async () => {
     if (!deleteData?.id) return;
 
     await api.client.delete({ id: deleteData.id });
@@ -37,7 +42,7 @@ const useClients = () => {
     fetchData({ params });
     // Close the delete modal
     closeDeleteModal({});
-  })
+  });
 
   const closeDeleteModal = useCallback(() => {
     setDeleteData({});
@@ -93,14 +98,18 @@ const useClients = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => navigate(MAIN_ROUTES.clients.path + `/${rowData.id}`)}
+                onClick={() =>
+                  navigate(MAIN_ROUTES.clients.path + `/${rowData.id}`)
+                }
               >
                 <Eye className="mr-2 h-4 w-4" />
                 View
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => navigate(MAIN_ROUTES.clients.path + `/edit/${rowData.id}`)}
+                onClick={() =>
+                  navigate(MAIN_ROUTES.clients.path + `/edit/${rowData.id}`)
+                }
               >
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
@@ -120,6 +129,15 @@ const useClients = () => {
     [navigate]
   );
 
+  const [handleBulkDeleteConfirm, deleteBulkLoading] = useAsyncOperation(
+    async (ids = []) => {
+      if (!ids.length) return;
+      await Promise.all(ids.map((id) => api.client.delete({ id })));
+      toastSuccess(`${ids.length} client deleted successfully`);
+      fetchData({ params });
+    }
+  );
+
   return {
     columns,
     data,
@@ -131,8 +149,10 @@ const useClients = () => {
     closeDrawer,
     isOpenDeleteModal,
     closeDeleteModal,
-    handleDeleteConfirm, 
-    deleteLoading
+    handleDeleteConfirm,
+    deleteLoading,
+    handleBulkDeleteConfirm,
+    deleteBulkLoading,
   };
 };
 

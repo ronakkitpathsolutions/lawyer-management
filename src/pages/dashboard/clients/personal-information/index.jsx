@@ -162,6 +162,39 @@ const PersonalInformation = () => {
           />
         );
 
+      case "number":
+        return (
+          <FormField
+            key={field.id}
+            control={methods.control}
+            name={field.name}
+            render={({ field: formField }) => (
+              <FormItem>
+                <FormLabel className="flex items-center gap-1">
+                  {field.label}
+                  {field.withAsterisk && (
+                    <span className="text-red-500">*</span>
+                  )}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder={field.placeholder}
+                    {...formField}
+                    value={formField.value || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      // Convert to number if value exists and is not empty
+                      formField.onChange(value === "" ? undefined : Number(value));
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        );
+
       default:
         return (
           <FormField
