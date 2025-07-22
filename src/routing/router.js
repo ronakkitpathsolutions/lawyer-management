@@ -2,10 +2,9 @@ import { createBrowserRouter, redirect } from "react-router";
 import { getAuth } from "../auth";
 
 // Routes
-import { AUTH_ROUTES, DASHBOARD_ROUTES, MAIN_ROUTES } from "./routes";
+import { AUTH_ROUTES, MAIN_ROUTES } from "./routes";
 
 // Layouts
-import PlainLayout from "../layouts/plain-layout";
 import AuthLayout from "../layouts/auth-layout";
 import DashboardLayout from "../layouts/dashboard-layout";
 
@@ -15,7 +14,6 @@ import ForgotPassword from "../pages/auth/forgot-password";
 import ResetPassword from "../pages/auth/reset-password";
 
 // Dashboard pages
-import DashboardRoot from "../pages/dashboard/root";
 import Profile from "../pages/dashboard/profile";
 import Clients from "../pages/dashboard/clients";
 import ClientInformation from "@/pages/dashboard/clients/components/client-information";
@@ -67,18 +65,6 @@ export const router = createBrowserRouter([
       { ...AUTH_ROUTES.login, Component: Login },
       { ...AUTH_ROUTES.forgotPassword, Component: ForgotPassword },
       { ...AUTH_ROUTES.resetPassword, Component: ResetPassword },
-    ],
-  },
-  {
-    ...DASHBOARD_ROUTES.layout,
-    Component: DashboardLayout,
-    loader: dashboardLayoutLoader,
-    children: [
-      {
-        ...DASHBOARD_ROUTES.dashboard,
-        Component: DashboardRoot,
-        loader: dashboardPageLoader(DASHBOARD_ROUTES.dashboard.roles),
-      },
     ],
   },
   {

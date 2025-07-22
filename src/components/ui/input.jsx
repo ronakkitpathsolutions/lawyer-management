@@ -32,9 +32,9 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
           tabIndex={-1}
         >
           {showPassword ? (
-            <ICONS.IconEyeOff className="h-4 w-4" />
+            <ICONS.IconEyeOff className="h-5 w-5" />
           ) : (
-            <ICONS.IconEye className="h-4 w-4" />
+            <ICONS.IconEye className="h-5 w-5" />
           )}
         </button>
       </div>

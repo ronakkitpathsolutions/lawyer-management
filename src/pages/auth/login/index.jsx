@@ -25,11 +25,11 @@ const Login = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col items-center gap-2 mb-6">
-        <h2 className="text-2xl font-bold text-center">
+      <div className="flex flex-col items-start gap-2 mb-8">
+        <h2 className="text-3xl font-bold">
           Welcome Back
         </h2>
-        <p className="text-sm text-center text-muted-foreground">
+        <p className="text-base text-muted-foreground">
           Please log in to your account to continue.
         </p>
       </div>
@@ -44,7 +44,7 @@ const Login = () => {
               control={methods.control}
               name={field.name}
               render={({ field: formField }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>
                     {field.label}
                     {field.withAsterisk && <span className="text-destructive ml-1">*</span>}
@@ -63,7 +63,7 @@ const Login = () => {
             />
           ))}
 
-          <div className="text-right -mt-3">
+          <div className="text-right -mt-4">
             <Link
               to={AUTH_ROUTES.forgotPassword.url}
               className="text-sm text-primary hover:underline"
@@ -89,16 +89,6 @@ const Login = () => {
               </>
             )}
           </Button>
-
-          <p className="text-sm text-center">
-            Don't have an account?{" "}
-            <Link
-              to={AUTH_ROUTES.register.url}
-              className="text-primary hover:underline"
-            >
-              Register here
-            </Link>
-          </p>
         </form>
       </Form>
     </div>

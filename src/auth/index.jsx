@@ -1,4 +1,4 @@
-import { AUTH_ROUTES, DASHBOARD_ROUTES } from "../routing/routes";
+import { AUTH_ROUTES, MAIN_ROUTES } from "../routing/routes";
 import {
   CACHED_URL_LOCAL_STORAGE_KEY,
   LOCAL_STORAGE_KEY,
@@ -12,8 +12,8 @@ import {
 } from "../utils/helper";
 
 export const REDIRECTION = {
-  [ROLES.ADMIN]: DASHBOARD_ROUTES.dashboard.url,
-  [ROLES.USER]: DASHBOARD_ROUTES.dashboard.url,
+  [ROLES.ADMIN]: MAIN_ROUTES.clients.url,
+  [ROLES.USER]: MAIN_ROUTES.clients.url,
 };
 
 export const getAuth = (options = {}) => {

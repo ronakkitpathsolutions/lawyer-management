@@ -14,6 +14,10 @@ const AuthLayout = () => {
       {/* RIGHT SIDE - Full on mobile, 1/3 on desktop */}
       <div className="w-full md:w-1/3 flex items-center justify-center p-8 bg-white">
         <div className="w-full max-w-md">
+          {/* Logo Section */}
+          <div className="flex items-center gap-2 mb-8">
+            <span className="text-xl font-bold text-gray-900">LegalAssist</span>
+          </div>
           <Outlet />
         </div>
       </div>

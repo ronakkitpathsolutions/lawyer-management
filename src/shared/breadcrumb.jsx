@@ -8,20 +8,24 @@ import { cn } from "@/lib/utils";
  */
 const ROUTE_BREADCRUMB_CONFIG = {
     "/dashboard": [
-        { label: "Dashboard", href: "/dashboard", isActive: true }
+        { label: "Home", href: "/dashboard", isActive: true }
     ],
     "/clients": [
+        { label: "Home", href: "/dashboard", isActive: false },
         { label: "Clients", href: "/clients", isActive: true }
     ],
     "/clients/:id": [
+        { label: "Home", href: "/dashboard", isActive: false },
         { label: "Clients", href: "/clients", isActive: false },
         { label: "Client Details", href: null, isActive: true, isDynamic: true }
     ],
     "/clients/edit/:id": [
+        { label: "Home", href: "/dashboard", isActive: false },
         { label: "Clients", href: "/clients", isActive: false },
-        { label: "Client Details", href: null, isActive: true, isDynamic: true }
+        { label: "Edit Client", href: null, isActive: true, isDynamic: true }
     ],
     "/profile": [
+        { label: "Home", href: "/dashboard", isActive: false },
         { label: "Profile", href: "/profile", isActive: true }
     ]
 };
@@ -136,17 +140,15 @@ const BreadcrumbItem = ({ item }) => {
  * Breadcrumb separator component
  */
 const BreadcrumbSeparator = () => (
-    <ChevronRight className="h-4 w-4 text-gray-400 dark:text-gray-500 mx-1 flex-shrink-0" />
+    <span className="text-gray-400 dark:text-gray-500 mx-2 flex-shrink-0">/</span>
 );
 
 /**
  * Main Breadcrumb component
  */
 const Breadcrumb = ({
-    showHomeIcon = true,
     maxItems = 4,
     className = "",
-    homeHref = "/dashboard",
     clientData = null,
     activeTab = null
 }) => {
@@ -184,20 +186,6 @@ const Breadcrumb = ({
             )}
             aria-label="Breadcrumb"
         >
-            {/* Home icon (optional) */}
-            {showHomeIcon && (
-                <>
-                    <Link
-                        to={homeHref}
-                        className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors flex-shrink-0"
-                        title="Home"
-                    >
-                        <Home className="h-4 w-4" />
-                    </Link>
-                    {displayItems.length > 0 && <BreadcrumbSeparator />}
-                </>
-            )}
-
             {/* Breadcrumb items */}
             {displayItems.map((item, index) => {
                 const isLast = index === displayItems.length - 1;
@@ -251,9 +239,7 @@ const CompactBreadcrumb = ({ clientData = null, activeTab = null, className = ""
  * Responsive breadcrumb that shows full breadcrumb on desktop and compact on mobile
  */
 const ResponsiveBreadcrumb = ({
-    showHomeIcon = true,
     maxItems = 4,
-    homeHref = "/dashboard",
     className = "",
     clientData = null,
     activeTab = null
@@ -263,9 +249,7 @@ const ResponsiveBreadcrumb = ({
             {/* Desktop breadcrumb */}
             <div className="hidden lg:block">
                 <Breadcrumb
-                    showHomeIcon={showHomeIcon}
                     maxItems={maxItems}
-                    homeHref={homeHref}
                     className={className}
                     clientData={clientData}
                     activeTab={activeTab}

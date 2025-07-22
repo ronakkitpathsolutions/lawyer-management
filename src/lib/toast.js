@@ -21,7 +21,7 @@ export const showToast = {
     info: (message, options = {}) => {
         toast.info(message, {
             duration: 4000,
-            className: "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-800/30",
+            className: "bg-primary/10 text-primary border-primary/20 dark:bg-primary/10 dark:text-primary dark:border-primary/30",
             ...options,
         });
     },
@@ -115,17 +115,17 @@ export const showToast = {
         info: {
             light: (message, options = {}) => toast.info(message, {
                 duration: 4000,
-                className: "bg-blue-50/60 text-blue-600 border-blue-200/60 dark:bg-blue-950/10 dark:text-blue-300 dark:border-blue-800/20",
+                className: "bg-primary/5 text-primary border-primary/10 dark:bg-primary/5 dark:text-primary dark:border-primary/20",
                 ...options,
             }),
             medium: (message, options = {}) => toast.info(message, {
                 duration: 4000,
-                className: "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-800/30",
+                className: "bg-primary/10 text-primary border-primary/20 dark:bg-primary/10 dark:text-primary dark:border-primary/30",
                 ...options,
             }),
             strong: (message, options = {}) => toast.info(message, {
                 duration: 4000,
-                className: "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-700/40",
+                className: "bg-primary/20 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40",
                 ...options,
             }),
         },

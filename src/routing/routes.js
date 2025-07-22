@@ -34,17 +34,6 @@ export const AUTH_ROUTES = {
   },
 };
 
-export const DASHBOARD_ROUTES = {
-  layout: { path: "/dashboard" },
-  dashboard: {
-    index: true,
-    roles: Object.values(ROLES),
-    url: "/dashboard",
-    title: "Dashboard",
-    breadcrumb: { label: "Dashboard", showInBreadcrumb: true }
-  },
-};
-
 export const MAIN_ROUTES = {
   clients: {
     path: "/clients",

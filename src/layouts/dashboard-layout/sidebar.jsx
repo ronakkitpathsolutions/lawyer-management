@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import { Menu, Home, UsersIcon, User, LogOutIcon } from "lucide-react";
+import { Menu, Home, UsersIcon, LogOutIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useDisclosure } from "@mantine/hooks";
 import NavItem from "./nav-item";
-import { AUTH_ROUTES, DASHBOARD_ROUTES, MAIN_ROUTES } from "@/routing/routes";
+import { AUTH_ROUTES, MAIN_ROUTES } from "@/routing/routes";
 import Confirmation from "@/shared/confirmation";
 import useAuth from "@/auth/use-auth";
 
@@ -31,15 +31,15 @@ const Sidebar = () => {
     <>
       <button
         type="button"
-        className="lg:hidden fixed top-3 left-4 z-40 p-2 rounded-lg bg-white dark:bg-[#0F0F12] shadow-md"
+        className="lg:hidden fixed top-3 left-4 z-40 p-2 rounded-lg bg-[#111827] dark:bg-[#111827] shadow-md"
         onClick={handleNavigation}
       >
-        <Menu className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+        <Menu className="h-5 w-5 text-white dark:text-white" />
       </button>
       <nav
         className={`
-                fixed inset-y-0 left-0 z-40 w-72 bg-white dark:bg-[#0F0F12] transform transition-transform duration-200 ease-in-out
-                lg:translate-x-0 lg:static lg:w-64 border-r border-gray-200 dark:border-[#1F1F23]
+                fixed inset-y-0 left-0 z-40 w-72 bg-[#111827] dark:bg-[#111827] transform transition-transform duration-200 ease-in-out
+                lg:translate-x-0 lg:static lg:w-64 border-r border-[#111827] dark:border-[#111827]
                 ${isOpen ? "translate-x-0" : "-translate-x-full"}
             `}
       >
@@ -48,28 +48,21 @@ const Sidebar = () => {
             href="https://kokonutui.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="h-16 px-6 flex items-center border-b border-gray-200 dark:border-[#1F1F23]"
+            className="h-16 px-6 flex items-center border-b border-[#111827] dark:border-[#111827]"
           >
             <div className="flex items-center gap-3">
-              <span className="text-lg font-semibold hover:cursor-pointer text-gray-900 dark:text-white">
-                LOGO
+              <span className="text-xl font-bold hover:cursor-pointer text-white dark:text-white">
+                LegalAssist
               </span>
             </div>
           </Link>
           <div className="flex-1 overflow-y-auto py-4 px-4">
             <div className="space-y-6">
               <div>
-                <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                <div className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-300 dark:text-gray-300">
                   Overview
                 </div>
                 <div className="space-y-1">
-                  <NavItem
-                    label="Dashboard"
-                    activeKey="dashboard"
-                    toggle={handleNavigation}
-                    url={DASHBOARD_ROUTES.dashboard.url}
-                    icon={Home}
-                  />
                   <NavItem
                     label="Clients"
                     activeKey="clients"
@@ -81,7 +74,7 @@ const Sidebar = () => {
               </div>
             </div>
           </div>
-          <div className="px-4 py-4 border-t border-gray-200 dark:border-[#1F1F23]">
+          <div className="px-4 py-4 border-t border-[#111827] dark:border-[#111827]">
             <NavItem
               label="Logout"
               type="button"

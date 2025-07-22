@@ -19,8 +19,8 @@ const NavItem = ({
     <button
       className={`flex items-center px-3 py-2 text-sm w-full rounded-md transition-colors ${
         isActive
-          ? "bg-gray-100 dark:bg-[#1F1F23]"
-          : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1F1F23]"
+          ? "bg-primary text-primary-foreground"
+          : "text-gray-300 hover:text-white hover:bg-[#111827]"
       }`}
       onClick={handleClick}
     >
@@ -33,8 +33,8 @@ const NavItem = ({
       onClick={toggle}
       className={`flex items-center w-full px-3 py-2 text-sm rounded-md transition-colors ${
         isActive
-          ? "bg-gray-100 dark:bg-[#1F1F23]"
-          : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1F1F23]"
+          ? "bg-primary text-primary-foreground"
+          : "text-gray-300 hover:text-white hover:bg-[#111827]"
       }`}
       {...props}
     >

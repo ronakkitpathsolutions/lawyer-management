@@ -31,11 +31,11 @@ const ResetPassword = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col items-center gap-2 mb-6">
-        <h2 className="text-2xl font-bold text-center">
+      <div className="flex flex-col items-start gap-2 mb-8">
+        <h2 className="text-3xl font-bold">
           Reset Your Password
         </h2>
-        <p className="text-sm text-center text-muted-foreground max-w-md">
+        <p className="text-base text-muted-foreground max-w-md">
           Please enter your new password below. Your password will be updated and you'll be automatically logged in.
         </p>
       </div>
@@ -69,7 +69,7 @@ const ResetPassword = () => {
             />
           ))}
 
-          <div className="pt-2">
+          <div className="pt-4">
             <Button
               type="submit"
               disabled={loading}

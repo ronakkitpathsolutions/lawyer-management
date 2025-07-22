@@ -24,11 +24,9 @@ const TopBar = () => {
   };
 
   return (
-    <nav className="px-3 sm:px-6 flex items-center justify-between bg-white dark:bg-[#0F0F12] h-full">
+    <nav className="px-3 sm:px-6 flex items-center justify-between bg-white dark:bg-[#0F0F12] h-full border-b border-gray-200 dark:border-[#1F1F23]">
       <ResponsiveBreadcrumb
-        showHomeIcon={true}
         maxItems={4}
-        homeHref="/dashboard"
         className="max-w-[300px] lg:max-w-none"
         clientData={clientData}
         activeTab={activeTab}
