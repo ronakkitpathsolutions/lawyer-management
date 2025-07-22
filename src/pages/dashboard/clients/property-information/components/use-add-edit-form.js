@@ -26,14 +26,12 @@ import useAsyncOperation from "@/hooks/use-async-operation";
 import { api } from "@/api";
 import { toastSuccess } from "@/lib/toast";
 import usePropertyStore from "../use-property-store";
-import useFetchWithAbort from "@/hooks/use-fetch-with-abort";
 import { useParams } from "react-router";
 import { removeEmptyFields } from "@/utils/helper";
 
 const useAddEditForm = ({ onClose, property = null }) => {
     const { id } = useParams(); // client id from route params
     const { getAll, params } = usePropertyStore();
-    const [fetchData] = useFetchWithAbort(getAll);
     const isEditing = Boolean(property);
 
     const initialValues = useMemo(() => ({
@@ -484,7 +482,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
             }
 
             // Refresh the property list
-            fetchData({ id, params });
+            await getAll({ id, params });
 
             // Close the drawer
             onClose();

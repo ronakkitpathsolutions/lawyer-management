@@ -10,11 +10,9 @@ import useAsyncOperation from "@/hooks/use-async-operation";
 import { api } from "@/api";
 import { toastSuccess } from "@/lib/toast";
 import useClientsStore from "../use-clients-store";
-import useFetchWithAbort from "@/hooks/use-fetch-with-abort";
 
 const useAddEditForm = ({ onClose, client = null }) => {
   const { getAll, params } = useClientsStore();
-  const [fetchData] = useFetchWithAbort(getAll);
   const isEditing = Boolean(client);
 
   const initialValues = {
@@ -111,8 +109,8 @@ const useAddEditForm = ({ onClose, client = null }) => {
         toastSuccess(ACTION_MESSAGES.add("client"));
       }
 
-      // Refresh the clients list
-      fetchData({ params });
+      // Refresh the clients list and wait for it to complete
+      await getAll({ params });
 
       // Close the drawer
       onClose();

@@ -19,7 +19,7 @@ export const useClientBreadcrumb = (activeTab = null, clientData = null) => {
             const breadcrumbClientData = {
                 id: params.id,
                 name: clientData.name || clientData.family_name
-                    ? `${clientData.name || ''} ${clientData.family_name || ''}`.trim()
+                    ? `${clientData.name || ''}`.trim()
                     : `Client ${params.id}`,
                 email: clientData.email
             };

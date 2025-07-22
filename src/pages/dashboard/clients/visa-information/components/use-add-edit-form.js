@@ -12,23 +12,24 @@ import useAsyncOperation from "@/hooks/use-async-operation";
 import { api } from "@/api";
 import { toastSuccess } from "@/lib/toast";
 import useVisaStore from "../use-visa-store";
-import useFetchWithAbort from "@/hooks/use-fetch-with-abort";
 import { useParams } from "react-router";
 import { removeEmptyFields } from "@/utils/helper";
 
 const useAddEditForm = ({ onClose, visa = null }) => {
   const { id } = useParams(); // client id from route params
   const { getAll, params } = useVisaStore();
-  const [fetchData] = useFetchWithAbort(getAll);
   const isEditing = Boolean(visa);
 
-  const initialValues = useMemo(() => ({
-    existing_visa: visa?.existing_visa || "",
-    wished_visa: visa?.wished_visa || "",
-    existing_visa_expiry: visa?.existing_visa_expiry || "",
-    intended_departure_date: visa?.intended_departure_date || "",
-    latest_entry_date: visa?.latest_entry_date || "",
-  }), [visa]);
+  const initialValues = useMemo(
+    () => ({
+      existing_visa: visa?.existing_visa || "",
+      wished_visa: visa?.wished_visa || "",
+      existing_visa_expiry: visa?.existing_visa_expiry || "",
+      intended_departure_date: visa?.intended_departure_date || "",
+      latest_entry_date: visa?.latest_entry_date || "",
+    }),
+    [visa]
+  );
 
   const methods = useForm({
     resolver: zodResolver(clientVisaSchema),
@@ -104,7 +105,7 @@ const useAddEditForm = ({ onClose, visa = null }) => {
       }
 
       // Refresh the visa list
-      fetchData({ id, params });
+      await getAll({ id, params });
 
       // Close the drawer
       onClose();
@@ -123,6 +124,6 @@ const useAddEditForm = ({ onClose, visa = null }) => {
     notification,
     isEditing,
   };
-}
+};
 
-export default useAddEditForm
+export default useAddEditForm;
