@@ -35,7 +35,7 @@ const ClientInformation = () => {
         <p className="text-gray-600 mt-2">Manage and view detailed client information</p>
       </div>
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-        <TabsList className="w-auto h-10">
+        <TabsList className="w-full h-10">
           <TabsTrigger value="personal" className="text-sm font-medium h-full">
             Personal Information
           </TabsTrigger>

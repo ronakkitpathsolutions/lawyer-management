@@ -7,25 +7,18 @@ import { cn } from "@/lib/utils";
  * Route-based breadcrumb configuration
  */
 const ROUTE_BREADCRUMB_CONFIG = {
-    "/dashboard": [
-        { label: "Home", href: "/dashboard", isActive: true }
-    ],
     "/clients": [
-        { label: "Home", href: "/dashboard", isActive: false },
         { label: "Clients", href: "/clients", isActive: true }
     ],
     "/clients/:id": [
-        { label: "Home", href: "/dashboard", isActive: false },
         { label: "Clients", href: "/clients", isActive: false },
         { label: "Client Details", href: null, isActive: true, isDynamic: true }
     ],
     "/clients/edit/:id": [
-        { label: "Home", href: "/dashboard", isActive: false },
         { label: "Clients", href: "/clients", isActive: false },
         { label: "Edit Client", href: null, isActive: true, isDynamic: true }
     ],
     "/profile": [
-        { label: "Home", href: "/dashboard", isActive: false },
         { label: "Profile", href: "/profile", isActive: true }
     ]
 };

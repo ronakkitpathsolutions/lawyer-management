@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ResponsiveBreadcrumb from "@/shared/breadcrumb";
-import { User, Shield } from "lucide-react";
+import { User, Shield, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router";
 import useProfileStore from "@/pages/dashboard/profile/use-profile-store";
 import { MAIN_ROUTES } from "@/routing/routes";
@@ -35,16 +35,32 @@ const TopBar = () => {
       <div className="flex items-center gap-2 sm:gap-4 ml-auto lg:ml-0">
         <DropdownMenu>
           <DropdownMenuTrigger className="focus:outline-none">
-            <div className="flex items-center gap-2 p-1.5 transition-colors cursor-pointer">
+            <div className="flex items-center gap-3 p-1.5 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors cursor-pointer">
               <Avatar className="w-10 h-10">
                 <AvatarImage
                   src={data?.profile || ""}
                   alt={data?.name || "User Avatar"}
                 />
-                <AvatarFallback className="font-medium">
+                <AvatarFallback className="font-medium bg-primary text-primary-foreground">
                   {getUserInitials(data?.name)}
                 </AvatarFallback>
               </Avatar>
+              <div className="hidden sm:flex items-center gap-2">
+                <div className="flex flex-col items-start">
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    {data?.name || "User"}
+                  </span>
+                  {data?.role && (
+                    <div className="flex items-center gap-1">
+                      <Shield className="h-3 w-3 text-blue-600" />
+                      <span className="text-xs text-blue-600 dark:text-blue-400 font-medium capitalize">
+                        {data.role}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <ChevronDown className="h-4 w-4 text-gray-500" />
+              </div>
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
