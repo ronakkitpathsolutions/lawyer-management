@@ -20,6 +20,7 @@ import {
     TYPE_OF_PROPERTY_MAP,
     HANDOVER_DATE_MAP,
 } from "@/utils/constants";
+import { Badge } from "@/components/ui/badge";
 
 const useProperty = () => {
     const { getAll, data, params, resetParams, setParams, loading, total } =
@@ -93,7 +94,9 @@ const useProperty = () => {
             {
                 header: "Transaction Type",
                 accessorKey: "transaction_type",
-                render: ({ rowData }) => TYPE_OF_TRANSACTION_MAP[rowData.transaction_type] || "-",
+                render: ({ rowData }) => <div className="flex flex-wrap items-center gap-1" >
+                    {String(rowData.transaction_type).split(',')?.map(label => <Badge className='text-primary border-primary' variant='outline' key={label}>{TYPE_OF_TRANSACTION_MAP[label]}</Badge>) || "-"}
+                </div>,
             },
             {
                 header: "Property Type",
@@ -156,7 +159,7 @@ const useProperty = () => {
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem
                                 className="cursor-pointer"
-                                onClick={() => console.log("View Property", rowData)}
+                                onClick={() => openEditDrawer(rowData)}
                             >
                                 <Eye className="mr-2 h-4 w-4" />
                                 View

@@ -53,6 +53,7 @@ const PropertyInformation = () => {
             columns,
             data,
             loading,
+            searchPlaceholder: "Search by all fields",
             deleteButtonText: "Delete Properties",
             handleDeleteConfirm: handleBulkDeleteConfirm,
             confirmTitle: "Delete Properties",

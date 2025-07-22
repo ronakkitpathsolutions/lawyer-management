@@ -48,6 +48,7 @@ const VisaInformation = () => {
             columns,
             data,
             loading,
+            searchPlaceholder: "Search by all fields",
             deleteButtonText: "Delete Visas",
             handleDeleteConfirm: handleBulkDeleteConfirm,
             confirmTitle: "Delete Visas",
