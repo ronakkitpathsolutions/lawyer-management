@@ -53,7 +53,13 @@ const useAddEditForm = ({ onClose, property = null }) => {
         deposit: property?.deposit || "",
         intermediary_payment: property?.intermediary_payment || "",
         closing_payment: property?.closing_payment || "",
-        acceptable_method_of_payment: property?.acceptable_method_of_payment || "",
+        acceptable_method_of_payment: property?.acceptable_method_of_payment 
+            ? (typeof property.acceptable_method_of_payment === 'string' 
+                ? property.acceptable_method_of_payment.split(',').filter(Boolean)
+                : Array.isArray(property.acceptable_method_of_payment) 
+                    ? property.acceptable_method_of_payment 
+                    : [])
+            : [],
         place_of_payment: property?.place_of_payment || "",
         property_condition: property?.property_condition || "",
         house_warranty: property?.house_warranty || "",
@@ -209,7 +215,8 @@ const useAddEditForm = ({ onClose, property = null }) => {
             {
                 id: "acceptable_method_of_payment",
                 name: "acceptable_method_of_payment",
-                type: "select",
+                type: "multi-select",
+                maxDisplayed: 2,
                 label: "Acceptable Method of Payment",
                 placeholder: msg.select("payment method"),
                 options: ACCEPTABLE_PAYMENT_METHODS_OPTIONS,
@@ -429,6 +436,9 @@ const useAddEditForm = ({ onClose, property = null }) => {
 
             const values = {
                 ...payload,
+                acceptable_method_of_payment: Array.isArray(payload.acceptable_method_of_payment)
+                    ? payload.acceptable_method_of_payment.join(',')
+                    : payload.acceptable_method_of_payment,
                 // Convert transaction_type array to comma-separated string
                 transaction_type: Array.isArray(payload.transaction_type) 
                     ? payload.transaction_type.join(',')

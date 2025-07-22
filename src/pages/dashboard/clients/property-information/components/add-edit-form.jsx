@@ -88,7 +88,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                     </SelectContent>
                                 </Select>
                             ) : field.type === 'multi-select' ? (
-                                <MultiSelect
+                                <MultiSelect maxDisplayed={field.maxDisplayed || 3}
                                     options={field.options || []}
                                     value={formField.value || []}
                                     onChange={formField.onChange}
