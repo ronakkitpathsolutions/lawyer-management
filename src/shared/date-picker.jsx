@@ -102,24 +102,13 @@ const DatePicker = React.forwardRef(({
             onSelect={(selectedDate) => {
               if (selectedDate) {
                 const today = new Date();
-                today.setHours(23, 59, 59, 999);
-                
-                // Don't allow future dates
-                if (selectedDate > today) {
-                  return;
-                }
-                
+                today.setHours(23, 59, 59, 999);    
                 const formattedDate = dayjs(selectedDate).format("YYYY-MM-DD");
                 setDate(selectedDate);
                 setInputValue(formatDate(selectedDate));
                 onChange?.(formattedDate);
                 setOpen(false);
               }
-            }}
-            disabled={(date) => {
-              const today = new Date();
-              today.setHours(23, 59, 59, 999);
-              return date > today;
             }}
           />
         </PopoverContent>
