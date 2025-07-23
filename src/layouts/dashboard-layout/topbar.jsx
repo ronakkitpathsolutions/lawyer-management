@@ -7,14 +7,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ResponsiveBreadcrumb from "@/shared/breadcrumb";
-import { User, Shield, ChevronDown } from "lucide-react";
+import { User, Shield, ChevronDown, Menu } from "lucide-react";
 import { useNavigate } from "react-router";
 import useProfileStore from "@/pages/dashboard/profile/use-profile-store";
 import { MAIN_ROUTES } from "@/routing/routes";
 import { getUserInitials } from "@/utils/helper";
 import { useBreadcrumbData } from "@/hooks/use-breadcrumb-data";
 
-const TopBar = () => {
+const TopBar = ({ toggle }) => {
   const { data } = useProfileStore();
   const navigate = useNavigate();
   const { clientData, activeTab } = useBreadcrumbData();
@@ -25,12 +25,21 @@ const TopBar = () => {
 
   return (
     <nav className="px-3 sm:px-6 flex items-center justify-between bg-white dark:bg-[#0F0F12] h-full border-b border-gray-200 dark:border-[#1F1F23]">
-      <ResponsiveBreadcrumb
-        maxItems={4}
-        className="max-w-[300px] lg:max-w-none"
-        clientData={clientData}
-        activeTab={activeTab}
-      />
+      <div className="flex gap-4 items-center" >
+        <button
+          type="button"
+          className="lg:hidden p-2 rounded-lg bg-[#111827] dark:bg-[#111827] shadow-md"
+          onClick={toggle}
+        >
+          <Menu className="h-5 w-5 text-white dark:text-white" />
+        </button>
+        <ResponsiveBreadcrumb
+          maxItems={4}
+          className="max-w-[300px] lg:max-w-none"
+          clientData={clientData}
+          activeTab={activeTab}
+        />
+      </div>
 
       <div className="flex items-center gap-2 sm:gap-4 ml-auto lg:ml-0">
         <DropdownMenu>

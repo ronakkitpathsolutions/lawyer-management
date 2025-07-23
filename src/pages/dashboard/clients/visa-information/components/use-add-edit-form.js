@@ -42,7 +42,7 @@ const useAddEditForm = ({ onClose, visa = null }) => {
       {
         id: "existing_visa",
         name: "existing_visa",
-        type: "select",
+        type: "autocomplete",
         label: "Existing Visa",
         placeholder: msg.select("existing visa"),
         options: EXISTING_VISA,
@@ -51,7 +51,7 @@ const useAddEditForm = ({ onClose, visa = null }) => {
       {
         id: "wished_visa",
         name: "wished_visa",
-        type: "select",
+        type: "autocomplete",
         label: "Wished Visa",
         placeholder: msg.select("wished visa"),
         options: WISHED_VISA,
@@ -103,10 +103,8 @@ const useAddEditForm = ({ onClose, visa = null }) => {
         });
         toastSuccess(ACTION_MESSAGES.add("visa"));
       }
-
       // Refresh the visa list
       await getAll({ id, params });
-
       // Close the drawer
       onClose();
     },

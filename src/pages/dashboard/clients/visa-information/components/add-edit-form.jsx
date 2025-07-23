@@ -1,31 +1,32 @@
 import React from "react";
 import useAddEditForm from "./use-add-edit-form";
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import DatePicker from "@/shared/date-picker";
+import { Autocomplete } from "@/shared/autocomplete";
 
 const AddEditForm = ({ onClose, visa = null, initialData = null }) => {
   // Support both prop names for backwards compatibility
   const visaData = visa || initialData;
-  
-  const {
-    methods,
-    fieldsData,
-    onSubmit,
-    loading,
-    notification,
-    isEditing,
-  } = useAddEditForm({ onClose, visa: visaData });
+
+  const { methods, fieldsData, onSubmit, loading, notification, isEditing } =
+    useAddEditForm({ onClose, visa: visaData });
 
   return (
     <div className="w-full">
@@ -43,10 +44,12 @@ const AddEditForm = ({ onClose, visa = null, initialData = null }) => {
                   <FormItem>
                     <FormLabel>
                       {field.label}
-                      {field.withAsterisk && <span className="text-destructive ml-1">*</span>}
+                      {field.withAsterisk && (
+                        <span className="text-destructive ml-1">*</span>
+                      )}
                     </FormLabel>
                     <FormControl>
-                      {field.type === 'select' ? (
+                      {field.type === "select" ? (
                         <Select
                           value={formField.value}
                           onValueChange={formField.onChange}
@@ -57,18 +60,28 @@ const AddEditForm = ({ onClose, visa = null, initialData = null }) => {
                           </SelectTrigger>
                           <SelectContent>
                             {field.options?.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
                                 {option.name}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
-                      ) : field.type === 'date' ? (
+                      ) : field.type === "date" ? (
                         <DatePicker
                           value={formField.value}
                           onChange={formField.onChange}
                           placeholder={field.placeholder}
                           disabled={loading}
+                        />
+                      ) : field.type === "autocomplete" ? (
+                        <Autocomplete
+                          autoFocus={field.focus}
+                          disabled={loading}
+                          options={field.options}
+                          {...formField}
                         />
                       ) : (
                         <Input
@@ -96,17 +109,16 @@ const AddEditForm = ({ onClose, visa = null, initialData = null }) => {
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={loading}
-            >
+            <Button type="submit" disabled={loading}>
               {loading ? (
                 <>
                   <Loader2 className="animate-spin mr-2 h-4 w-4" />
-                  {isEditing ? 'Updating...' : 'Adding...'}
+                  {isEditing ? "Updating..." : "Adding..."}
                 </>
+              ) : isEditing ? (
+                "Update Visa"
               ) : (
-                isEditing ? 'Update Visa' : 'Add Visa'
+                "Add Visa"
               )}
             </Button>
           </div>

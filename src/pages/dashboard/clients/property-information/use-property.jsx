@@ -91,6 +91,7 @@ const useProperty = () => {
                 header: "Property Name",
                 accessorKey: "property_name",
                 isEnableSorting: true,
+                cellClassName: "min-w-[180px]",
             },
             {
                 header: "Transaction Type",
@@ -98,12 +99,14 @@ const useProperty = () => {
                 render: ({ rowData }) => <div className="flex flex-wrap items-center gap-1" >
                     {String(rowData.transaction_type).split(',')?.map(label => <Badge className='text-primary border-primary' variant='outline' key={label}>{TYPE_OF_TRANSACTION_MAP[label]}</Badge>) || "-"}
                 </div>,
+                cellClassName: "min-w-[220px]",
             },
             {
                 header: "Property Type",
                 accessorKey: "property_type",
                 isEnableSorting: true,
                 render: ({ rowData }) => TYPE_OF_PROPERTY_MAP[rowData.property_type] || "-",
+                cellClassName: "min-w-[180px]",
             },
             {
                 header: "Reservation Date",
@@ -112,6 +115,7 @@ const useProperty = () => {
                     rowData.reservation_date
                         ? DATE_FORMAT.date(rowData.reservation_date)
                         : "-",
+                cellClassName: "min-w-[240px]",
             },
             {
                 header: "Intended Closing Date",
@@ -120,6 +124,7 @@ const useProperty = () => {
                     rowData.intended_closing_date
                         ? DATE_FORMAT.date(rowData.intended_closing_date)
                         : "-",
+                cellClassName: "min-w-[240px]",
             },
             {
                 header: "Handover Date",
@@ -128,16 +133,19 @@ const useProperty = () => {
                     rowData.handover_date
                         ? HANDOVER_DATE_MAP[rowData.handover_date] || "-"
                         : "-",
+                cellClassName: "min-w-[180px]",
             },
             {
                 header: "Selling Price",
                 accessorKey: "selling_price",
                 render: ({ rowData }) => rowData.selling_price ?? "-",
+                cellClassName: "min-w-[200px]",
             },
             {
                 header: "Deposit",
                 accessorKey: "deposit",
                 render: ({ rowData }) => rowData.deposit ?? "-",
+                cellClassName: "min-w-[200px]",
             },
             {
                 header: "Created At",
@@ -146,6 +154,7 @@ const useProperty = () => {
                     rowData.createdAt
                         ? DATE_FORMAT.dateTime(rowData.createdAt)
                         : "-",
+                cellClassName: "min-w-[240px]",
             },
             {
                 header: "Actions",
@@ -183,6 +192,7 @@ const useProperty = () => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 ),
+                cellClassName: "min-w-[80px]",
             },
         ],
         [openEditDrawer]

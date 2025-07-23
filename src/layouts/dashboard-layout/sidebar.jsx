@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Menu, Home, UsersIcon, LogOutIcon } from "lucide-react";
+import { UsersIcon, LogOutIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useDisclosure } from "@mantine/hooks";
 import NavItem from "./nav-item";
@@ -7,8 +7,8 @@ import { AUTH_ROUTES, MAIN_ROUTES } from "@/routing/routes";
 import Confirmation from "@/shared/confirmation";
 import useAuth from "@/auth/use-auth";
 
-const Sidebar = () => {
-  const [isOpen, { toggle }] = useDisclosure(false);
+const Sidebar = ({ isOpen, toggle }) => {
+
   const [isLogoutOpen, { open: openLogout, close: closeLogout }] =
     useDisclosure(false);
 
@@ -29,17 +29,10 @@ const Sidebar = () => {
 
   return (
     <>
-      <button
-        type="button"
-        className="lg:hidden fixed top-3 left-4 z-40 p-2 rounded-lg bg-[#111827] dark:bg-[#111827] shadow-md"
-        onClick={handleNavigation}
-      >
-        <Menu className="h-5 w-5 text-white dark:text-white" />
-      </button>
       <nav
         className={`
-                fixed inset-y-0 left-0 z-40 w-72 bg-[#111827] dark:bg-[#111827] transform transition-transform duration-200 ease-in-out
-                lg:translate-x-0 lg:static lg:w-64 border-r border-[#111827] dark:border-[#111827]
+                fixed inset-y-0 left-0 z-40 w-64 bg-[#111827] dark:bg-[#111827] transform transition-transform duration-200 ease-in-out
+                lg:translate-x-0 lg:relative lg:!min-w-64 border-r border-[#111827] dark:border-[#111827]
                 ${isOpen ? "translate-x-0" : "-translate-x-full"}
             `}
       >

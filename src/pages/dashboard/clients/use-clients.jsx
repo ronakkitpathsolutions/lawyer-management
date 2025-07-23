@@ -64,33 +64,40 @@ const useClients = () => {
         header: "Name",
         accessorKey: "name",
         isEnableSorting: true,
+        cellClassName: "min-w-[180px]",
       },
       {
         header: "Family Name",
         accessorKey: "family_name",
         isEnableSorting: true,
+        cellClassName: "min-w-[240px]",
       },
       {
         header: "Email",
         accessorKey: "email",
         isEnableSorting: true,
+        cellClassName: "min-w-[240px]",
       },
       {
         header: "Phone",
         accessorKey: "phone_number",
+        cellClassName: "min-w-[180px]",
       },
       {
         header: "Nationality",
         accessorKey: "nationality",
         isEnableSorting: true,
+        cellClassName: "min-w-[140px]",
       },
       {
         header: "DOB",
         accessorKey: "date_of_birth",
+        cellClassName: "min-w-[120px]",
       },
       {
         header: "Actions",
         id: "actions",
+        cellClassName: "min-w-[80px]",
         render: ({ rowData }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

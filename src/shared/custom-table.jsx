@@ -283,7 +283,7 @@ const CustomTable = ({
               {columns.map((column, index) => (
                 <TableHead
                   key={column.accessorKey || index}
-                  className={`px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                  className={`px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${column.cellClassName} ${
                     column.isEnableSorting ? 'cursor-pointer hover:bg-gray-100' : ''
                   }`}
                   onClick={() => handleSort(column)}
@@ -338,7 +338,7 @@ const CustomTable = ({
               <TableRow>
                 <TableCell
                   colSpan={columns.length + 1}
-                  className="text-center py-12"
+                  className="text-center py-8"
                 >
                   <div className="text-gray-500">No data available</div>
                 </TableCell>
@@ -350,7 +350,7 @@ const CustomTable = ({
 
       {/* Pagination */}
       {setParams && params && (
-        <div className="mt-6 flex items-center justify-between bg-white px-4 py-3 border-t border-gray-200">
+        <div className="flex items-center justify-between bg-white px-0 py-3">
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-700">
               Showing {(currentPage - 1) * limit + 1} to{" "}

@@ -93,17 +93,20 @@ const useVisaInformation = () => {
           rowData?.existing_visa
             ? EXISTING_VISA_MAP[rowData.existing_visa]
             : "-",
+        cellClassName: "min-w-[240px]",
       },
       {
         header: "Wished Visa",
         accessorKey: "wished_visa",
         isEnableSorting: true,
+        cellClassName: "min-w-[240px]",
         render: ({ rowData }) =>
           rowData?.wished_visa ? WISHED_VISA_MAP[rowData.wished_visa] : "-",
       },
       {
         header: "Existing Visa Expiry",
         accessorKey: "existing_visa_expiry",
+        cellClassName: "min-w-[220px]",
         render: ({ rowData }) =>
           rowData?.existing_visa_expiry
             ? DATE_FORMAT.date(rowData.existing_visa_expiry)
@@ -112,6 +115,7 @@ const useVisaInformation = () => {
       {
         header: "Latest Entry Date",
         accessorKey: "latest_entry_date",
+        cellClassName: "min-w-[220px]",
         render: ({ rowData }) =>
           rowData?.latest_entry_date
             ? DATE_FORMAT.date(rowData.latest_entry_date)
@@ -120,6 +124,7 @@ const useVisaInformation = () => {
       {
         header: "Intended Departure",
         accessorKey: "intended_departure_date",
+        cellClassName: "min-w-[220px]",
         render: ({ rowData }) =>
           rowData?.intended_departure_date
             ? DATE_FORMAT.date(rowData.intended_departure_date)
@@ -128,11 +133,13 @@ const useVisaInformation = () => {
       {
         header: "Created At",
         accessorKey: "createdAt",
+        cellClassName: "min-w-[240px]",
         render: ({ rowData }) => DATE_FORMAT.dateTime(rowData.createdAt),
       },
       {
         header: "Actions",
         id: "actions",
+        cellClassName: "min-w-[80px]",
         render: ({ rowData }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
