@@ -140,9 +140,8 @@ export const clientFullInformationSchema = clientPersonalInfoSchema.extend({
   whatsapp: z
     .string()
     .trim()
-    .min(10, msg.minLength("WhatsApp number", 10))
-    .max(15, msg.maxLength("WhatsApp number", 15))
-    .regex(/^[+]?[1-9][\d]{0,15}$/, msg.invalid("WhatsApp number"))
+    .min(1, msg.minLength("phone number", 10))
+    .refine(isValidPhoneNumber, { message: msg.invalid("phone number") })
     .optional()
     .or(z.literal("")),
 

@@ -34,7 +34,7 @@ PhoneInput.displayName = "PhoneInput";
 const InputComponent = React.forwardRef(
 ({ className, ...props }, ref) => (
   <Input
-    className={cn("rounded-e-lg rounded-s-none", className)}
+    className={cn("rounded-e-md rounded-s-none", className)}
     {...props}
     ref={ref}
   />
@@ -70,7 +70,7 @@ const CountrySelect = ({
         <Button
           type="button"
           variant="outline"
-          className="flex gap-1 rounded-e-none rounded-s-lg border-r-0 px-3 focus:z-10"
+          className="flex gap-1 rounded-e-none rounded-s-md border-r-0 px-3 focus:z-10"
           disabled={disabled}
         >
           <FlagComponent
@@ -79,8 +79,8 @@ const CountrySelect = ({
           />
           <ChevronsUpDown
             className={cn(
-              "-mr-2 size-4 opacity-50",
-              disabled ? "hidden" : "opacity-100",
+              "-mr-2 size-3 opacity-50",
+              disabled ? "hidden" : "opacity-50",
             )}
           />
         </Button>
@@ -94,7 +94,7 @@ const CountrySelect = ({
               placeholder='Search country...'
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
           
@@ -159,7 +159,7 @@ const FlagComponent = ({ country, countryName }) => {
   const Flag = flags[country];
 
   return (
-    <span className="flex h-4 w-6 overflow-hidden rounded-sm bg-foreground/20 [&_svg:not([class*='size-'])]:size-full">
+    <span className="flex h-[18px] w-7 overflow-hidden rounded-sm bg-foreground/20 [&_svg:not([class*='size-'])]:size-full">
       {Flag && <Flag title={countryName} />}
     </span>
   );

@@ -161,7 +161,7 @@ const initialValues = useMemo(() => ({
       {
         id: "whatsapp",
         name: "whatsapp",
-        type: "tel",
+        type: "phone",
         label: "WhatsApp Number",
         placeholder: msg.default("WhatsApp number"),
         section: "contact",
