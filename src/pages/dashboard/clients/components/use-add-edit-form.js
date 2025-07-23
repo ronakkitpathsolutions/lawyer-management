@@ -77,7 +77,7 @@ const useAddEditForm = ({ onClose, client = null }) => {
       {
         id: "phone_number",
         name: "phone_number",
-        type: "tel",
+        type: "phone",
         label: "Phone Number",
         placeholder: msg.default("phone number"),
         withAsterisk: true,

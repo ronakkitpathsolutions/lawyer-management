@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import DatePicker from "@/shared/date-picker";
+import { PhoneInput } from "@/shared/phone-input";
 
 const AddEditForm = ({ onClose, client = null }) => {
   const {
@@ -45,9 +46,9 @@ const AddEditForm = ({ onClose, client = null }) => {
                     <FormControl>
                       {field.type === 'textarea' ? (
                         <Textarea
-                          placeholder={field.placeholder}
-                          autoFocus={field.focus}
-                          {...formField}
+                            placeholder={field.placeholder}
+                            autoFocus={field.focus}
+                            {...formField}
                         />
                       ) : field.type === 'date' ? (
                         <DatePicker
@@ -55,6 +56,12 @@ const AddEditForm = ({ onClose, client = null }) => {
                           onChange={formField.onChange}
                           placeholder={field.placeholder}
                           disabled={loading}
+                        />
+                      ) : field.type === 'phone' ? (
+                        <PhoneInput
+                          placeholder={field.placeholder}
+                          autoFocus={field.focus}
+                          {...formField}
                         />
                       ) : (
                         <Input

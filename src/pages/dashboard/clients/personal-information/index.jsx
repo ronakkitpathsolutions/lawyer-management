@@ -22,6 +22,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import usePersonalInformation from "./use-personal-information";
 import DatePicker from "@/shared/date-picker";
+import { PhoneInput } from "@/shared/phone-input";
 
 const PersonalInformation = () => {
   const { methods, fieldsData, onSubmit, loading } = usePersonalInformation();
@@ -134,7 +135,6 @@ const PersonalInformation = () => {
             )}
           />
         );
-
       case "date":
         return (
           <FormField
@@ -185,8 +185,37 @@ const PersonalInformation = () => {
                     onChange={(e) => {
                       const value = e.target.value;
                       // Convert to number if value exists and is not empty
-                      formField.onChange(value === "" ? undefined : Number(value));
+                      formField.onChange(
+                        value === "" ? undefined : Number(value)
+                      );
                     }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        );
+
+      case "phone":
+        return (
+          <FormField
+            key={field.id}
+            control={methods.control}
+            name={field.name}
+            render={({ field: formField }) => (
+              <FormItem>
+                <FormLabel className="flex items-center gap-1">
+                  {field.label}
+                  {field.withAsterisk && (
+                    <span className="text-red-500">*</span>
+                  )}
+                </FormLabel>
+                <FormControl>
+                  <PhoneInput
+                    placeholder={field.placeholder}
+                    autoFocus={field.focus}
+                    {...formField}
                   />
                 </FormControl>
                 <FormMessage />

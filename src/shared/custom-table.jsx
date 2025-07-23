@@ -242,7 +242,7 @@ const CustomTable = ({
             </div>
         )}
         {selectedRows.length > 0 && (
-            <div className="bg-primary rounded-lg px-6 py-[3px] flex items-center justify-center gap-4 shadow-lg border border-primary max-w-fit">
+            <div className="bg-primary rounded-md px-6 py-[3px] flex items-center justify-center gap-4 shadow-lg border border-primary max-w-fit">
               <span className="text-white font-medium">
                 {selectedRows.length} Selected
               </span>

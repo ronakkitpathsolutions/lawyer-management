@@ -12,9 +12,9 @@ import {
   PROPERTY_MESSAGES,
   TYPE_OF_PROPERTY_TEXTS,
   TYPE_OF_TRANSACTION_TEXTS,
-  INTENDED_CLOSING_DATE_TEXTS,
   HANDOVER_DATE_TEXTS,
 } from "../constants";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 export const loginSchema = z.object({
   email: z
@@ -64,10 +64,8 @@ export const profileSchema = z.object({
   phone_number: z
     .string()
     .trim()
-    .optional()
-    .nullable()
-    .or(z.literal(""))
-    .transform((val) => (val === "" ? null : val)),
+    .min(1, msg.required("phone number"))
+    .refine(isValidPhoneNumber, { message: "Invalid phone number" }),
 });
 
 export const clientPersonalInfoSchema = z.object({
@@ -107,9 +105,8 @@ export const clientPersonalInfoSchema = z.object({
   phone_number: z
     .string()
     .trim()
-    .min(10, msg.minLength("phone number", 10))
-    .max(15, msg.maxLength("phone number", 15))
-    .regex(/^[+]?[1-9][\d]{0,15}$/, msg.invalid("phone number")),
+    .min(1, msg.minLength("phone number", 10))
+    .refine(isValidPhoneNumber, { message: msg.invalid("phone number") }),
   current_address: z
     .string()
     .trim()
