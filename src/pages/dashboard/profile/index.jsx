@@ -7,6 +7,7 @@ import { Loader2, Save, User, Camera } from 'lucide-react';
 import ProfileImageUpload from '@/shared/profile-image-upload';
 import { ChangePasswordForm } from './components';
 import useProfile from './use-profile';
+import { PhoneInput } from '@/shared/phone-input';
 
 const Profile = () => {
   const {
@@ -118,11 +119,9 @@ const Profile = () => {
                     <FormItem>
                       <FormLabel>Phone Number</FormLabel>
                       <FormControl>
-                        <Input
-                          type="tel"
+                        <PhoneInput
                           placeholder="Enter your phone number"
                           {...field}
-                          value={field.value || ''}
                         />
                       </FormControl>
                       <FormMessage />
