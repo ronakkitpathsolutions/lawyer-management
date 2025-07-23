@@ -301,7 +301,7 @@ const CustomTable = ({
               <TableRow>
                 <TableCell
                   colSpan={columns.length + 1}
-                  className="text-center py-12"
+                  className="text-center py-8"
                 >
                   <div className="flex items-center justify-center gap-2">
                     <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
