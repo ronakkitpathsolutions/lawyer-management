@@ -74,7 +74,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                 <Select
                                     value={formField.value}
                                     onValueChange={formField.onChange}
-                                    disabled={loading}
+                                    disabled={loading || field.disabled}
                                 >
                                     <SelectTrigger autoFocus={field.focus}>
                                         <SelectValue placeholder={field.placeholder} />
@@ -93,14 +93,14 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                     value={formField.value || []}
                                     onChange={formField.onChange}
                                     placeholder={field.placeholder}
-                                    disabled={loading}
+                                    disabled={loading || field.disabled}
                                 />
                             ) : field.type === 'date' ? (
                                 <DatePicker
                                     value={formField.value}
                                     onChange={formField.onChange}
                                     placeholder={field.placeholder}
-                                    disabled={loading}
+                                    disabled={loading || field.disabled}
                                 />
                             ) : field.type === 'checkbox' ? (
                                 <div className="flex items-center space-x-2">
@@ -108,7 +108,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                         id={field.id}
                                         checked={formField.value}
                                         onCheckedChange={formField.onChange}
-                                        disabled={loading}
+                                        disabled={loading || field.disabled}
                                     />
                                 </div>
                             ) : field.type === 'file' ? (
@@ -119,7 +119,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                     }}
                                     onRemove={() => formField.onChange("")}
                                     placeholder={field.placeholder}
-                                    disabled={loading}
+                                    disabled={loading || field.disabled}
                                     accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                     maxSize={10 * 1024 * 1024} // 10MB
                                 />
@@ -128,7 +128,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                     type="number"
                                     placeholder={field.placeholder}
                                     autoFocus={field.focus}
-                                    disabled={loading}
+                                    disabled={loading || field.disabled}
                                     step="0.01"
                                     min="0"
                                     {...formField}
@@ -138,7 +138,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                     type={field.type}
                                     placeholder={field.placeholder}
                                     autoFocus={field.focus}
-                                    disabled={loading}
+                                    disabled={loading || field.disabled}
                                     {...formField}
                                 />
                             )}

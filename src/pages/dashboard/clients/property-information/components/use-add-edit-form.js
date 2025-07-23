@@ -90,6 +90,8 @@ const useAddEditForm = ({ onClose, property = null }) => {
 
     // Watch house_warranty field to conditionally show warranty fields
     const houseWarranty = methods.watch("house_warranty");
+    const transaction_type = methods.watch("transaction_type");
+    const property_type = methods.watch("property_type");
 
     const fieldsData = useMemo(
         () => [
@@ -325,7 +327,8 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 placeholder: msg.select("lease registration fee"),
                 options: LESSEE_LESSOR_COST_OPTIONS,
                 withAsterisk: false,
-                section: "costs"
+                section: "costs",
+                disabled: !['condominium_leasehold', 'house_and_land_leasehold'].includes(property_type)
             },
             {
                 id: "mortgage_fee",
@@ -335,7 +338,8 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 placeholder: msg.select("mortgage fee"),
                 options: MORTGAGOR_MORTGAGEE_COST_OPTIONS,
                 withAsterisk: false,
-                section: "costs"
+                section: "costs",
+                disabled: !transaction_type.includes("mortgage")
             },
             {
                 id: "usufruct_registration_fee",
@@ -345,7 +349,8 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 placeholder: msg.select("usufruct registration fee"),
                 options: USUFRUCTUARY_OWNER_COST_OPTIONS,
                 withAsterisk: false,
-                section: "costs"
+                section: "costs",
+                disabled: !transaction_type.includes("usufruct")
             },
             {
                 id: "servitude_registration_fee",
@@ -355,7 +360,8 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 placeholder: msg.select("servitude registration fee"),
                 options: SERVITUDE_COST_OPTIONS,
                 withAsterisk: false,
-                section: "costs"
+                section: "costs",
+                disabled: !transaction_type.includes("servitude")
             },
             {
                 id: "declared_land_office_price",
@@ -426,7 +432,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 section: "documents",
             },
         ],
-        [houseWarranty]
+        [houseWarranty, property_type, transaction_type]
     );
 
     const [onSubmit, loading, notification] = useAsyncOperation(

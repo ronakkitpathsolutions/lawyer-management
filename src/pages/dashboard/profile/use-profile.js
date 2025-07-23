@@ -8,7 +8,7 @@ import { api } from "@/api";
 import useAsyncOperation from "@/hooks/use-async-operation";
 
 const useProfile = () => {
-  const { data, loading, getData } = useProfileStore();
+  const { data, getData } = useProfileStore();
   
   // Async operations for better error handling and loading states
   const [
@@ -78,7 +78,6 @@ const useProfile = () => {
   return {
     form,
     data,
-    loading,
     updating,
     uploading,
     handleUpdateProfile: executeUpdateProfile,

@@ -13,20 +13,11 @@ const Profile = () => {
   const {
     form,
     data,
-    loading,
     updating,
     uploading,
     handleUpdateProfile,
     handleImageUpload,
   } = useProfile();
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-96">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
 
   return (
     <div className="p-6 space-y-6">
