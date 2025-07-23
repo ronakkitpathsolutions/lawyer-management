@@ -110,7 +110,7 @@ export const EXISTING_VISA = [
   { id: 17, name: 'DTV', value: 'dtv' },
   { id: 18, name: 'LTR: Wealthy Pensioner', value: 'ltr_wealthy_pensioner' },
   { id: 19, name: 'LTR: Wealthy Citizen', value: 'ltr_wealthy_citizen' },
-  { id: 20, name: 'LTR: Highly Skilled Professional', value: 'ltr_highly_skilled_professional' },
+  { id: 20, name: 'LTR: Highly Skilled/Professional', value: 'ltr_highly_skilled_professional' },
   { id: 21, name: 'LTR: Work from Thailand Professional', value: 'ltr_work_from_thailand_professional' }
 ];
 
@@ -132,7 +132,7 @@ export const WISHED_VISA = [
   { id: 15, name: 'DTV', value: 'dtv' },
   { id: 16, name: 'LTR: Wealthy Pensioner', value: 'ltr_wealthy_pensioner' },
   { id: 17, name: 'LTR: Wealthy Citizen', value: 'ltr_wealthy_citizen' },
-  { id: 18, name: 'LTR: Highly Skilled Professional', value: 'ltr_highly_skilled_professional' },
+  { id: 18, name: 'LTR: Highly Skilled/Professional', value: 'ltr_highly_skilled_professional' },
   { id: 19, name: 'LTR: Work from Thailand Professional', value: 'ltr_work_from_thailand_professional' }
 ];
 
@@ -149,13 +149,25 @@ export const WISHED_VISA_MAP = WISHED_VISA.reduce((acc, item) => {
 export const TYPE_OF_TRANSACTION_TEXTS = [
   'buy',
   'sell',
-  'rent',
-  'sublease',
+  'rental',
+  'usufruct',
   'mortgage',
-  'construction',
-  'joint_venture',
-  'consultant_from_owner',
-  'consultant_from_buyer',
+  'subdivision',
+  'consolidation',
+  'servitude',
+  'other',
+];
+
+export const TYPE_OF_TRANSACTION_OPTIONS = [
+  { id: 1, name: 'Buy', value: 'buy' },
+  { id: 2, name: 'Sell', value: 'sell' },
+  { id: 3, name: 'Rental', value: 'rental' },
+  { id: 4, name: 'Usufruct', value: 'usufruct' },
+  { id: 5, name: 'Mortgage', value: 'mortgage' },
+  { id: 6, name: 'Subdivision', value: 'subdivision' },
+  { id: 7, name: 'Consolidation', value: 'consolidation' },
+  { id: 8, name: 'Servitude', value: 'servitude' },
+  { id: 9, name: 'Other', value: 'other' },
 ];
 
 export const TYPE_OF_PROPERTY_TEXTS = [
@@ -405,18 +417,6 @@ export const PROPERTY_MESSAGES = {
     FORBIDDEN: 'Access forbidden - Admin access required',
   },
 }
-
-export const TYPE_OF_TRANSACTION_OPTIONS = [
-  { id: 1, name: 'Buy', value: 'buy' },
-  { id: 2, name: 'Sell', value: 'sell' },
-  { id: 3, name: 'Rent', value: 'rent' },
-  { id: 4, name: 'Sublease', value: 'sublease' },
-  { id: 5, name: 'Mortgage', value: 'mortgage' },
-  { id: 6, name: 'Construction', value: 'construction' },
-  { id: 7, name: 'Joint Venture', value: 'joint_venture' },
-  { id: 8, name: 'Consultant from Owner', value: 'consultant_from_owner' },
-  { id: 9, name: 'Consultant from Buyer', value: 'consultant_from_buyer' },
-];
 
 export const TYPE_OF_TRANSACTION_MAP = TYPE_OF_TRANSACTION_OPTIONS.reduce((acc, item) => {
   acc[item.value] = item.name;
