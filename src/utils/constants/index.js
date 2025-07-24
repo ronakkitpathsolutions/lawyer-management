@@ -428,8 +428,8 @@ export const TYPE_OF_TRANSACTION_MAP = TYPE_OF_TRANSACTION_OPTIONS.reduce((acc, 
 export const TYPE_OF_PROPERTY_OPTIONS = [
   { id: 1, name: 'House and Land (Freehold)', value: 'house_and_land_freehold' },
   { id: 2, name: 'House and Land (Leasehold)', value: 'house_and_land_leasehold' },
-  { id: 3, name: 'Condominium (Freehold)', value: 'condominium_freehold' },
-  { id: 4, name: 'Condominium (Leasehold)', value: 'condominium_leasehold' },
+  { id: 3, name: 'Condominium (Thai Quota)', value: 'condominium_freehold' },
+  { id: 4, name: 'Condominium (Foreign Quota)', value: 'condominium_leasehold' },
   { id: 5, name: 'Empty Land', value: 'empty_land' },
 ];
 
