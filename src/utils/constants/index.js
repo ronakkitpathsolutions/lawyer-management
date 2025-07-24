@@ -486,7 +486,7 @@ export const PROPERTY_CONDITION_OPTIONS = [
   { id: 1, name: 'New', value: 'new' },
   { id: 2, name: 'Good Working', value: 'good_working' },
   { id: 3, name: 'As Seen', value: 'as_seen' },
-  { id: 4, name: 'Sometimes Items to be Repaired', value: 'sometimes_items_to_be_repaired' },
+  { id: 4, name: 'Some items to be repaired', value: 'sometimes_items_to_be_repaired' },
 ];
 
 export const PROPERTY_CONDITION_MAP = PROPERTY_CONDITION_OPTIONS.reduce((acc, item) => {
