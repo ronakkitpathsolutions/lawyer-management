@@ -9,6 +9,7 @@ import {
     FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -131,6 +132,14 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                     disabled={loading || field.disabled}
                                     step="0.01"
                                     min="0"
+                                    {...formField}
+                                />
+                            ) : field.type === 'textarea' ? (
+                                <Textarea
+                                    placeholder={field.placeholder}
+                                    autoFocus={field.focus}
+                                    disabled={loading || field.disabled}
+                                    rows={3}
                                     {...formField}
                                 />
                             ) : (

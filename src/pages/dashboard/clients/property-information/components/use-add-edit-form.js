@@ -64,6 +64,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
             : [],
         place_of_payment: property?.place_of_payment || "",
         property_condition: property?.property_condition || "",
+        repair_details: property?.repair_details || "",
         house_warranty: property?.house_warranty || "",
         warranty_term: property?.warranty_term || "",
         warranty_condition: property?.warranty_condition || "",
@@ -94,6 +95,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
     const houseWarranty = methods.watch("house_warranty");
     const transaction_type = methods.watch("transaction_type");
     const property_type = methods.watch("property_type");
+    const property_condition = methods.watch("property_condition");
     
     // Watch title and document fields for conditional requirements
     const landTitle = methods.watch("land_title");
@@ -267,6 +269,16 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 options: PROPERTY_CONDITION_OPTIONS,
                 withAsterisk: false,
                 section: "details",
+            },
+            {
+                id: "repair_details",
+                name: "repair_details",
+                type: "textarea",
+                label: "Repair Details",
+                placeholder: msg.default("repair details"),
+                withAsterisk: property_condition === "sometimes_items_to_be_repaired",
+                section: "details",
+                hidden: property_condition !== "sometimes_items_to_be_repaired",
             },
             {
                 id: "house_warranty",
@@ -453,7 +465,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 section: "documents",
             },
         ],
-        [houseWarranty, property_type, intended_closing_date, transaction_type, landTitle, landTitleDocument, houseTitle, houseTitleDocument]
+        [houseWarranty, property_type, intended_closing_date, transaction_type, property_condition, landTitle, landTitleDocument, houseTitle, houseTitleDocument]
     );
 
     const [onSubmit, loading, notification] = useAsyncOperation(

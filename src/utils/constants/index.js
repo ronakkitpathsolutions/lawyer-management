@@ -283,6 +283,11 @@ export const PROPERTY_MESSAGES = {
     REQUIRED: 'Intended closing date (specific) is required',
     INVALID: 'Intended closing date (specific) must be a valid date',
   },
+  REPAIRED_DETAILS: {
+    REQUIRED: 'Repair details are required',
+    TOO_LONG: 'Repair details must not exceed 500 characters',
+    INVALID: 'Repair details contain invalid characters',
+  },
   HANDOVER_DATE: {
     REQUIRED: 'Handover date is required',
     INVALID: 'Handover date must be a valid date',

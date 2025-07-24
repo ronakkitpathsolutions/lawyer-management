@@ -547,6 +547,16 @@ export const propertyValidationSchema = z
           PROPERTY_CONDITION_TEXTS.includes(val),
         PROPERTY_MESSAGES.PROPERTY_CONDITION.INVALID
       ),
+    repair_details: z
+      .string()
+      .trim()
+      .optional()
+      .nullable()
+      .transform((val) => (val === "" ? null : val))
+      .refine(
+        (val) => val === null || val === undefined || val.length <= 500,
+        PROPERTY_MESSAGES.REPAIRED_DETAILS.TOO_LONG
+      ),
     house_warranty: z
       .string()
       .trim()
@@ -819,5 +829,17 @@ export const propertyValidationSchema = z
     {
       message: PROPERTY_MESSAGES.INTENDED_CLOSING_DATE_SPECIFIC.REQUIRED,
       path: ["intended_closing_date_specific"],
+    }
+  ).refine(
+    (data) => {
+      // If property condition is "sometimes_items_to_be_repaired", repair details are required
+      if (data.property_condition === "sometimes_items_to_be_repaired") {
+        return data.repair_details && data.repair_details.trim() !== "";
+      }
+      return true;
+    },
+    {
+      message: PROPERTY_MESSAGES.REPAIRED_DETAILS.REQUIRED,
+      path: ["repair_details"],
     }
   );
