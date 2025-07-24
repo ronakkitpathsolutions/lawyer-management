@@ -15,12 +15,8 @@ const useProfile = () => {
     executeUpdateProfile,
     updating
   ] = useAsyncOperation(async (formData) => {
-    const response = await api.auth.updateProfile({ data: formData });
+    await api.auth.updateProfile({ data: formData });
     toastSuccess("Profile updated successfully!");
-    
-    // Update user data in auth context
-    console.log('response?.data?.data :>> ', response?.data?.data);
-    
     // Refresh profile data
     await getData();
   });

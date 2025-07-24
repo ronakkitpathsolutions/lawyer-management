@@ -182,10 +182,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                             {renderField(documentGroups.landTitle.select)}
                             {documentGroups.landTitle.upload && (
                                 <div>
-                                    <label className="text-sm font-medium text-gray-700 block mb-2">
-                                        Upload Document
-                                    </label>
-                                    {renderField(documentGroups.landTitle.upload, true)}
+                                    {renderField(documentGroups.landTitle.upload, false)}
                                 </div>
                             )}
                         </div>
@@ -199,10 +196,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                             {renderField(documentGroups.houseTitle.select)}
                             {documentGroups.houseTitle.upload && (
                                 <div>
-                                    <label className="text-sm font-medium text-gray-700 block mb-2">
-                                        Upload Document
-                                    </label>
-                                    {renderField(documentGroups.houseTitle.upload, true)}
+                                    {renderField(documentGroups.houseTitle.upload, false)}
                                 </div>
                             )}
                         </div>

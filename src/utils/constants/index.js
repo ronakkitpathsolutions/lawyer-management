@@ -180,10 +180,8 @@ export const TYPE_OF_PROPERTY_TEXTS = [
 
 export const INTENDED_CLOSING_DATE_TEXTS = [
   'on_or_before',
-  'any_date',
-  'at_closing',
-  'after_closing',
-  'specific_date',
+  'after',
+  'only_on',
 ];
 
 export const HANDOVER_DATE_TEXTS = [
@@ -279,7 +277,11 @@ export const PROPERTY_MESSAGES = {
   },
   INTENDED_CLOSING_DATE: {
     REQUIRED: 'Intended closing date is required',
-    INVALID: 'Intended closing date must be a valid date',
+    INVALID: 'Intended closing date is invalid',
+  },
+  INTENDED_CLOSING_DATE_SPECIFIC: {
+    REQUIRED: 'Intended closing date (specific) is required',
+    INVALID: 'Intended closing date (specific) must be a valid date',
   },
   HANDOVER_DATE: {
     REQUIRED: 'Handover date is required',
@@ -378,7 +380,7 @@ export const PROPERTY_MESSAGES = {
   },
   // documentation attachment
   LAND_TITLE: {
-    REQUIRED: 'Land title document is required',
+    REQUIRED: 'Land title is required',
     INVALID: 'Land title must be a valid URL',
     TOO_LONG: 'Land title URL must not exceed 500 characters',
   },
@@ -388,7 +390,7 @@ export const PROPERTY_MESSAGES = {
     TOO_LONG: 'Land title document URL must not exceed 500 characters',
   },
   HOUSE_TITLE: {
-    REQUIRED: 'House title document is required',
+    REQUIRED: 'House title is required',
     INVALID: 'House title must be a valid URL',
     TOO_LONG: 'House title URL must not exceed 500 characters',
   },
@@ -438,10 +440,8 @@ export const TYPE_OF_PROPERTY_MAP = TYPE_OF_PROPERTY_OPTIONS.reduce((acc, item) 
 
 export const INTENDED_CLOSING_DATE_OPTIONS = [
   { id: 1, name: 'On or Before', value: 'on_or_before' },
-  { id: 2, name: 'Any Date', value: 'any_date' },
-  { id: 3, name: 'At Closing', value: 'at_closing' },
-  { id: 4, name: 'After Closing', value: 'after_closing' },
-  { id: 5, name: 'Specific Date', value: 'specific_date' },
+  { id: 2, name: 'After', value: 'after' },
+  { id: 3, name: 'Only on', value: 'only_on' }
 ];
 
 export const INTENDED_CLOSING_DATE_MAP = INTENDED_CLOSING_DATE_OPTIONS.reduce((acc, item) => {
@@ -450,9 +450,8 @@ export const INTENDED_CLOSING_DATE_MAP = INTENDED_CLOSING_DATE_OPTIONS.reduce((a
 }, {});
 
 export const HANDOVER_DATE_OPTIONS = [
-  { id: 1, name: 'On or Before', value: 'on_or_before' },
-  { id: 2, name: 'At Closing', value: 'at_closing' },
-  { id: 3, name: 'After Closing', value: 'after_closing' },
+  { id: 1, name: 'At Closing', value: 'at_closing' },
+  { id: 2, name: 'After Closing', value: 'after_closing' },
 ];
 
 export const HANDOVER_DATE_MAP = HANDOVER_DATE_OPTIONS.reduce((acc, item) => {

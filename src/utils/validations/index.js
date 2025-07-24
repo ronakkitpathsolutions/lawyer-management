@@ -13,6 +13,7 @@ import {
   TYPE_OF_PROPERTY_TEXTS,
   TYPE_OF_TRANSACTION_TEXTS,
   HANDOVER_DATE_TEXTS,
+  INTENDED_CLOSING_DATE_TEXTS,
 } from "../constants";
 import { isValidPhoneNumber } from "react-phone-number-input";
 
@@ -356,7 +357,7 @@ export const propertyValidationSchema = z
         (val) => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
         PROPERTY_MESSAGES.RESERVATION_DATE.INVALID
       ),
-    intended_closing_date: z
+    intended_closing_date_specific: z
       .string()
       .trim()
       .optional()
@@ -385,6 +386,19 @@ export const propertyValidationSchema = z
       })
       .refine(
         (val) => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
+        PROPERTY_MESSAGES.INTENDED_CLOSING_DATE.INVALID
+      ),
+    intended_closing_date: z
+      .string()
+      .trim()
+      .optional()
+      .nullable()
+      .transform((val) => (val === "" ? null : val))
+      .refine(
+        (val) =>
+          val === null ||
+          val === undefined ||
+          INTENDED_CLOSING_DATE_TEXTS.includes(val),
         PROPERTY_MESSAGES.INTENDED_CLOSING_DATE.INVALID
       ),
     handover_date: z
@@ -719,7 +733,7 @@ export const propertyValidationSchema = z
       return true;
     },
     {
-      message: "Warranty term is required when house warranty is Yes",
+      message: "Warranty term is required",
       path: ["warranty_term"],
     }
   )
@@ -732,7 +746,78 @@ export const propertyValidationSchema = z
       return true;
     },
     {
-      message: "Warranty condition is required when house warranty is Yes",
+      message: "Warranty condition is required",
       path: ["warranty_condition"],
+    }
+  )
+  .refine(
+    (data) => {
+      // If land title is selected, land title document is required
+      if (data.land_title && data.land_title.trim() !== "") {
+        return (
+          data.land_title_document !== null &&
+          data.land_title_document !== undefined
+        );
+      }
+      return true;
+    },
+    {
+      message: PROPERTY_MESSAGES.LAND_TITLE_DOCUMENT.REQUIRED,
+      path: ["land_title_document"],
+    }
+  )
+  .refine(
+    (data) => {
+      // If land title document is uploaded, land title is required
+      if (data.land_title_document && data.land_title_document !== null) {
+        return data.land_title && data.land_title.trim() !== "";
+      }
+      return true;
+    },
+    {
+      message: PROPERTY_MESSAGES.LAND_TITLE.REQUIRED,
+      path: ["land_title"],
+    }
+  )
+  .refine(
+    (data) => {
+      // If house title is selected, house title document is required
+      if (data.house_title && data.house_title.trim() !== "") {
+        return (
+          data.house_title_document !== null &&
+          data.house_title_document !== undefined
+        );
+      }
+      return true;
+    },
+    {
+      message: PROPERTY_MESSAGES.HOUSE_TITLE_DOCUMENT.REQUIRED,
+      path: ["house_title_document"],
+    }
+  )
+  .refine(
+    (data) => {
+      // If house title document is uploaded, house title is required
+      if (data.house_title_document && data.house_title_document !== null) {
+        return data.house_title && data.house_title.trim() !== "";
+      }
+      return true;
+    },
+    {
+      message: PROPERTY_MESSAGES.HOUSE_TITLE.REQUIRED,
+      path: ["house_title"],
+    }
+  )
+  .refine(
+    (data) => {
+      // If intended closing date is selected, intended closing date specific is required
+      if (data.intended_closing_date && data.intended_closing_date.trim() !== "") {
+        return data.intended_closing_date_specific && data.intended_closing_date_specific.trim() !== "";
+      }
+      return true;
+    },
+    {
+      message: PROPERTY_MESSAGES.INTENDED_CLOSING_DATE_SPECIFIC.REQUIRED,
+      path: ["intended_closing_date_specific"],
     }
   );

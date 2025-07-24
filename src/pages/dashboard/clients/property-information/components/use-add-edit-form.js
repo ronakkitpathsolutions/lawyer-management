@@ -21,6 +21,7 @@ import {
     USUFRUCTUARY_OWNER_COST_OPTIONS,
     SERVITUDE_COST_OPTIONS,
     HANDOVER_DATE_OPTIONS,
+    INTENDED_CLOSING_DATE_OPTIONS,
 } from "@/utils/constants";
 import useAsyncOperation from "@/hooks/use-async-operation";
 import { api } from "@/api";
@@ -47,6 +48,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
             : [],
         property_type: property?.property_type || "",
         reservation_date: property?.reservation_date || "",
+        intended_closing_date_specific: property?.intended_closing_date_specific || "",
         intended_closing_date: property?.intended_closing_date || "",
         handover_date: property?.handover_date || "",
         selling_price: property?.selling_price || "",
@@ -92,6 +94,14 @@ const useAddEditForm = ({ onClose, property = null }) => {
     const houseWarranty = methods.watch("house_warranty");
     const transaction_type = methods.watch("transaction_type");
     const property_type = methods.watch("property_type");
+    
+    // Watch title and document fields for conditional requirements
+    const landTitle = methods.watch("land_title");
+    const landTitleDocument = methods.watch("land_title_document");
+    const houseTitle = methods.watch("house_title");
+    const houseTitleDocument = methods.watch("house_title_document");
+
+    const intended_closing_date = methods.watch("intended_closing_date");
 
     const fieldsData = useMemo(
         () => [
@@ -147,6 +157,16 @@ const useAddEditForm = ({ onClose, property = null }) => {
 
             // Dates
             {
+                id: "intended_closing_date",
+                name: "intended_closing_date",
+                type: "select",
+                label: "Intended Closing Date",
+                placeholder: msg.select("intended closing date"),
+                options: INTENDED_CLOSING_DATE_OPTIONS,
+                withAsterisk: false,
+                section: "dates",
+            },
+            {
                 id: "reservation_date",
                 name: "reservation_date",
                 type: "date",
@@ -156,13 +176,14 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 section: "dates",
             },
             {
-                id: "intended_closing_date",
-                name: "intended_closing_date",
+                id: "intended_closing_date_specific",
+                name: "intended_closing_date_specific",
                 type: "date",
-                label: "Intended Closing Date",
+                label: "Intended Closing Date (Specific)",
                 placeholder: msg.select("intended closing date"),
-                withAsterisk: false,
+                withAsterisk: ['on_or_before', 'after', 'only_on'].includes(intended_closing_date),
                 section: "dates",
+                disabled: !['on_or_before', 'after', 'only_on'].includes(intended_closing_date),
             },
             {
                 id: "handover_date",
@@ -382,7 +403,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 label: "Land Title",
                 placeholder: msg.select("land title"),
                 options: LAND_TITLE_OPTIONS,
-                withAsterisk: false,
+                withAsterisk: Boolean(landTitleDocument),
                 section: "documents",
             },
             {
@@ -391,7 +412,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 type: "file",
                 label: "Upload Land Title Document",
                 placeholder: "Drag and drop a file here, or click to select",
-                withAsterisk: false,
+                withAsterisk: Boolean(landTitle && landTitle.trim() !== ""),
                 section: "documents",
             },
             {
@@ -401,7 +422,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 label: "House Title",
                 placeholder: msg.select("house title"),
                 options: HOUSE_TITLE_OPTIONS,
-                withAsterisk: false,
+                withAsterisk: Boolean(houseTitleDocument),
                 section: "documents",
             },
             {
@@ -410,7 +431,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 type: "file",
                 label: "Upload House Title Document",
                 placeholder: "Drag and drop a file here, or click to select",
-                withAsterisk: false,
+                withAsterisk: Boolean(houseTitle && houseTitle.trim() !== ""),
                 section: "documents",
             },
             {
@@ -432,7 +453,7 @@ const useAddEditForm = ({ onClose, property = null }) => {
                 section: "documents",
             },
         ],
-        [houseWarranty, property_type, transaction_type]
+        [houseWarranty, property_type, intended_closing_date, transaction_type, landTitle, landTitleDocument, houseTitle, houseTitleDocument]
     );
 
     const [onSubmit, loading, notification] = useAsyncOperation(
@@ -441,60 +462,66 @@ const useAddEditForm = ({ onClose, property = null }) => {
             const hasFiles = fileFields.some(field => payload[field] && payload[field] instanceof File);
 
             const values = {
-                ...payload,
-                acceptable_method_of_payment: Array.isArray(payload.acceptable_method_of_payment)
-                    ? payload.acceptable_method_of_payment.join(',')
-                    : payload.acceptable_method_of_payment,
-                // Convert transaction_type array to comma-separated string
-                transaction_type: Array.isArray(payload.transaction_type) 
-                    ? payload.transaction_type.join(',')
-                    : payload.transaction_type
-            }
+              ...payload,
+              acceptable_method_of_payment: Array.isArray(
+                payload.acceptable_method_of_payment
+              )
+                ? payload.acceptable_method_of_payment.join(",")
+                : payload.acceptable_method_of_payment,
+              // Convert transaction_type array to comma-separated string
+              transaction_type: Array.isArray(payload.transaction_type)
+                ? payload.transaction_type.join(",")
+                : payload.transaction_type,
+            };
 
             let requestData;
-            
+
             if (hasFiles) {
-                // If there are files, use FormData
-                const formData = new FormData();
-                
-                // Add regular fields to FormData
-                Object.keys(values).forEach(key => {
-                    if (values[key] !== null && values[key] !== undefined && values[key] !== '') {
-                        if (fileFields.includes(key) && values[key] instanceof File) {
-                            // Add file to FormData
-                            formData.append(key, values[key]);
-                        } else if (!fileFields.includes(key)) {
-                            // Add non-file fields to FormData
-                            formData.append(key, values[key]);
-                        }
-                    }
-                });
-                
-                // Add client_id for create operation
-                if (!isEditing) {
-                    formData.append('client_id', id);
+              // If there are files, use FormData
+              const formData = new FormData();
+
+              // Add regular fields to FormData
+              Object.keys(values).forEach((key) => {
+                if (
+                  values[key] !== null &&
+                  values[key] !== undefined &&
+                  values[key] !== ""
+                ) {
+                  if (fileFields.includes(key) && values[key] instanceof File) {
+                    // Add file to FormData
+                    formData.append(key, values[key]);
+                  } else if (!fileFields.includes(key)) {
+                    // Add non-file fields to FormData
+                    formData.append(key, values[key]);
+                  }
                 }
-                
-                requestData = formData;
+              });
+
+              // Add client_id for create operation
+              if (!isEditing) {
+                formData.append("client_id", id);
+              }
+
+              requestData = formData;
             } else {
-                // If no files, use regular JSON data
-                requestData = removeEmptyFields(values);
-                if (!isEditing) {
-                    requestData.client_id = id;
-                }
+              // If no files, use regular JSON data
+              requestData = removeEmptyFields(values);
+              if (!isEditing) {
+                requestData.client_id = id;
+              }
             }
 
             if (isEditing) {
-                await api.property.update({
-                    id: property.id,
-                    data: requestData,
-                });
-                toastSuccess(ACTION_MESSAGES.update("property"));
+              await api.property.update({
+                id: property.id,
+                data: requestData,
+              });
+              toastSuccess(ACTION_MESSAGES.update("property"));
             } else {
-                await api.property.create({
-                    data: requestData,
-                });
-                toastSuccess(ACTION_MESSAGES.add("property"));
+              await api.property.create({
+                data: requestData,
+              });
+              toastSuccess(ACTION_MESSAGES.add("property"));
             }
 
             // Refresh the property list
