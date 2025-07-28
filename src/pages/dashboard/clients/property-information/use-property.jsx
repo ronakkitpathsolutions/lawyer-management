@@ -80,6 +80,10 @@ const useProperty = () => {
     }
   }, [fetchData, id, params]);
 
+  const handleRowSelection = useCallback((row = {}) => {
+    openEditDrawer(row);
+  }, [openEditDrawer]);
+
   useEffect(() => {
     return () => {
       resetParams();
@@ -251,6 +255,7 @@ const useProperty = () => {
     selectedPropertyData,
     deleteBulkLoading,
     handleBulkDeleteConfirm,
+    handleRowSelection
   };
 };
 

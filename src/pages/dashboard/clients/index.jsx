@@ -21,7 +21,8 @@ const Clients = () => {
     handleDeleteConfirm,
     deleteLoading,
     handleBulkDeleteConfirm,
-    deleteBulkLoading
+    deleteBulkLoading,
+    handleRowSelection
   } = useClients();
 
   return (
@@ -47,6 +48,7 @@ const Clients = () => {
             columns,
             data,
             loading,
+            handleRowSelection,
             searchPlaceholder: "Search by all fields",
             deleteButtonText: "Delete Clients",
             handleDeleteConfirm: handleBulkDeleteConfirm,

@@ -187,6 +187,10 @@ const useVisaInformation = () => {
     }
   );
 
+    const handleRowSelection = useCallback((row = {}) => {
+      openEditDrawer(row);
+    }, [openEditDrawer]);
+
   return {
     columns,
     data,
@@ -194,6 +198,7 @@ const useVisaInformation = () => {
     params: { ...params, totalItems: total },
     setParams,
     openDrawer: openAddDrawer,
+    handleRowSelection,
     isDrawerOpen,
     closeDrawer: handleCloseDrawer,
     isOpenDeleteModal,

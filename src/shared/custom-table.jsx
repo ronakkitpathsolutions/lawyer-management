@@ -42,6 +42,7 @@ const CustomTable = ({
   searchPlaceholder = "Search...",
   // Selection actions
   handleDeleteConfirm,
+  handleRowSelection,
   confirmTitle,
   confirmDescription,
   deleteLoading,
@@ -51,7 +52,13 @@ const CustomTable = ({
 }) => {
   const [localSearchValue, setLocalSearchValue] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
-  const { page: currentPage, limit, totalItems, sortBy, sortOrder } = params || {};
+  const {
+    page: currentPage,
+    limit,
+    totalItems,
+    sortBy,
+    sortOrder,
+  } = params || {};
   const totalPages = Math.ceil(totalItems / limit) || 1;
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -138,45 +145,51 @@ const CustomTable = ({
   };
 
   // Handle sorting
-  const handleSort = useCallback((column) => {
-    if (!column.isEnableSorting || !setParams) return;
+  const handleSort = useCallback(
+    (column) => {
+      if (!column.isEnableSorting || !setParams) return;
 
-    const currentSortBy = sortBy;
-    const currentSortOrder = sortOrder;
-    const columnKey = column.accessorKey;
+      const currentSortBy = sortBy;
+      const currentSortOrder = sortOrder;
+      const columnKey = column.accessorKey;
 
-    // If clicking the same column, toggle sort order
-    if (currentSortBy === columnKey) {
-      const newSortOrder = currentSortOrder === 'ASC' ? 'DESC' : 'ASC';
-      setParams({ sortBy: columnKey, sortOrder: newSortOrder, page: 1 });
-    } else {
-      // If clicking a new column, set it to ascending
-      setParams({ sortBy: columnKey, sortOrder: 'ASC', page: 1 });
-    }
-  }, [sortBy, sortOrder, setParams]);
+      // If clicking the same column, toggle sort order
+      if (currentSortBy === columnKey) {
+        const newSortOrder = currentSortOrder === "ASC" ? "DESC" : "ASC";
+        setParams({ sortBy: columnKey, sortOrder: newSortOrder, page: 1 });
+      } else {
+        // If clicking a new column, set it to ascending
+        setParams({ sortBy: columnKey, sortOrder: "ASC", page: 1 });
+      }
+    },
+    [sortBy, sortOrder, setParams]
+  );
 
   // Get sort icon for a column
-  const getSortIcon = useCallback((column) => {
-    if (!column.isEnableSorting) return null;
+  const getSortIcon = useCallback(
+    (column) => {
+      if (!column.isEnableSorting) return null;
 
-    const columnKey = column.accessorKey;
-    const isActive = sortBy === columnKey;
+      const columnKey = column.accessorKey;
+      const isActive = sortBy === columnKey;
 
-    if (!isActive) {
-      return (
-        <div className="flex flex-col opacity-50">
-          <ChevronUp className="h-3 w-3 text-gray-400" />
-          <ChevronDown className="h-3 w-3 text-gray-400 -mt-1" />
-        </div>
-      );
-    }
+      if (!isActive) {
+        return (
+          <div className="flex flex-col opacity-50">
+            <ChevronUp className="h-3 w-3 text-gray-400" />
+            <ChevronDown className="h-3 w-3 text-gray-400 -mt-1" />
+          </div>
+        );
+      }
 
-    if (sortOrder === 'asc') {
-      return <ChevronUp className="h-4 w-4 text-gray-700" />;
-    } else {
-      return <ChevronDown className="h-4 w-4 text-gray-700" />;
-    }
-  }, [sortBy, sortOrder]);
+      if (sortOrder === "asc") {
+        return <ChevronUp className="h-4 w-4 text-gray-700" />;
+      } else {
+        return <ChevronDown className="h-4 w-4 text-gray-700" />;
+      }
+    },
+    [sortBy, sortOrder]
+  );
 
   // Generate page numbers to show
   const generatePageNumbers = () => {
@@ -222,44 +235,44 @@ const CustomTable = ({
       {/* Search Input - Separated from table */}
       <div className="flex items-center gap-4 w-full mb-4">
         {showSearch && (
-            <div className="relative w-full lg:w-[320px]">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                type="text"
-                placeholder={searchPlaceholder}
-                value={localSearchValue}
-                onChange={handleSearchInputChange}
-                className="pl-10 pr-10 border-gray-300 focus:ring-0 h-10 w-full"
-              />
-              {localSearchValue && (
-                <button
-                  onClick={handleClearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </div>
+          <div className="relative w-full lg:w-[320px]">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input
+              type="text"
+              placeholder={searchPlaceholder}
+              value={localSearchValue}
+              onChange={handleSearchInputChange}
+              className="pl-10 pr-10 border-gray-300 focus:ring-0 h-10 w-full"
+            />
+            {localSearchValue && (
+              <button
+                onClick={handleClearSearch}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         )}
         {selectedRows.length > 0 && (
-            <div className="bg-primary rounded-md px-6 py-[3px] flex items-center justify-center gap-4 shadow-lg border border-primary max-w-fit">
-              <span className="text-white font-medium">
-                {selectedRows.length} Selected
-              </span>
-              {/* Divider */}
-              <div className="w-px h-6 bg-white"></div>
-              <div className="flex items-center gap-3">
-                <Button
-                  onClick={() => setShowDeleteConfirmation(true)}
-                  variant="ghost"
-                  size="sm"
-                  className="text-white text-sm !pl-0 hover:text-white px-4 py-2 rounded-md hover:bg-transparent"
-                >
-                  <Trash2 className="h-5 w-5" />
-                  {deleteButtonText}
-                </Button>
-              </div>
+          <div className="bg-primary rounded-md px-6 py-[3px] flex items-center justify-center gap-4 shadow-lg border border-primary max-w-fit">
+            <span className="text-white font-medium">
+              {selectedRows.length} Selected
+            </span>
+            {/* Divider */}
+            <div className="w-px h-6 bg-white"></div>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => setShowDeleteConfirmation(true)}
+                variant="ghost"
+                size="sm"
+                className="text-white text-sm !pl-0 hover:text-white px-4 py-2 rounded-md hover:bg-transparent"
+              >
+                <Trash2 className="h-5 w-5" />
+                {deleteButtonText}
+              </Button>
             </div>
+          </div>
         )}
       </div>
 
@@ -283,8 +296,12 @@ const CustomTable = ({
               {columns.map((column, index) => (
                 <TableHead
                   key={column.accessorKey || index}
-                  className={`px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${column.cellClassName} ${
-                    column.isEnableSorting ? 'cursor-pointer hover:bg-gray-100' : ''
+                  className={`px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                    column.cellClassName
+                  } ${
+                    column.isEnableSorting
+                      ? "cursor-pointer hover:bg-gray-100"
+                      : ""
                   }`}
                   onClick={() => handleSort(column)}
                 >
@@ -316,6 +333,21 @@ const CustomTable = ({
                   className={`hover:bg-gray-50 transition-colors ${
                     selectedRows.includes(rowIndex) ? "bg-blue-50" : ""
                   }`}
+                  onClick={(e) => {
+                    // Prevent row click if clicking on a button, svg, or input (checkbox)
+                    const tag = e.target.tagName.toLowerCase();
+                    if (
+                      ["button", "svg", "path", "input"].includes(tag) ||
+                      e.target.closest("button") ||
+                      e.target.closest("input")
+                    ) {
+                      return;
+                    }
+                    if (typeof handleRowSelection === "function") {
+                      handleRowSelection(rowData, rowIndex);
+                    }
+                  }}
+                  style={{ cursor: handleRowSelection ? "pointer" : undefined }}
                 >
                   <TableCell className="px-4 py-4">
                     <Checkbox

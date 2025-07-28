@@ -23,6 +23,7 @@ const VisaInformation = () => {
     selectedVisaData,
     handleBulkDeleteConfirm,
     deleteBulkLoading,
+    handleRowSelection,
   } = useVisaInformation();
 
   return (
@@ -45,6 +46,7 @@ const VisaInformation = () => {
           {...{
             params,
             setParams,
+            handleRowSelection,
             columns,
             data,
             loading,

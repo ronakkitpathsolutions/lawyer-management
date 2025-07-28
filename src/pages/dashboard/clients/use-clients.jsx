@@ -48,6 +48,10 @@ const useClients = () => {
     setDeleteData({});
   }, []);
 
+  const handleRowSelection = useCallback((row = {}) => {
+    navigate(MAIN_ROUTES.clients.path + `/${row.id}`);
+  }, [navigate]);
+
   useEffect(() => {
     fetchData({ params });
   }, [fetchData, params]);
@@ -164,6 +168,7 @@ const useClients = () => {
     deleteLoading,
     handleBulkDeleteConfirm,
     deleteBulkLoading,
+    handleRowSelection,
   };
 };
 

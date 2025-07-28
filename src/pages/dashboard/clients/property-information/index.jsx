@@ -24,6 +24,7 @@ const PropertyInformation = () => {
     selectedPropertyData,
     deleteBulkLoading,
     handleBulkDeleteConfirm,
+    handleRowSelection,
   } = useProperty();
 
   return (
@@ -53,6 +54,7 @@ const PropertyInformation = () => {
             columns,
             data,
             loading,
+            handleRowSelection,
             searchPlaceholder: "Search by all fields",
             deleteButtonText: "Delete Properties",
             handleDeleteConfirm: handleBulkDeleteConfirm,
