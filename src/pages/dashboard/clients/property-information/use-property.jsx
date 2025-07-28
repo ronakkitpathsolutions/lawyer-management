@@ -147,9 +147,10 @@ const useProperty = () => {
               rowData.intended_closing_date
                 ? INTENDED_CLOSING_DATE_MAP[rowData.intended_closing_date]
                 : "-"
-            } (${rowData.intended_closing_date_specific
-              ? DATE_FORMAT.date(rowData.intended_closing_date_specific)
-              : "-"
+            } (${
+              rowData.intended_closing_date_specific
+                ? DATE_FORMAT.date(rowData.intended_closing_date_specific)
+                : "-"
             })`}
           </div>
         ),
