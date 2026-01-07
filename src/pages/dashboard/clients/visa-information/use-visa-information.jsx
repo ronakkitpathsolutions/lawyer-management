@@ -16,6 +16,7 @@ import { api } from "@/api";
 import {
   DATE_FORMAT,
   EXISTING_VISA_MAP,
+  RE_ENTRY_PERMIT_TEXT_OBJECT,
   WISHED_VISA_MAP,
 } from "@/utils/constants";
 import { useParams } from "react-router";
@@ -114,7 +115,7 @@ const useVisaInformation = () => {
         accessorKey: "re_entry_permit",
         cellClassName: "min-w-[220px]",
         render: ({ rowData }) =>
-          rowData?.re_entry_permit ? rowData.re_entry_permit : "-",
+          rowData?.re_entry_permit ? RE_ENTRY_PERMIT_TEXT_OBJECT?.[rowData.re_entry_permit] : "-",
       },
       {
         header: "Intended Departure",

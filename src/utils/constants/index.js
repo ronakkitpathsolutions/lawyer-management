@@ -164,6 +164,12 @@ export const RE_ENTRY_PERMIT_TEXTS = [
   'not_required'
 ]
 
+export const RE_ENTRY_PERMIT_TEXT_OBJECT = {
+  single: 'Single',
+  multiple: 'Multiple',
+  not_required: 'Not Required',
+}
+
 export const RE_ENTRY_PERMIT_TEXT_OPTIONS = [
   { id: 1, name: 'Single', value: 'single' },
   { id: 2, name: 'Multiple', value: 'multiple' },
