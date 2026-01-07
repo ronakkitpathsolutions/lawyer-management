@@ -158,6 +158,18 @@ export const TYPE_OF_TRANSACTION_TEXTS = [
   'other',
 ];
 
+export const RE_ENTRY_PERMIT_TEXTS = [
+  'single',
+  'multiple',
+  'not_required'
+]
+
+export const RE_ENTRY_PERMIT_TEXT_OPTIONS = [
+  { id: 1, name: 'Single', value: 'single' },
+  { id: 2, name: 'Multiple', value: 'multiple' },
+  { id: 3, name: 'Not Required', value: 'not_required' },
+];
+
 export const TYPE_OF_TRANSACTION_OPTIONS = [
   { id: 1, name: 'Buy', value: 'buy' },
   { id: 2, name: 'Sell', value: 'sell' },

@@ -118,7 +118,7 @@ const AddEditForm = ({ onClose, visa = null, initialData = null }) => {
               ) : isEditing ? (
                 "Update Visa"
               ) : (
-                "Add Visa"
+                "Add New Visa"
               )}
             </Button>
           </div>

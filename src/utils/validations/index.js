@@ -14,6 +14,7 @@ import {
   TYPE_OF_TRANSACTION_TEXTS,
   HANDOVER_DATE_TEXTS,
   INTENDED_CLOSING_DATE_TEXTS,
+  RE_ENTRY_PERMIT_TEXTS,
 } from "../constants";
 import { isValidPhoneNumber } from "react-phone-number-input";
 
@@ -245,6 +246,42 @@ export const clientVisaSchema = z.object({
         return !isNaN(Date.parse(date));
       },
       { message: msg.invalid("latest entry date") }
+    ),
+  intended_visa_renewal_date: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .refine(
+      (date) => {
+        if (!date || date === "") return true;
+        return !isNaN(Date.parse(date));
+      },
+      { message: msg.invalid("intended visa renewal date") }
+    ),
+  re_entry_permit: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .refine(
+      (value) => {
+        if (!value || value === "") return true;
+        return RE_ENTRY_PERMIT_TEXTS.includes(value);
+      },
+      { message: msg.invalid("re-entry permit") }
+    ),
+  new_visa_expiry_date: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .refine(
+      (date) => {
+        if (!date || date === "") return true;
+        return !isNaN(Date.parse(date));
+      },
+      { message: msg.invalid("new visa expiry date") }
     ),
 });
 

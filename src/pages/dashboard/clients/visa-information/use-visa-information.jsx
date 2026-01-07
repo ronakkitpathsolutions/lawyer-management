@@ -85,24 +85,19 @@ const useVisaInformation = () => {
 
   const columns = useMemo(
     () => [
+      // 1️⃣ Current Visa
       {
         header: "Existing Visa",
         accessorKey: "existing_visa",
         isEnableSorting: true,
+        cellClassName: "min-w-[240px]",
         render: ({ rowData }) =>
           rowData?.existing_visa
             ? EXISTING_VISA_MAP[rowData.existing_visa]
             : "-",
-        cellClassName: "min-w-[240px]",
       },
-      {
-        header: "Wished Visa",
-        accessorKey: "wished_visa",
-        isEnableSorting: true,
-        cellClassName: "min-w-[240px]",
-        render: ({ rowData }) =>
-          rowData?.wished_visa ? WISHED_VISA_MAP[rowData.wished_visa] : "-",
-      },
+
+      // 2️⃣ Current Expiry (critical for agents)
       {
         header: "Existing Visa Expiry",
         accessorKey: "existing_visa_expiry",
@@ -112,14 +107,14 @@ const useVisaInformation = () => {
             ? DATE_FORMAT.date(rowData.existing_visa_expiry)
             : "-",
       },
+
+      // 3️⃣ Travel / Re-entry Context
       {
-        header: "Latest Entry Date",
-        accessorKey: "latest_entry_date",
+        header: "Re-entry Permit",
+        accessorKey: "re_entry_permit",
         cellClassName: "min-w-[220px]",
         render: ({ rowData }) =>
-          rowData?.latest_entry_date
-            ? DATE_FORMAT.date(rowData.latest_entry_date)
-            : "-",
+          rowData?.re_entry_permit ? rowData.re_entry_permit : "-",
       },
       {
         header: "Intended Departure",
@@ -131,11 +126,54 @@ const useVisaInformation = () => {
             : "-",
       },
       {
+        header: "Latest Entry Date",
+        accessorKey: "latest_entry_date",
+        cellClassName: "min-w-[220px]",
+        render: ({ rowData }) =>
+          rowData?.latest_entry_date
+            ? DATE_FORMAT.date(rowData.latest_entry_date)
+            : "-",
+      },
+
+      // 4️⃣ Renewal Plan
+      {
+        header: "Wished Visa",
+        accessorKey: "wished_visa",
+        isEnableSorting: true,
+        cellClassName: "min-w-[240px]",
+        render: ({ rowData }) =>
+          rowData?.wished_visa ? WISHED_VISA_MAP[rowData.wished_visa] : "-",
+      },
+      {
+        header: "Intended Visa Renewal Date",
+        accessorKey: "intended_visa_renewal_date",
+        cellClassName: "min-w-[220px]",
+        render: ({ rowData }) =>
+          rowData?.intended_visa_renewal_date
+            ? DATE_FORMAT.date(rowData.intended_visa_renewal_date)
+            : "-",
+      },
+
+      // 5️⃣ Future Validity
+      {
+        header: "New Visa Expiry Date",
+        accessorKey: "new_visa_expiry_date",
+        cellClassName: "min-w-[220px]",
+        render: ({ rowData }) =>
+          rowData?.new_visa_expiry_date
+            ? DATE_FORMAT.date(rowData.new_visa_expiry_date)
+            : "-",
+      },
+
+      // 6️⃣ Audit
+      {
         header: "Created At",
         accessorKey: "createdAt",
         cellClassName: "min-w-[240px]",
         render: ({ rowData }) => DATE_FORMAT.dateTime(rowData.createdAt),
       },
+
+      // 7️⃣ Actions
       {
         header: "Actions",
         id: "actions",
@@ -187,9 +225,12 @@ const useVisaInformation = () => {
     }
   );
 
-    const handleRowSelection = useCallback((row = {}) => {
+  const handleRowSelection = useCallback(
+    (row = {}) => {
       openEditDrawer(row);
-    }, [openEditDrawer]);
+    },
+    [openEditDrawer]
+  );
 
   return {
     columns,
