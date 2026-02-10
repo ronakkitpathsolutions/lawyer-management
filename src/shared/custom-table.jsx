@@ -337,7 +337,7 @@ const CustomTable = ({
                     // Prevent row click if clicking on a button, svg, or input (checkbox)
                     const tag = e.target.tagName.toLowerCase();
                     if (
-                      ["button", "svg", "path", "input"].includes(tag) ||
+                      ["button", "svg", "path", "input", "div"].includes(tag) ||
                       e.target.closest("button") ||
                       e.target.closest("input")
                     ) {

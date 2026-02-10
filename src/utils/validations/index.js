@@ -770,6 +770,11 @@ export const propertyValidationSchema = z
         if (typeof file === "string") return true; // Allow existing file URLs
         return file instanceof File; // Must be a File object if present
       }, "Land lease agreement must be a valid file"),
+    remarks: z
+      .string()
+      .trim().optional()
+      .nullable()
+      .transform((val) => (val === "" ? null : val))
   })
   .refine(
     (data) => {

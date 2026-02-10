@@ -48,7 +48,8 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
         payment: "Payment Details",
         details: "Property Details",
         costs: "Cost Sharing",
-        documents: "Documentation & Attachments"
+        documents: "Documentation & Attachments",
+        remarks: "Additional Remarks",
     };
 
     const renderField = (field, hideLabel = false) => {
@@ -179,7 +180,7 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
             },
             landLease: {
                 upload: fields.find(f => f.name === 'land_lease_agreement')
-            }
+            },
         };
 
         return (
@@ -258,6 +259,14 @@ const AddEditForm = ({ onClose, property = null, initialData = null }) => {
                                 {sectionKey === 'documents' ? (
                                     <div className="space-y-6">
                                         {renderDocumentSection(fields)}
+                                    </div>
+                                ) : sectionKey === 'remarks' ? (
+                                    <div className="grid grid-cols-12 gap-4">
+                                        {fields.map((field) => (
+                                            <div key={field.id} className="col-span-12">
+                                                {renderField(field)}
+                                            </div>
+                                        ))}
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
