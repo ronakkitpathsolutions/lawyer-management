@@ -81,6 +81,14 @@ export const api = {
         ...configs,
       }),
   },
+  member: {
+    delete: ({ id, ...configs }) =>
+      client({
+        url: `/clients/members/${id}`,
+        method: METHODS.DELETE,
+        ...configs,
+      }),
+  },
   visa: {
     getAll: ({ id, params, ...configs }) =>
       client({
@@ -138,5 +146,5 @@ export const api = {
         method: METHODS.DELETE,
         ...configs,
       }),
-  }
+  },
 };

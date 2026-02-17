@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { clientFullInformationSchema } from "@/utils/validations";
 import {
   PLACEHOLDER_MESSAGES as msg,
@@ -13,44 +13,89 @@ import { toastSuccess } from "@/lib/toast";
 import { useParams } from "react-router";
 import usePersonalInformationStore from "./use-personal-store";
 import useFetchWithAbort from "@/hooks/use-fetch-with-abort";
+import { useFieldArray } from "react-hook-form";
+import { useDisclosure } from "@mantine/hooks";
+
+const memberDetails = {
+  member_name: "",
+  member_email: "",
+  relationship: "",
+  date_of_birth: "",
+  contact_number: "",
+  nationality: "",
+  passport_number: "",
+  has_yellow_or_pink_card: false,
+  has_bought_property_in_thailand: false,
+};
 
 const usePersonalInformation = () => {
   const { id } = useParams();
-  const {
-    getData,
-    data
-  } = usePersonalInformationStore();
+  const { getData, data } = usePersonalInformationStore();
   const [fetchData] = useFetchWithAbort(getData);
+  const [deleteData, setDeleteData] = useState({});
 
-const initialValues = useMemo(() => ({
-    id: data?.id || undefined,
-    // Personal Information
-    name: data?.name || "",
-    family_name: data?.family_name || "",
-    email: data?.email || "",
-    nationality: data?.nationality || "",
-    date_of_birth: data?.date_of_birth || "",
-    phone_number: data?.phone_number || "",
-    current_address: data?.current_address || "",
+  const [
+    isOpenDeleteMember,
+    { open: openDeleteMember, close: closeDeleteMember },
+  ] = useDisclosure(false);
 
-    // Additional Information
-    passport_number: data?.passport_number || "",
-    age: data?.age ? Number(data.age) : "",
-    address_in_thailand: data?.address_in_thailand || "",
-    whatsapp: data?.whatsapp || "",
-    line: data?.line || "",
-    marital_status: data?.marital_status || undefined,
-    father_name: data?.father_name || "",
-    mother_name: data?.mother_name || "",
-    married_to_thai_and_registered: data?.married_to_thai_and_registered || false,
-    has_yellow_or_pink_card: data?.has_yellow_or_pink_card || false,
-    has_bought_property_in_thailand: data?.has_bought_property_in_thailand || false,
-    is_active: data?.is_active ?? true,
-}), [data]);
+  const initialValues = useMemo(
+    () => ({
+      id: data?.id || undefined,
+      // Personal Information
+      name: data?.name || "",
+      family_name: data?.family_name || "",
+      email: data?.email || "",
+      nationality: data?.nationality || "",
+      date_of_birth: data?.date_of_birth || "",
+      phone_number: data?.phone_number || "",
+      current_address: data?.current_address || "",
+
+      // Additional Information
+      passport_number: data?.passport_number || "",
+      age: data?.age ? Number(data.age) : "",
+      address_in_thailand: data?.address_in_thailand || "",
+      whatsapp: data?.whatsapp || "",
+      line: data?.line || "",
+      marital_status: data?.marital_status || undefined,
+      father_name: data?.father_name || "",
+      mother_name: data?.mother_name || "",
+      married_to_thai_and_registered:
+        data?.married_to_thai_and_registered || false,
+      has_yellow_or_pink_card: data?.has_yellow_or_pink_card || false,
+      has_bought_property_in_thailand:
+        data?.has_bought_property_in_thailand || false,
+      is_active: data?.is_active ?? true,
+      relationships: data?.relationships || [{ ...memberDetails }],
+    }),
+    [data],
+  );
+
+  const handleOpenDeleteMember = useCallback((id) => {
+    setDeleteData({ id });
+    openDeleteMember();
+  }, [openDeleteMember]);
+
+  const handleCloseDeleteMember = useCallback(() => {
+    setDeleteData({});
+    closeDeleteMember();
+  }, [closeDeleteMember]);
+
+    // call delete Visa API
+  const [handleDeleteConfirm, deleteLoading] = useAsyncOperation(async () => {
+    if (!deleteData.id) return;
+
+    await api.member.delete({ id: deleteData.id });
+    toastSuccess("Member deleted successfully");
+    // Refresh the visa list
+    fetchData({ id });
+    // Close the delete modal
+    closeDeleteMember({});
+  });
 
   useEffect(() => {
     if (id) {
-        fetchData({ id });
+      fetchData({ id });
     }
   }, [fetchData, id]);
 
@@ -58,6 +103,12 @@ const initialValues = useMemo(() => ({
     resolver: zodResolver(clientFullInformationSchema),
     defaultValues: initialValues,
     values: initialValues,
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: methods.control,
+    name: "relationships",
+    keyName: "fieldId", // Use a different key name to avoid conflict with 'id' in member details
   });
 
   // Reset form when data changes to ensure all fields are properly updated
@@ -242,7 +293,7 @@ const initialValues = useMemo(() => ({
         section: "status",
       },
     ],
-    []
+    [],
   );
 
   const [onSubmit, loading, notification] = useAsyncOperation(
@@ -252,7 +303,7 @@ const initialValues = useMemo(() => ({
         ...values,
         age: values.age ? Number(values.age) : undefined,
       };
-      
+
       await api.client.update({
         id: processedValues.id, // Assuming the ID will be in the form values
         data: removeEmptyFields(processedValues),
@@ -262,7 +313,7 @@ const initialValues = useMemo(() => ({
     () => {
       // Handle specific error cases if needed
       return false;
-    }
+    },
   );
 
   return {
@@ -271,6 +322,15 @@ const initialValues = useMemo(() => ({
     onSubmit,
     loading,
     notification,
+    memberFields: fields,
+    appendMember: append,
+    removeMember: remove,
+    memberDetails,
+    handleOpenDeleteMember,
+    handleCloseDeleteMember,
+    handleDeleteConfirm,
+    deleteLoading,
+    isOpenDeleteMember,
   };
 };
 

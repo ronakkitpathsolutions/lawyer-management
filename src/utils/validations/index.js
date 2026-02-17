@@ -102,7 +102,7 @@ export const clientPersonalInfoSchema = z.object({
         const input = new Date(date);
         return input < now;
       },
-      { message: "Date of birth must be in the past" }
+      { message: "Date of birth must be in the past" },
     ),
   phone_number: z
     .string()
@@ -193,6 +193,83 @@ export const clientFullInformationSchema = clientPersonalInfoSchema.extend({
   is_active: z
     .boolean({ invalid_type_error: "Must be true or false" })
     .default(true),
+  relationships: z
+    .array(
+      z.object({
+        member_name: z
+          .string()
+          .trim()
+          .min(2, msg.minLength("member name", 2))
+          .max(100, msg.maxLength("member name", 100)),
+        member_email: z
+          .string()
+          .trim()
+          .min(1, msg.required("email"))
+          .email(msg.invalid("email"))
+          .max(255, msg.maxLength("email", 255)),
+        relationship: z
+          .string()
+          .trim()
+          .min(1, msg.required("relationship"))
+          .refine(
+            (val) =>
+              [
+                "spouse",
+                "child",
+                "parent",
+                "sibling",
+                "dependent",
+                "other",
+              ].includes(val),
+            { message: msg.invalid("relationship") },
+          ),
+
+        date_of_birth: z
+          .string()
+          .trim()
+          .min(1, msg.required("date of birth"))
+          .refine(
+            (date) => {
+              const now = new Date();
+              const input = new Date(date);
+              return input < now;
+            },
+            { message: "Date of birth must be in the past" },
+          ),
+
+        contact_number: z
+          .string()
+          .trim()
+          .min(1, msg.minLength("phone number", 10))
+          .refine(isValidPhoneNumber, { message: msg.invalid("phone number") }),
+
+        nationality: z
+          .string()
+          .trim()
+          .min(2, msg.required("nationality"))
+          .max(100, msg.maxLength("nationality", 100)),
+
+        passport_number: z
+          .string()
+          .trim()
+          .regex(/^[A-Z0-9]+$/, msg.invalid("passport number"))
+          .min(6, msg.minLength("passport number", 6))
+          .max(20, msg.maxLength("passport number", 20))
+          .optional()
+          .or(z.literal("")),
+
+        has_yellow_or_pink_card: z
+          .boolean({ invalid_type_error: "Must be true or false" })
+          .optional()
+          .nullable(),
+
+        has_bought_property_in_thailand: z
+          .boolean({ invalid_type_error: "Must be true or false" })
+          .optional()
+          .nullable(),
+      }),
+    )
+    .optional(),
 });
 
 export const clientVisaSchema = z.object({
@@ -219,7 +296,7 @@ export const clientVisaSchema = z.object({
         if (!date || date === "") return true;
         return !isNaN(Date.parse(date));
       },
-      { message: msg.invalid("existing visa expiry date") }
+      { message: msg.invalid("existing visa expiry date") },
     ),
 
   intended_departure_date: z
@@ -232,7 +309,7 @@ export const clientVisaSchema = z.object({
         if (!date || date === "") return true;
         return !isNaN(Date.parse(date));
       },
-      { message: msg.invalid("intended departure date") }
+      { message: msg.invalid("intended departure date") },
     ),
 
   latest_entry_date: z
@@ -245,7 +322,7 @@ export const clientVisaSchema = z.object({
         if (!date || date === "") return true;
         return !isNaN(Date.parse(date));
       },
-      { message: msg.invalid("latest entry date") }
+      { message: msg.invalid("latest entry date") },
     ),
   intended_visa_renewal_date: z
     .string()
@@ -257,7 +334,7 @@ export const clientVisaSchema = z.object({
         if (!date || date === "") return true;
         return !isNaN(Date.parse(date));
       },
-      { message: msg.invalid("intended visa renewal date") }
+      { message: msg.invalid("intended visa renewal date") },
     ),
   re_entry_permit: z
     .string()
@@ -269,7 +346,7 @@ export const clientVisaSchema = z.object({
         if (!value || value === "") return true;
         return RE_ENTRY_PERMIT_TEXTS.includes(value);
       },
-      { message: msg.invalid("re-entry permit") }
+      { message: msg.invalid("re-entry permit") },
     ),
   new_visa_expiry_date: z
     .string()
@@ -281,7 +358,7 @@ export const clientVisaSchema = z.object({
         if (!date || date === "") return true;
         return !isNaN(Date.parse(date));
       },
-      { message: msg.invalid("new visa expiry date") }
+      { message: msg.invalid("new visa expiry date") },
     ),
 });
 
@@ -316,11 +393,11 @@ export const propertyValidationSchema = z
       .transform((val) => (val === "" ? null : val))
       .refine(
         (val) => val === null || val === undefined || val.length >= 2,
-        PROPERTY_MESSAGES.AGENT_NAME.TOO_SHORT
+        PROPERTY_MESSAGES.AGENT_NAME.TOO_SHORT,
       )
       .refine(
         (val) => val === null || val === undefined || val.length <= 100,
-        PROPERTY_MESSAGES.AGENT_NAME.TOO_LONG
+        PROPERTY_MESSAGES.AGENT_NAME.TOO_LONG,
       ),
     broker_company: z
       .string()
@@ -330,11 +407,11 @@ export const propertyValidationSchema = z
       .transform((val) => (val === "" ? null : val))
       .refine(
         (val) => val === null || val === undefined || val.length >= 2,
-        PROPERTY_MESSAGES.BROKER_COMPANY.TOO_SHORT
+        PROPERTY_MESSAGES.BROKER_COMPANY.TOO_SHORT,
       )
       .refine(
         (val) => val === null || val === undefined || val.length <= 100,
-        PROPERTY_MESSAGES.BROKER_COMPANY.TOO_LONG
+        PROPERTY_MESSAGES.BROKER_COMPANY.TOO_LONG,
       ),
     transaction_type: z
       .array(z.string())
@@ -349,7 +426,7 @@ export const propertyValidationSchema = z
           val === null ||
           val === undefined ||
           val.every((item) => TYPE_OF_TRANSACTION_TEXTS.includes(item)),
-        PROPERTY_MESSAGES.TRANSACTION_TYPE.INVALID
+        PROPERTY_MESSAGES.TRANSACTION_TYPE.INVALID,
       ),
     property_type: z
       .string()
@@ -362,7 +439,7 @@ export const propertyValidationSchema = z
           val === null ||
           val === undefined ||
           TYPE_OF_PROPERTY_TEXTS.includes(val),
-        PROPERTY_MESSAGES.PROPERTY_TYPE.INVALID
+        PROPERTY_MESSAGES.PROPERTY_TYPE.INVALID,
       ),
     reservation_date: z
       .string()
@@ -392,7 +469,7 @@ export const propertyValidationSchema = z
       })
       .refine(
         (val) => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
-        PROPERTY_MESSAGES.RESERVATION_DATE.INVALID
+        PROPERTY_MESSAGES.RESERVATION_DATE.INVALID,
       ),
     intended_closing_date_specific: z
       .string()
@@ -423,7 +500,7 @@ export const propertyValidationSchema = z
       })
       .refine(
         (val) => val === null || /^\d{4}-\d{2}-\d{2}$/.test(val),
-        PROPERTY_MESSAGES.INTENDED_CLOSING_DATE.INVALID
+        PROPERTY_MESSAGES.INTENDED_CLOSING_DATE.INVALID,
       ),
     intended_closing_date: z
       .string()
@@ -436,7 +513,7 @@ export const propertyValidationSchema = z
           val === null ||
           val === undefined ||
           INTENDED_CLOSING_DATE_TEXTS.includes(val),
-        PROPERTY_MESSAGES.INTENDED_CLOSING_DATE.INVALID
+        PROPERTY_MESSAGES.INTENDED_CLOSING_DATE.INVALID,
       ),
     handover_date: z
       .string()
@@ -449,7 +526,7 @@ export const propertyValidationSchema = z
           val === null ||
           val === undefined ||
           HANDOVER_DATE_TEXTS.includes(val),
-        PROPERTY_MESSAGES.HANDOVER_DATE.INVALID
+        PROPERTY_MESSAGES.HANDOVER_DATE.INVALID,
       ),
     warranty_term: z
       .string()
@@ -479,7 +556,7 @@ export const propertyValidationSchema = z
             invalid_type_error: PROPERTY_MESSAGES.SELLING_PRICE.INVALID,
           })
           .positive(PROPERTY_MESSAGES.SELLING_PRICE.MUST_BE_POSITIVE)
-          .nullable()
+          .nullable(),
       )
       .optional()
       .nullable(),
@@ -499,7 +576,7 @@ export const propertyValidationSchema = z
             invalid_type_error: PROPERTY_MESSAGES.DEPOSIT.INVALID,
           })
           .positive(PROPERTY_MESSAGES.DEPOSIT.MUST_BE_POSITIVE)
-          .nullable()
+          .nullable(),
       )
       .optional()
       .nullable(),
@@ -519,7 +596,7 @@ export const propertyValidationSchema = z
             invalid_type_error: PROPERTY_MESSAGES.INTERMEDIARY_PAYMENT.INVALID,
           })
           .positive(PROPERTY_MESSAGES.INTERMEDIARY_PAYMENT.MUST_BE_POSITIVE)
-          .nullable()
+          .nullable(),
       )
       .optional()
       .nullable(),
@@ -539,7 +616,7 @@ export const propertyValidationSchema = z
             invalid_type_error: PROPERTY_MESSAGES.CLOSING_PAYMENT.INVALID,
           })
           .positive(PROPERTY_MESSAGES.CLOSING_PAYMENT.MUST_BE_POSITIVE)
-          .nullable()
+          .nullable(),
       )
       .optional()
       .nullable(),
@@ -556,7 +633,7 @@ export const propertyValidationSchema = z
           val === null ||
           val === undefined ||
           val.every((item) => ACCEPTABLE_PAYMENT_METHODS_TEXTS.includes(item)),
-        PROPERTY_MESSAGES.ACCEPTABLE_METHOD_OF_PAYMENT.INVALID
+        PROPERTY_MESSAGES.ACCEPTABLE_METHOD_OF_PAYMENT.INVALID,
       ),
     place_of_payment: z
       .string()
@@ -569,7 +646,7 @@ export const propertyValidationSchema = z
           val === null ||
           val === undefined ||
           PLACE_OF_PAYMENT_TEXTS.includes(val),
-        PROPERTY_MESSAGES.PLACE_OF_PAYMENT.INVALID
+        PROPERTY_MESSAGES.PLACE_OF_PAYMENT.INVALID,
       ),
     property_condition: z
       .string()
@@ -582,7 +659,7 @@ export const propertyValidationSchema = z
           val === null ||
           val === undefined ||
           PROPERTY_CONDITION_TEXTS.includes(val),
-        PROPERTY_MESSAGES.PROPERTY_CONDITION.INVALID
+        PROPERTY_MESSAGES.PROPERTY_CONDITION.INVALID,
       ),
     repair_details: z
       .string()
@@ -592,7 +669,7 @@ export const propertyValidationSchema = z
       .transform((val) => (val === "" ? null : val))
       .refine(
         (val) => val === null || val === undefined || val.length <= 500,
-        PROPERTY_MESSAGES.REPAIRED_DETAILS.TOO_LONG
+        PROPERTY_MESSAGES.REPAIRED_DETAILS.TOO_LONG,
       ),
     house_warranty: z
       .string()
@@ -616,7 +693,7 @@ export const propertyValidationSchema = z
           val === null ||
           val === undefined ||
           FURNITURE_INCLUDED_TEXTS.includes(val),
-        PROPERTY_MESSAGES.FURNITURE_INCLUDED.INVALID
+        PROPERTY_MESSAGES.FURNITURE_INCLUDED.INVALID,
       ),
     // Cost sharing fields
     transfer_fee: z
@@ -628,7 +705,7 @@ export const propertyValidationSchema = z
       .refine(
         (val) =>
           val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
-        PROPERTY_MESSAGES.TRANSFER_FEE.INVALID
+        PROPERTY_MESSAGES.TRANSFER_FEE.INVALID,
       ),
     withholding_tax: z
       .string()
@@ -639,7 +716,7 @@ export const propertyValidationSchema = z
       .refine(
         (val) =>
           val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
-        PROPERTY_MESSAGES.WITHHOLDING_TAX.INVALID
+        PROPERTY_MESSAGES.WITHHOLDING_TAX.INVALID,
       ),
     business_tax: z
       .string()
@@ -650,7 +727,7 @@ export const propertyValidationSchema = z
       .refine(
         (val) =>
           val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
-        PROPERTY_MESSAGES.BUSINESS_TAX.INVALID
+        PROPERTY_MESSAGES.BUSINESS_TAX.INVALID,
       ),
     lease_registration_fee: z
       .string()
@@ -661,7 +738,7 @@ export const propertyValidationSchema = z
       .refine(
         (val) =>
           val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
-        PROPERTY_MESSAGES.LEASE_REGISTRATION_FEE.INVALID
+        PROPERTY_MESSAGES.LEASE_REGISTRATION_FEE.INVALID,
       ),
     mortgage_fee: z
       .string()
@@ -672,7 +749,7 @@ export const propertyValidationSchema = z
       .refine(
         (val) =>
           val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
-        PROPERTY_MESSAGES.MORTGAGE_FEE.INVALID
+        PROPERTY_MESSAGES.MORTGAGE_FEE.INVALID,
       ),
     usufruct_registration_fee: z
       .string()
@@ -683,7 +760,7 @@ export const propertyValidationSchema = z
       .refine(
         (val) =>
           val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
-        PROPERTY_MESSAGES.USUFRUCT_REGISTRATION_FEE.INVALID
+        PROPERTY_MESSAGES.USUFRUCT_REGISTRATION_FEE.INVALID,
       ),
     servitude_registration_fee: z
       .string()
@@ -694,7 +771,7 @@ export const propertyValidationSchema = z
       .refine(
         (val) =>
           val === null || val === undefined || COST_SHARING_TEXTS.includes(val),
-        PROPERTY_MESSAGES.SERVITUDE_REGISTRATION_FEE.INVALID
+        PROPERTY_MESSAGES.SERVITUDE_REGISTRATION_FEE.INVALID,
       ),
     declared_land_office_price: z
       .string()
@@ -707,7 +784,7 @@ export const propertyValidationSchema = z
           val === null ||
           val === undefined ||
           DECLARED_LAND_OFFICE_PRICE_TEXTS.includes(val),
-        PROPERTY_MESSAGES.DECLARED_LAND_OFFICE_PRICE.INVALID
+        PROPERTY_MESSAGES.DECLARED_LAND_OFFICE_PRICE.INVALID,
       ),
     // Documentation attachment fields
     land_title: z
@@ -719,7 +796,7 @@ export const propertyValidationSchema = z
       .refine(
         (val) =>
           val === null || val === undefined || LAND_TITLE_TEXTS.includes(val),
-        PROPERTY_MESSAGES.LAND_TITLE.INVALID
+        PROPERTY_MESSAGES.LAND_TITLE.INVALID,
       ),
     house_title: z
       .string()
@@ -730,7 +807,7 @@ export const propertyValidationSchema = z
       .refine(
         (val) =>
           val === null || val === undefined || HOUSE_TITLE_TEXTS.includes(val),
-        PROPERTY_MESSAGES.HOUSE_TITLE.INVALID
+        PROPERTY_MESSAGES.HOUSE_TITLE.INVALID,
       ),
 
     // File upload fields
@@ -772,9 +849,10 @@ export const propertyValidationSchema = z
       }, "Land lease agreement must be a valid file"),
     remarks: z
       .string()
-      .trim().optional()
+      .trim()
+      .optional()
       .nullable()
-      .transform((val) => (val === "" ? null : val))
+      .transform((val) => (val === "" ? null : val)),
   })
   .refine(
     (data) => {
@@ -787,7 +865,7 @@ export const propertyValidationSchema = z
     {
       message: "Warranty term is required",
       path: ["warranty_term"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -800,7 +878,7 @@ export const propertyValidationSchema = z
     {
       message: "Warranty condition is required",
       path: ["warranty_condition"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -816,7 +894,7 @@ export const propertyValidationSchema = z
     {
       message: PROPERTY_MESSAGES.LAND_TITLE_DOCUMENT.REQUIRED,
       path: ["land_title_document"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -829,7 +907,7 @@ export const propertyValidationSchema = z
     {
       message: PROPERTY_MESSAGES.LAND_TITLE.REQUIRED,
       path: ["land_title"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -845,7 +923,7 @@ export const propertyValidationSchema = z
     {
       message: PROPERTY_MESSAGES.HOUSE_TITLE_DOCUMENT.REQUIRED,
       path: ["house_title_document"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -858,21 +936,28 @@ export const propertyValidationSchema = z
     {
       message: PROPERTY_MESSAGES.HOUSE_TITLE.REQUIRED,
       path: ["house_title"],
-    }
+    },
   )
   .refine(
     (data) => {
       // If intended closing date is selected, intended closing date specific is required
-      if (data.intended_closing_date && data.intended_closing_date.trim() !== "") {
-        return data.intended_closing_date_specific && data.intended_closing_date_specific.trim() !== "";
+      if (
+        data.intended_closing_date &&
+        data.intended_closing_date.trim() !== ""
+      ) {
+        return (
+          data.intended_closing_date_specific &&
+          data.intended_closing_date_specific.trim() !== ""
+        );
       }
       return true;
     },
     {
       message: PROPERTY_MESSAGES.INTENDED_CLOSING_DATE_SPECIFIC.REQUIRED,
       path: ["intended_closing_date_specific"],
-    }
-  ).refine(
+    },
+  )
+  .refine(
     (data) => {
       // If property condition is "sometimes_items_to_be_repaired", repair details are required
       if (data.property_condition === "sometimes_items_to_be_repaired") {
@@ -883,5 +968,5 @@ export const propertyValidationSchema = z
     {
       message: PROPERTY_MESSAGES.REPAIRED_DETAILS.REQUIRED,
       path: ["repair_details"],
-    }
+    },
   );
