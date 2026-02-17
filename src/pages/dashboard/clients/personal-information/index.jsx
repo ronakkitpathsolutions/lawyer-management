@@ -25,7 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import usePersonalInformation from "./use-personal-information";
 import DatePicker from "@/shared/date-picker";
 import { PhoneInput } from "@/shared/phone-input";
-import { Trash2 } from "lucide-react";
+import { Download, Loader2, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const PersonalInformation = () => {
@@ -43,6 +43,8 @@ const PersonalInformation = () => {
     isOpenDeleteMember,
     handleDeleteConfirm,
     deleteLoading,
+    handleExport,
+    exportLoading,
   } = usePersonalInformation();
 
   // Group fields by section
@@ -452,6 +454,19 @@ const PersonalInformation = () => {
               </Button>
               <Button type="submit" disabled={loading} className="px-8">
                 {loading ? "Updating..." : "Update Client"}
+              </Button>
+              <Button
+                type="button"
+                onClick={handleExport}
+                className="flex items-center gap-2"
+                disabled={exportLoading}
+              >
+                {exportLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4" />
+                )}
+                {exportLoading ? "Exporting" : "Export"}
               </Button>
             </div>
           </form>

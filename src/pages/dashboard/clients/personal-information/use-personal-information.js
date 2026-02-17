@@ -6,7 +6,7 @@ import {
   PLACEHOLDER_MESSAGES as msg,
   ACTION_MESSAGES,
 } from "@/utils/constants";
-import { removeEmptyFields } from "@/utils/helper";
+import { downloadFile, removeEmptyFields } from "@/utils/helper";
 import useAsyncOperation from "@/hooks/use-async-operation";
 import { api } from "@/api";
 import { toastSuccess } from "@/lib/toast";
@@ -15,6 +15,7 @@ import usePersonalInformationStore from "./use-personal-store";
 import useFetchWithAbort from "@/hooks/use-fetch-with-abort";
 import { useFieldArray } from "react-hook-form";
 import { useDisclosure } from "@mantine/hooks";
+import dayjs from "dayjs";
 
 const memberDetails = {
   member_name: "",
@@ -71,17 +72,20 @@ const usePersonalInformation = () => {
     [data],
   );
 
-  const handleOpenDeleteMember = useCallback((id) => {
-    setDeleteData({ id });
-    openDeleteMember();
-  }, [openDeleteMember]);
+  const handleOpenDeleteMember = useCallback(
+    (id) => {
+      setDeleteData({ id });
+      openDeleteMember();
+    },
+    [openDeleteMember],
+  );
 
   const handleCloseDeleteMember = useCallback(() => {
     setDeleteData({});
     closeDeleteMember();
   }, [closeDeleteMember]);
 
-    // call delete Visa API
+  // call delete Visa API
   const [handleDeleteConfirm, deleteLoading] = useAsyncOperation(async () => {
     if (!deleteData.id) return;
 
@@ -117,6 +121,12 @@ const usePersonalInformation = () => {
       methods.reset(initialValues);
     }
   }, [methods, initialValues, data]);
+
+  const [handleExport, exportLoading] = useAsyncOperation(async () => {
+    const response = await api.client.export({ id });
+    const filename = `client_${dayjs().format("YYYY-MM-DD")}.xlsx`;
+    downloadFile(response?.data, filename);
+  });
 
   const fieldsData = useMemo(
     () => [
@@ -331,6 +341,8 @@ const usePersonalInformation = () => {
     handleDeleteConfirm,
     deleteLoading,
     isOpenDeleteMember,
+    handleExport,
+    exportLoading,
   };
 };
 

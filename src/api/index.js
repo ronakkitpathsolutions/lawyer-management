@@ -80,6 +80,13 @@ export const api = {
         method: METHODS.DELETE,
         ...configs,
       }),
+    export: ({ id, ...configs }) =>
+      client({
+        url: `/clients/export/${id}`,
+        method: METHODS.GET,
+        responseType: "blob",
+        ...configs,
+      }),
   },
   member: {
     delete: ({ id, ...configs }) =>
