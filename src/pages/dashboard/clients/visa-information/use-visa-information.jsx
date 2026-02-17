@@ -20,6 +20,8 @@ import {
   WISHED_VISA_MAP,
 } from "@/utils/constants";
 import { useParams } from "react-router";
+import { downloadFile } from "@/utils/helper";
+import dayjs from "dayjs";
 
 const useVisaInformation = () => {
   const { getAll, data, params, resetParams, setParams, loading, total } =
@@ -217,6 +219,12 @@ const useVisaInformation = () => {
     [openEditDrawer]
   );
 
+  const [handleExport, exportLoading] = useAsyncOperation(async () => {
+    const response = await api.visa.export({})
+    const filename = `visas_${dayjs().format('YYYY-MM-DD')}.xlsx`;
+    downloadFile(response?.data, filename);
+  });
+
   const [handleBulkDeleteConfirm, deleteBulkLoading] = useAsyncOperation(
     async (ids = []) => {
       if (!ids.length) return;
@@ -250,6 +258,8 @@ const useVisaInformation = () => {
     selectedVisaData,
     handleBulkDeleteConfirm,
     deleteBulkLoading,
+    handleExport,
+    exportLoading,
   };
 };
 

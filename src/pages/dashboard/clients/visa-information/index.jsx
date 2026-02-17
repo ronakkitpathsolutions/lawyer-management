@@ -24,6 +24,8 @@ const VisaInformation = () => {
     handleBulkDeleteConfirm,
     deleteBulkLoading,
     handleRowSelection,
+    handleExport,
+    exportLoading,
   } = useVisaInformation();
 
   return (
@@ -57,6 +59,8 @@ const VisaInformation = () => {
             deleteLoading: deleteBulkLoading,
             confirmDescription:
               "Are you sure you want to delete the selected visas?",
+            exportLoading,
+            handleExport
           }}
           className="w-full"
         />

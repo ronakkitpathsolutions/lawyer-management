@@ -27,6 +27,7 @@ import {
   ChevronUp,
   ChevronDown,
   Trash2,
+  Download,
 } from "lucide-react";
 import Confirmation from "./confirmation";
 
@@ -47,6 +48,8 @@ const CustomTable = ({
   confirmDescription,
   deleteLoading,
   deleteButtonText = "Delete Rows",
+  handleExport,
+  exportLoading,
   // Additional props to pass to render functions
   ...additionalProps
 }) => {
@@ -116,7 +119,7 @@ const CustomTable = ({
 
       return "-";
     },
-    [additionalProps]
+    [additionalProps],
   );
 
   // Handle search
@@ -162,7 +165,7 @@ const CustomTable = ({
         setParams({ sortBy: columnKey, sortOrder: "ASC", page: 1 });
       }
     },
-    [sortBy, sortOrder, setParams]
+    [sortBy, sortOrder, setParams],
   );
 
   // Get sort icon for a column
@@ -188,7 +191,7 @@ const CustomTable = ({
         return <ChevronDown className="h-4 w-4 text-gray-700" />;
       }
     },
-    [sortBy, sortOrder]
+    [sortBy, sortOrder],
   );
 
   // Generate page numbers to show
@@ -212,7 +215,7 @@ const CustomTable = ({
           totalPages - 3,
           totalPages - 2,
           totalPages - 1,
-          totalPages
+          totalPages,
         );
       } else {
         pages.push(
@@ -222,7 +225,7 @@ const CustomTable = ({
           currentPage,
           currentPage + 1,
           "...",
-          totalPages
+          totalPages,
         );
       }
     }
@@ -254,6 +257,7 @@ const CustomTable = ({
             )}
           </div>
         )}
+
         {selectedRows.length > 0 && (
           <div className="bg-primary rounded-md px-6 py-[3px] flex items-center justify-center gap-4 shadow-lg border border-primary max-w-fit">
             <span className="text-white font-medium">
@@ -274,6 +278,21 @@ const CustomTable = ({
             </div>
           </div>
         )}
+
+        {handleExport ? (
+          <Button
+            onClick={handleExport}
+            className="flex items-center gap-2"
+            disabled={exportLoading}
+          >
+            {exportLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            {exportLoading ? "Exporting" : "Export"}
+          </Button>
+        ) : null}
       </div>
 
       {/* Selection Toolbar - Shows when items are selected */}

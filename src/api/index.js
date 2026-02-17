@@ -117,6 +117,13 @@ export const api = {
         method: METHODS.DELETE,
         ...configs,
       }),
+    export: ({ ...configs }) =>
+      client({
+        url: `/visas/export`,
+        method: METHODS.GET,
+        responseType: "blob",
+        ...configs,
+      }),
   },
   property: {
     getAll: ({ id, params, ...configs }) =>
