@@ -220,7 +220,7 @@ const useVisaInformation = () => {
   );
 
   const [handleExport, exportLoading] = useAsyncOperation(async () => {
-    const response = await api.visa.export({})
+    const response = await api.visa.export({ id });
     const filename = `visas_${dayjs().format('YYYY-MM-DD')}.xlsx`;
     downloadFile(response?.data, filename);
   });

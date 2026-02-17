@@ -25,6 +25,8 @@ const PropertyInformation = () => {
     deleteBulkLoading,
     handleBulkDeleteConfirm,
     handleRowSelection,
+    handleExport,
+    exportLoading,
   } = useProperty();
 
   return (
@@ -62,6 +64,8 @@ const PropertyInformation = () => {
             deleteLoading: deleteBulkLoading,
             confirmDescription:
               "Are you sure you want to delete the selected properties?",
+            exportLoading,
+            handleExport
           }}
           className="w-full"
         />

@@ -22,6 +22,8 @@ import {
   INTENDED_CLOSING_DATE_MAP,
 } from "@/utils/constants";
 import { Badge } from "@/components/ui/badge";
+import dayjs from "dayjs";
+import { downloadFile } from "@/utils/helper";
 
 const useProperty = () => {
   const { getAll, data, params, resetParams, setParams, loading, total } =
@@ -239,6 +241,12 @@ const useProperty = () => {
     }
   );
 
+    const [handleExport, exportLoading] = useAsyncOperation(async () => {
+    const response = await api.property.export({ id });
+    const filename = `properties_${dayjs().format('YYYY-MM-DD')}.xlsx`;
+    downloadFile(response?.data, filename);
+  });
+
   return {
     columns,
     data,
@@ -255,7 +263,9 @@ const useProperty = () => {
     selectedPropertyData,
     deleteBulkLoading,
     handleBulkDeleteConfirm,
-    handleRowSelection
+    handleRowSelection,
+    handleExport,
+    exportLoading,
   };
 };
 

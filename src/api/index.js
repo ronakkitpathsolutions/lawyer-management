@@ -117,9 +117,9 @@ export const api = {
         method: METHODS.DELETE,
         ...configs,
       }),
-    export: ({ ...configs }) =>
+    export: ({ id, ...configs }) =>
       client({
-        url: `/visas/export`,
+        url: `/visas/export/${id}`,
         method: METHODS.GET,
         responseType: "blob",
         ...configs,
@@ -151,6 +151,13 @@ export const api = {
       client({
         url: `/properties/${id}`,
         method: METHODS.DELETE,
+        ...configs,
+      }),
+    export: ({ id, ...configs }) =>
+      client({
+        url: `/properties/export/${id}`,
+        method: METHODS.GET,
+        responseType: "blob",
         ...configs,
       }),
   },
